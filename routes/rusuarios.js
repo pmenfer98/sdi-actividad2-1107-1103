@@ -35,20 +35,44 @@ module.exports = function(app, swig, gestorBD) {
     });
 
     app.post('/usuario', function(req, res) {
-        var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
-            .update(req.body.password).digest('hex');
-        var usuario = {
-            email : req.body.email,
-            password : seguro
+        if(req.body.nombre==null || req.body.nombre=='' || req.body.apellidos==null || req.body.apellidos=='' ||
+            req.body.email==null || req.body.email=='' || req.body.password==null || req.body.password=='' ||
+            req.body.repeatPassword==null || req.body.repeatPassword=='') {
+            res.redirect("/registrarse?mensaje=Debes rellenar todos los campos");
         }
-        gestorBD.insertarUsuario(usuario, function(id) {
-            if (id == null){
-                res.redirect("/registrarse?mensaje=Error al registrar usuario")
-            } else {
-                res.redirect("/identificarse?mensaje=Nuevo usuario registrado");
+        else if(req.body.password===req.body.repeatPassword) {
+            var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
+                .update(req.body.password).digest('hex');
+            var usuario = {
+                nombre: req.body.nombre,
+                apellidos: req.body.apellidos,
+                email: req.body.email,
+                password: seguro,
+                rol: 'user'
             }
-        });
-
+            var criterio = {
+                email: usuario.email
+            }
+            var collection = db.collection('usuarios');
+            collection.find(criterio).toArray(function (err, users) {
+                if (err) {
+                    res.redirect("/registrarse?mensaje=Error al registrar usuario");
+                } else if (users.length == 0) {
+                    console.log("Usuario: " + usuario.nombre + " " + usuario.apellidos);
+                    gestorBD.insertarUsuario(usuario, function (id) {
+                        if (id == null) {
+                            res.redirect("/registrarse?mensaje=Error al registrar usuario");
+                        } else {
+                            res.redirect("/identificarse?mensaje=Nuevo usuario registrado");
+                        }
+                    });
+                } else {
+                    res.redirect("/registrarse?mensaje=Ya hay un usuario registrado con ese email");
+                }
+            });
+        }else{
+            res.redirect("/registrarse?mensaje=Las contraseñas no coinciden")
+        }
     })
 
 };
