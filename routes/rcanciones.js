@@ -217,7 +217,7 @@ module.exports = function(app, swig, gestorBD) {
 
 
     app.get("/publicaciones", function(req, res) {
-        var criterio = { autor : req.session.usuario };
+        var criterio = { autor : app.get('usuario') };
         gestorBD.obtenerCanciones(criterio, function(canciones) {
             if (canciones == null) {
                 res.send("Error al listar ");

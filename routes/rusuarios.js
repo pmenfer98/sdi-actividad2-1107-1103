@@ -15,23 +15,29 @@ module.exports = function(app, swig, gestorBD) {
         res.send("Usuario desconectado");
     })
     app.post("/identificarse", function(req, res) {
-        var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
-            .update(req.body.password).digest('hex');
-        var criterio = {
-            email : req.body.email,
-            password : seguro
-        }
-        gestorBD.obtenerUsuarios(criterio, function(usuarios) {
-            if (usuarios == null || usuarios.length == 0) {
-                req.session.usuario = null;
-                res.redirect("/identificarse" +
-                    "?mensaje=Email o password incorrecto"+
-                    "&tipoMensaje=alert-danger ");
-            } else {
-                req.session.usuario = usuarios[0].email;
-                res.redirect("/publicaciones");
+        if(req.body.email == '' || req.body.email == null || req.body.password == null || req.body.password == ''){
+            res.redirect("/identificarse" +
+                "?mensaje=Debes rellenar el email y la contraseña"+
+                "&tipoMensaje=alert-danger ");
+        }else{
+            var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
+                .update(req.body.password).digest('hex');
+            var criterio = {
+                email : req.body.email,
+                password : seguro
             }
-        });
+            gestorBD.obtenerUsuarios(criterio, function(usuarios) {
+                if (usuarios == null || usuarios.length == 0) {
+                    app.set('usuario', null);
+                    res.redirect("/identificarse" +
+                        "?mensaje=Email o password incorrecto"+
+                        "&tipoMensaje=alert-danger ");
+                } else {
+                    app.set('usuario', usuarios[0]);
+                    res.redirect("/publicaciones");
+                }
+            });
+        }
     });
 
     app.post('/usuario', function(req, res) {
