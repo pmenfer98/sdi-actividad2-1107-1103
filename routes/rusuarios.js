@@ -59,12 +59,8 @@ module.exports = function(app, swig, gestorBD) {
             var criterio = {
                 email: usuario.email
             }
-            var collection = db.collection('usuarios');
-            collection.find(criterio).toArray(function (err, users) {
-                if (err) {
-                    res.redirect("/registrarse?mensaje=Error al registrar usuario");
-                } else if (users.length == 0) {
-                    console.log("Usuario: " + usuario.nombre + " " + usuario.apellidos);
+            gestorBD.obtenerUsuarios(criterio, function (users) {
+                if (users.length == 0) {
                     gestorBD.insertarUsuario(usuario, function (id) {
                         if (id == null) {
                             res.redirect("/registrarse?mensaje=Error al registrar usuario");
@@ -76,6 +72,7 @@ module.exports = function(app, swig, gestorBD) {
                     res.redirect("/registrarse?mensaje=Ya hay un usuario registrado con ese email");
                 }
             });
+
         }else{
             res.redirect("/registrarse?mensaje=Las contraseñas no coinciden")
         }

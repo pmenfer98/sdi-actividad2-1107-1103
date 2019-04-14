@@ -45,16 +45,14 @@ module.exports = {
                 funcionCallback(null);
             } else {
                 var collection = db.collection('usuarios');
-                collection.find(criterio).toArray(function(err, users){
-                    collection.insert(usuario, function(err, result) {
-                        if (err) {
-                            funcionCallback(null);
-                        } else {
-                            funcionCallback(result.ops[0]._id);
-                            console.log("Usuario añadido")
-                        }
-                        db.close();
-                    });
+                collection.insert(usuario, function(err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result.ops[0]._id);
+                        console.log("Usuario añadido")
+                    }
+                    db.close();
                 });
             }
         });
