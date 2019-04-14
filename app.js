@@ -22,7 +22,7 @@ require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rcanciones.js")(app, swig, gestorBD);
 
 app.get('/', function (req, res) {
-    res.redirect('/registrarse');
+    res.redirect('/identificarse');
 });
 
 // lanzar el servidor

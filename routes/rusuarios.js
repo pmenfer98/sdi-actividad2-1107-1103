@@ -11,8 +11,8 @@ module.exports = function(app, swig, gestorBD) {
         res.send(respuesta);
     });
     app.get('/desconectarse', function (req, res) {
-        req.session.usuario = null;
-        res.send("Usuario desconectado");
+        app.set('usuario', null);
+        res.redirect("/identificarse");
     })
     app.post("/identificarse", function(req, res) {
         if(req.body.email == '' || req.body.email == null || req.body.password == null || req.body.password == ''){
