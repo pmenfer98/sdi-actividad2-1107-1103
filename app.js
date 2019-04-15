@@ -12,16 +12,6 @@ app.use(expressSession({
     saveUninitialized: true,
 }));
 
-// routerUserSession
-let routerUserSession = express.Router();
-routerUserSession.use(function (req, res, next) {
-    if (req.session.user) { // dejamos correr la petición
-        next();
-    } else {
-        res.redirect("/identificarse");
-    }
-});
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -34,8 +24,31 @@ app.set('crypto', crypto);
 var gestorBD = require("./modules/gestorBD.js");
 gestorBD.init(app,mongo);
 
+var routerUserSession = express.Router();
+routerUserSession.use(function (req, res, next) {
+    if (req.session.user != null || req.session.user != undefined) { // dejamos correr la petición
+        next();
+    } else {
+        res.redirect("/identificarse");
+    }
+});
+
+var routerUserLogged = express.Router();
+routerUserLogged.use(function (req, res, next) {
+    if (req.session.user == null || req.session.user == undefined) { // dejamos correr la petición
+        next();
+    } else {
+        res.redirect("/publicaciones");
+    }
+});
+
+app.use('/identificarse', routerUserLogged);
+app.use('/registrarse', routerUserLogged);
+app.use('/publicaciones', routerUserSession);
+
 require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rcanciones.js")(app, swig, gestorBD);
+
 
 app.get('/', function (req, res) {
     res.redirect('/identificarse');
