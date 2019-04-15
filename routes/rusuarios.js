@@ -1,52 +1,54 @@
-module.exports = function(app, swig, gestorBD) {
-    app.get("/usuarios", function(req, res) {
+module.exports = function (app, swig, gestorBD) {
+    app.get("/usuarios", function (req, res) {
         res.send("ver usuarios");
     });
-    app.get("/registrarse", function(req, res) {
-        var respuesta = swig.renderFile('views/bregistro.html', {});
+    app.get("/registrarse", function (req, res) {
+        var respuesta = swig.renderFile('views/bregistro.html', {user: req.session.user});
         res.send(respuesta);
     });
-    app.get("/identificarse", function(req, res) {
-        var respuesta = swig.renderFile('views/bidentificacion.html', {});
+    app.get("/identificarse", function (req, res) {
+        var respuesta = swig.renderFile('views/bidentificacion.html', {user: req.session.user});
         res.send(respuesta);
     });
     app.get('/desconectarse', function (req, res) {
-        app.set('usuario', null);
-        res.redirect("/identificarse");
-    })
-    app.post("/identificarse", function(req, res) {
-        if(req.body.email == '' || req.body.email == null || req.body.password == null || req.body.password == ''){
+        req.session.user=null;
+        var respuesta = swig.renderFile('views/bidentificacion.html', {user: req.session.user});
+        res.send(respuesta);
+    });
+    app.post("/identificarse", function (req, res) {
+        console.log(req.session);
+        if (req.body.email == '' || req.body.email == null || req.body.password == null || req.body.password == '') {
             res.redirect("/identificarse" +
-                "?mensaje=Debes rellenar el email y la contraseña"+
+                "?mensaje=Debes rellenar el email y la contraseña" +
                 "&tipoMensaje=alert-danger ");
-        }else{
+        } else {
             var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
                 .update(req.body.password).digest('hex');
             var criterio = {
-                email : req.body.email,
-                password : seguro
+                email: req.body.email,
+                password: seguro
             }
-            gestorBD.obtenerUsuarios(criterio, function(usuarios) {
+            gestorBD.obtenerUsuarios(criterio, function (usuarios) {
                 if (usuarios == null || usuarios.length == 0) {
-                    app.set('usuario', null);
+                    req.session.user = null;
                     res.redirect("/identificarse" +
-                        "?mensaje=Email o password incorrecto"+
+                        "?mensaje=Email o password incorrecto" +
                         "&tipoMensaje=alert-danger ");
                 } else {
-                    app.set('usuario', usuarios[0]);
+                    req.session.user = usuarios[0];
                     res.redirect("/publicaciones");
                 }
             });
         }
     });
 
-    app.post('/usuario', function(req, res) {
-        if(req.body.nombre==null || req.body.nombre=='' || req.body.apellidos==null || req.body.apellidos=='' ||
-            req.body.email==null || req.body.email=='' || req.body.password==null || req.body.password=='' ||
-            req.body.repeatPassword==null || req.body.repeatPassword=='') {
+    app.post('/usuario', function (req, res) {
+        if (req.body.nombre == null || req.body.nombre == '' || req.body.apellidos == null || req.body.apellidos == '' ||
+            req.body.email == null || req.body.email == '' || req.body.password == null || req.body.password == '' ||
+            req.body.repeatPassword == null || req.body.repeatPassword == '') {
             res.redirect("/registrarse?mensaje=Debes rellenar todos los campos");
         }
-        else if(req.body.password===req.body.repeatPassword) {
+        else if (req.body.password === req.body.repeatPassword) {
             var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
                 .update(req.body.password).digest('hex');
             var usuario = {
@@ -73,7 +75,7 @@ module.exports = function(app, swig, gestorBD) {
                 }
             });
 
-        }else{
+        } else {
             res.redirect("/registrarse?mensaje=Las contraseñas no coinciden")
         }
     })
