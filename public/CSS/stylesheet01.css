@@ -1,0 +1,9 @@
+#dinero {
+    padding-top: 12px;
+    color: grey;
+}
+
+#dinero input{
+    width: 100px;
+    text-align: center;
+}
