@@ -47,6 +47,7 @@ routerUserLogged.use(function (req, res, next) {
 app.use('/identificarse', routerUserLogged);
 app.use('/registrarse', routerUserLogged);
 app.use('/publicaciones', routerUserSession);
+app.use('/listarUsuarios', routerUserSession);
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rcanciones.js")(app, swig, gestorBD);

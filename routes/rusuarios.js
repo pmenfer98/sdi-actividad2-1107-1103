@@ -16,7 +16,7 @@ module.exports = function (app, swig, gestorBD) {
         res.send(respuesta);
     });
     app.post("/identificarse", function (req, res) {
-        if (req.body.email == '' || req.body.email == null || req.body.password == null || req.body.password == '') {
+        if (req.body.email === '' || req.body.email == null || req.body.password == null || req.body.password === '') {
             res.redirect("/identificarse" +
                 "?mensaje=Debes rellenar el email y la contraseña" +
                 "&tipoMensaje=alert-danger ");
@@ -26,9 +26,9 @@ module.exports = function (app, swig, gestorBD) {
             var criterio = {
                 email: req.body.email,
                 password: seguro
-            }
+            };
             gestorBD.obtenerUsuarios(criterio, function (usuarios) {
-                if (usuarios == null || usuarios.length == 0) {
+                if (usuarios == null || usuarios.length === 0) {
                     req.session.user = null;
                     res.redirect("/identificarse" +
                         "?mensaje=Email o password incorrecto" +
@@ -38,7 +38,6 @@ module.exports = function (app, swig, gestorBD) {
                     res.redirect("/publicaciones");
                 }
             });
-
         }
     });
 
@@ -80,13 +79,30 @@ module.exports = function (app, swig, gestorBD) {
                         res.redirect("/registrarse?mensaje=Ya hay un usuario registrado con ese email");
                     }
                 });
-            }else{
+            } else {
                 res.redirect("/registrarse?mensaje=El email no es valido");
             }
 
         } else {
             res.redirect("/registrarse?mensaje=Las contraseñas no coinciden")
         }
-    })
-
+    });
+    app.get('/listarUsuarios', function (req, res) {
+        let criterioMongo = {
+            email: {
+                $ne: req.session.user // $ne es 'not' en Mongo
+            }
+        };
+        gestorBD.obtenerUsuarios(criterioMongo, function (users) {
+            if (users !== null) {
+                var respuesta = swig.renderFile('views/listaUsuarios.html', {
+                    user: req.session.user,
+                    users: users
+                });
+                res.send(respuesta);
+            } else {
+                res.redirect("/identificarse?mensaje=El email no es valido");
+            }
+        })
+    });
 };
