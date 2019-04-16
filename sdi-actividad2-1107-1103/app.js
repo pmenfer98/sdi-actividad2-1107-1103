@@ -47,7 +47,11 @@ routerUserLogged.use(function (req, res, next) {
 app.use('/identificarse', routerUserLogged);
 app.use('/registrarse', routerUserLogged);
 app.use('/publicaciones', routerUserSession);
+<<<<<<< HEAD:sdi-actividad2-1107-1103/app.js
 app.use('/ofertas/agregar', routerUserSession);
+=======
+app.use('/listarUsuarios', routerUserSession);
+>>>>>>> master:app.js
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rofertas.js")(app, swig, gestorBD);

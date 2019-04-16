@@ -63,6 +63,30 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="-590162695">
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="html" value="87" />
+          <entry key="js" value="251" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="HTML" value="87" />
+          <entry key="JavaScript" value="251" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="html" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="HTML" value="4" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
@@ -93,8 +117,16 @@
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD:sdi-actividad2-1107-1103/.idea/workspace.xml
       <file pinned="false" current-in-tab="false">
+=======
+      <file pinned="false" current-in-tab="true">
+<<<<<<< HEAD
+        <entry file="file://$PROJECT_DIR$/routes/rusuarios.js">
+=======
+>>>>>>> master:.idea/workspace.xml
         <entry file="file://$PROJECT_DIR$/views/base.html">
+>>>>>>> master
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="461">
               <caret line="30" column="52" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
@@ -106,6 +138,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD:sdi-actividad2-1107-1103/.idea/workspace.xml
         <entry file="file://$PROJECT_DIR$/routes/rapicanciones.js">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
@@ -120,6 +153,11 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+=======
+<<<<<<< HEAD
+        <entry file="file://$PROJECT_DIR$/views/bpublicaciones.html">
+=======
+>>>>>>> master:.idea/workspace.xml
         <entry file="file://$PROJECT_DIR$/public/CSS/stylesheet01.css">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
@@ -130,15 +168,20 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
+>>>>>>> master
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="153">
+              <caret line="9" selection-start-line="9" selection-end-line="9" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD:sdi-actividad2-1107-1103/.idea/workspace.xml
         <entry file="file://$PROJECT_DIR$/routes/rofertas.js">
+=======
+        <entry file="file://$PROJECT_DIR$/views/listaUsuarios.html">
+>>>>>>> master:.idea/workspace.xml
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="118">
               <caret line="93" column="36" selection-start-line="93" selection-start-column="36" selection-end-line="93" selection-end-column="36" />
@@ -166,6 +209,11 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>render</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -177,14 +225,21 @@
         <option value="$PROJECT_DIR$/modules/gestorBD.js" />
         <option value="$PROJECT_DIR$/views/css/stylesheet01.css" />
         <option value="$PROJECT_DIR$/routes/rusuarios.js" />
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/views/listaUsuarios.html" />
+=======
         <option value="$PROJECT_DIR$/views/stylesheet01.css" />
         <option value="$PROJECT_DIR$/views/CSS/stylesheet01.css" />
         <option value="$PROJECT_DIR$/routes/rcanciones.js" />
         <option value="$PROJECT_DIR$/public/CSS/stylesheet01.css" />
         <option value="$PROJECT_DIR$/views/base.html" />
+<<<<<<< HEAD:sdi-actividad2-1107-1103/.idea/workspace.xml
         <option value="$PROJECT_DIR$/routes/rofertas.js" />
         <option value="$PROJECT_DIR$/views/bagregar.html" />
         <option value="$PROJECT_DIR$/app.js" />
+=======
+>>>>>>> master
+>>>>>>> master:.idea/workspace.xml
       </list>
     </option>
   </component>
@@ -203,7 +258,7 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="676" />
+    <option name="x" value="-7" />
     <option name="width" value="697" />
     <option name="height" value="735" />
   </component>
@@ -248,6 +303,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Workspace" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
@@ -307,19 +363,27 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
+<<<<<<< HEAD
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15252976" />
+=======
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16741072" />
+>>>>>>> master
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
+<<<<<<< HEAD:sdi-actividad2-1107-1103/.idea/workspace.xml
       <window_info anchor="bottom" id="Run" order="2" weight="0.3295082" />
+=======
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.124590166" />
+>>>>>>> master:.idea/workspace.xml
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3295082" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32459018" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -342,8 +406,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/bregistro.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="36" column="56" selection-start-line="36" selection-start-column="56" selection-end-line="36" selection-end-column="56" />
+        <state relative-caret-position="187">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>
@@ -418,6 +482,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD:sdi-actividad2-1107-1103/.idea/workspace.xml
     <entry file="file://$PROJECT_DIR$/views/bagregar.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="414">
@@ -432,5 +497,24 @@
         </state>
       </provider>
     </entry>
+=======
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/views/bpublicaciones.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/rusuarios.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="50" column="23" selection-start-line="50" selection-start-column="23" selection-end-line="50" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+=======
+>>>>>>> master
+>>>>>>> master:.idea/workspace.xml
   </component>
 </project>
