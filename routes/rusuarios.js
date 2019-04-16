@@ -16,8 +16,6 @@ module.exports = function (app, swig, gestorBD) {
         res.send(respuesta);
     });
     app.post("/identificarse", function (req, res) {
-        var len = req.body.email.split('@').length();
-        var aux;
         if (req.body.email == '' || req.body.email == null || req.body.password == null || req.body.password == '') {
             res.redirect("/identificarse" +
                 "?mensaje=Debes rellenar el email y la contraseña" +
@@ -45,16 +43,16 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.post('/usuario', function (req, res) {
-        var len = req.body.email.split('@').length;
-        var aux;
+        var len = req.body.email;
         if (req.body.nombre == null || req.body.nombre == '' || req.body.apellidos == null || req.body.apellidos == '' ||
             req.body.email == null || req.body.email == '' || req.body.password == null || req.body.password == '' ||
             req.body.repeatPassword == null || req.body.repeatPassword == '') {
             res.redirect("/registrarse?mensaje=Debes rellenar todos los campos");
-        } else if (len != 2) {
+        } else if (len.split("@").length != 2) {
             res.redirect("/registrarse?mensaje=El email no es valido");
         } else if (req.body.password === req.body.repeatPassword) {
-            aux = req.body.email.split('@').get(1).split('.');
+            var email = req.body.email
+            var aux = email.split(".");
             if (aux.length == 2) {
                 var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
                     .update(req.body.password).digest('hex');
@@ -63,7 +61,8 @@ module.exports = function (app, swig, gestorBD) {
                     apellidos: req.body.apellidos,
                     email: req.body.email,
                     password: seguro,
-                    rol: 'user'
+                    rol: 'user',
+                    dinero: 100
                 }
                 var criterio = {
                     email: usuario.email
