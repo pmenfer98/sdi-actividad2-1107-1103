@@ -43,15 +43,28 @@ routerUserLogged.use(function (req, res, next) {
         res.redirect("/publicaciones");
     }
 });
+var routerUserChecker = express.Router();
+routerUserChecker.use(function (req, res, next) {
+    if (req.session.user.email === app.get('current_user')) { // dejamos correr la petición
+        next();
+    } else {
+        res.redirect("/identificarse" +
+            "?mensaje=El usuario actual no corresponde con el usuario de la peticion" +
+            "&tipoMensaje=alert-danger ");
+    }
+});
 
 app.use('/identificarse', routerUserLogged);
 app.use('/registrarse', routerUserLogged);
+app.use('/usuario', routerUserLogged);
+
 app.use('/publicaciones', routerUserSession);
-<<<<<<< HEAD:sdi-actividad2-1107-1103/app.js
 app.use('/ofertas/agregar', routerUserSession);
-=======
+app.use('/oferta', routerUserSession);
 app.use('/listarUsuarios', routerUserSession);
->>>>>>> master:app.js
+
+app.use('/oferta', routerUserChecker);
+
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rofertas.js")(app, swig, gestorBD);

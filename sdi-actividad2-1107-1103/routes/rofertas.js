@@ -57,10 +57,6 @@ module.exports = function (app, swig, gestorBD) {
 
 
     app.get('/ofertas/agregar', function (req, res) {
-        if (req.session.user == null) {
-            res.redirect("/tienda");
-            return;
-        }
         var respuesta = swig.renderFile('views/bagregar.html', {});
         res.send(respuesta);
     })
@@ -85,33 +81,31 @@ module.exports = function (app, swig, gestorBD) {
         });
     });
     app.post("/oferta", function (req, res) {
-        if (req.session.user == null) {
-            res.redirect("/tienda");
-            return;
-        }
-
-        var oferta = {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+        let dateString = mm + '/' + dd + '/' + yyyy;
+        let oferta = {
             nombre: req.body.nombre,
+            detalles: req.body.detalles,
             precio: req.body.precio,
-            autor: req.session.usuario
-        }
-        // Conectarse
-        gestorBD.insertarOferta(oferta, function (id) {
-            if (id == null) {
-                res.send("Error al insertar oferta");
-            } else {
-                if (req.files.portada != null) {
-                    var imagen = req.files.portada;
-                    imagen.mv('public/portadas/' + id + '.png', function (err) {
-                        if (err) {
-                            res.send("Error al subir la portada");
-                        } else {
-                            res.send("Agregada id: " + id);
-                        }
-                    });
+            propietario: req.session.user.email,
+            fecha: dateString
+        };
+        if(oferta.nombre === null || oferta.nombre === undefined || oferta.nombre === '' ||
+            oferta.detalles === null || oferta.detalles === undefined || oferta.detalles === '' ||
+            oferta.precio === null || oferta.precio === undefined || oferta.precio <= 0){
+            res.redirect("/ofertas/agregar?mensaje=Los campos no son validos");
+        }else {
+            gestorBD.insertarOferta(oferta, function (id) {
+                if (id == null) {
+                    res.redirect("/publicaciones?mensaje=Error al añadir oferta");
+                } else {
+                    res.redirect("/publicaciones?mensaje=Nueva oferta añadida");
                 }
-            }
-        });
+            });
+        }
 
     });
 
