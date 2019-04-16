@@ -57,10 +57,6 @@ module.exports = function (app, swig, gestorBD) {
 
 
     app.get('/ofertas/agregar', function (req, res) {
-        if (req.session.user == null) {
-            res.redirect("/tienda");
-            return;
-        }
         var respuesta = swig.renderFile('views/bagregar.html', {});
         res.send(respuesta);
     })
@@ -85,31 +81,26 @@ module.exports = function (app, swig, gestorBD) {
         });
     });
     app.post("/oferta", function (req, res) {
-        if (req.session.user == null) {
-            res.redirect("/tienda");
-            return;
-        }
-
-        var oferta = {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+        let dateString = mm + '/' + dd + '/' + yyyy;
+        console.log(req)
+        let oferta = {
             nombre: req.body.nombre,
+            detalles: req.body.detalles,
             precio: req.body.precio,
-            autor: req.session.usuario
-        }
+            propietario: req.session.user.email,
+            fecha: dateString
+        };
+        console.log(oferta);
         // Conectarse
-        gestorBD.insertarOferta(oferta, function (id) {
-            if (id == null) {
+        gestorBD.insertarOferta(oferta, function (err, id) {
+            if (err) {
                 res.send("Error al insertar oferta");
             } else {
-                if (req.files.portada != null) {
-                    var imagen = req.files.portada;
-                    imagen.mv('public/portadas/' + id + '.png', function (err) {
-                        if (err) {
-                            res.send("Error al subir la portada");
-                        } else {
-                            res.send("Agregada id: " + id);
-                        }
-                    });
-                }
+                res.send("Agregada id: " + id);
             }
         });
 

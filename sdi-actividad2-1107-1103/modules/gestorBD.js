@@ -147,18 +147,13 @@ module.exports = {
         });
     },
 
-<<<<<<< HEAD:sdi-actividad2-1107-1103/modules/gestorBD.js
-    insertarOferta : function(cancion, funcionCallback) {
+    insertarOferta : function(oferta, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
-=======
-    insertarCancion: function (cancion, funcionCallback) {
-        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
->>>>>>> master:modules/gestorBD.js
             if (err) {
                 funcionCallback(null);
             } else {
-                var collection = db.collection('canciones');
-                collection.insert(cancion, function (err, result) {
+                var collection = db.collection('ofertas');
+                collection.insert(oferta, function (err, result) {
                     if (err) {
                         funcionCallback(null);
                     } else {
