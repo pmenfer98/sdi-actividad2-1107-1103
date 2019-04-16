@@ -147,7 +147,7 @@ module.exports = {
         });
     },
 
-    insertarCancion : function(cancion, funcionCallback) {
+    insertarOferta : function(cancion, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallback(null);

@@ -56,8 +56,8 @@ module.exports = function (app, swig, gestorBD) {
     });
 
 
-    app.get('/canciones/agregar', function (req, res) {
-        if (req.session.usuario == null) {
+    app.get('/ofertas/agregar', function (req, res) {
+        if (req.session.user == null) {
             res.redirect("/tienda");
             return;
         }
@@ -84,22 +84,21 @@ module.exports = function (app, swig, gestorBD) {
             }
         });
     });
-    app.post("/cancion", function (req, res) {
-        if (req.session.usuario == null) {
+    app.post("/oferta", function (req, res) {
+        if (req.session.user == null) {
             res.redirect("/tienda");
             return;
         }
 
-        var cancion = {
+        var oferta = {
             nombre: req.body.nombre,
-            genero: req.body.genero,
             precio: req.body.precio,
             autor: req.session.usuario
         }
         // Conectarse
-        gestorBD.insertarCancion(cancion, function (id) {
+        gestorBD.insertarOferta(oferta, function (id) {
             if (id == null) {
-                res.send("Error al insertar canción");
+                res.send("Error al insertar oferta");
             } else {
                 if (req.files.portada != null) {
                     var imagen = req.files.portada;

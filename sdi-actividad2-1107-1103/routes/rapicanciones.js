@@ -20,7 +20,7 @@ module.exports = function(app, gestorBD) {
             genero : req.body.genero,
             precio : req.body.precio,
         }
-        gestorBD.insertarCancion(cancion, function(id){
+        gestorBD.insertarOferta(cancion, function(id){
             if (id == null) {
                 res.status(500);
                 res.json({
