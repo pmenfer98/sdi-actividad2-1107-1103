@@ -12,6 +12,7 @@ module.exports = function (app, swig, gestorBD) {
     });
     app.get('/desconectarse', function (req, res) {
         req.session.user = null;
+        app.set('current_user', null);
         var respuesta = swig.renderFile('views/bidentificacion.html', {user: req.session.user});
         res.send(respuesta);
     });
@@ -35,6 +36,7 @@ module.exports = function (app, swig, gestorBD) {
                         "&tipoMensaje=alert-danger ");
                 } else {
                     req.session.user = usuarios[0];
+                    app.set('current_user', usuarios[0].email);
                     res.redirect("/publicaciones");
                 }
             });
