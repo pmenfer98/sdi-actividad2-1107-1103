@@ -64,6 +64,7 @@ app.use('/oferta', routerUserSession);
 app.use('/listarUsuarios', routerUserSession);
 
 app.use('/oferta', routerUserChecker);
+app.use('/publicaciones', routerUserChecker);
 
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);

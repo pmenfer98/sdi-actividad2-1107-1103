@@ -44,7 +44,7 @@ module.exports = function (app, swig, gestorBD) {
                     cancionesCompradasIds.push(compras[i].cancionId);
                 }
                 var criterio = {"_id": {$in: cancionesCompradasIds}}
-                gestorBD.obtenerCanciones(criterio, function (canciones) {
+                gestorBD.obtenerMisOfertas(criterio, function (canciones) {
                     var respuesta = swig.renderFile('views/bcompras.html',
                         {
                             canciones: canciones
@@ -57,7 +57,7 @@ module.exports = function (app, swig, gestorBD) {
 
 
     app.get('/ofertas/agregar', function (req, res) {
-        var respuesta = swig.renderFile('views/bagregar.html', {});
+        var respuesta = swig.renderFile('views/bagregar.html', {user: req.session.user});
         res.send(respuesta);
     })
 
@@ -68,7 +68,7 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get('/cancion/:id', function (req, res) {
         var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        gestorBD.obtenerCanciones(criterio, function (canciones) {
+        gestorBD.obtenerMisOfertas(criterio, function (canciones) {
             if (canciones == null) {
                 res.send(respuesta);
             } else {
@@ -150,7 +150,7 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get('/cancion/modificar/:id', function (req, res) {
         var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        gestorBD.obtenerCanciones(criterio, function (canciones) {
+        gestorBD.obtenerMisOfertas(criterio, function (canciones) {
             if (canciones == null) {
                 res.send(respuesta);
                 res.redirect("/identificarse" +
@@ -208,15 +208,15 @@ module.exports = function (app, swig, gestorBD) {
 
 
     app.get("/publicaciones", function (req, res) {
-        var criterio = {autor: app.get('usuario')};
-        gestorBD.obtenerCanciones(criterio, function (canciones) {
-            if (canciones == null) {
+        var criterio = {propietario: req.session.user.email};
+        gestorBD.obtenerMisOfertas(criterio, function (ofertas) {
+            if (ofertas == null) {
                 res.send("Error al listar ");
             } else {
-                var respuesta = swig.renderFile('views/bpublicaciones.html',
+                var respuesta = swig.renderFile('views/bpublicacionespropias.html',
                     {
                         user: req.session.user,
-                        canciones: canciones
+                        ofertas: ofertas
                     });
                 res.send(respuesta);
             }

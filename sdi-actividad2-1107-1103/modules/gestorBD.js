@@ -57,12 +57,12 @@ module.exports = {
             }
         });
     },
-    obtenerCanciones: function (criterio, funcionCallback) {
+    obtenerMisOfertas: function (criterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {
                 funcionCallback(null);
             } else {
-                var collection = db.collection('canciones');
+                var collection = db.collection('ofertas');
                 collection.find(criterio).toArray(function (err, canciones) {
                     if (err) {
                         funcionCallback(null);
