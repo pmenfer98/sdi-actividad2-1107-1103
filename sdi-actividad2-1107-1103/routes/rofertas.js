@@ -93,11 +93,11 @@ module.exports = function (app, swig, gestorBD) {
             propietario: req.session.user.email,
             fecha: dateString
         };
-        if(oferta.nombre === null || oferta.nombre === undefined || oferta.nombre === '' ||
+        if (oferta.nombre === null || oferta.nombre === undefined || oferta.nombre === '' ||
             oferta.detalles === null || oferta.detalles === undefined || oferta.detalles === '' ||
-            oferta.precio === null || oferta.precio === undefined || oferta.precio <= 0){
+            oferta.precio === null || oferta.precio === undefined || oferta.precio <= 0) {
             res.redirect("/ofertas/agregar?mensaje=Los campos no son validos");
-        }else {
+        } else {
             gestorBD.insertarOferta(oferta, function (id) {
                 if (id == null) {
                     res.redirect("/publicaciones?mensaje=Error al añadir oferta");
@@ -223,17 +223,23 @@ module.exports = function (app, swig, gestorBD) {
         });
     });
 
-    app.get('/cancion/eliminar/:id', function (req, res) {
-        var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        gestorBD.eliminarCancion(criterio, function (canciones) {
-            if (canciones == null) {
-                res.redirect("/publicaciones" +
-                    "?mensaje=Error al eliminar la publicacion" +
-                    "&tipoMensaje=alert-danger ");
-            } else {
-                res.redirect("/publicaciones");
-            }
-        });
+    app.get('/oferta/eliminar/:id', function (req, res) {
+        if (req.params.id === null || req.params.id === undefined || req.params.id === '') {
+            res.redirect("/publicaciones" +
+                "?mensaje=Error al eliminar la publicacion" +
+                "&tipoMensaje=alert-danger ");
+        }else{
+            var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+            gestorBD.eliminarOferta(criterio, function (canciones) {
+                if (canciones == null) {
+                    res.redirect("/publicaciones" +
+                        "?mensaje=Error al eliminar la publicacion" +
+                        "&tipoMensaje=alert-danger ");
+                } else {
+                    res.redirect("/publicaciones");
+                }
+            });
+        }
     });
 
 

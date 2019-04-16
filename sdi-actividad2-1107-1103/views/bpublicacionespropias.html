@@ -14,6 +14,7 @@
 			<tr>
 				<th>Nombre</th>
 				<th>Detalles</th>
+				<th>Fecha</th>
 				<th>Precio</th>
 				<th class="col-md-1"></th>
 			</tr>
@@ -23,10 +24,12 @@
 			<tr>
 				<td>{{ oferta.nombre }}</td>
 				<td>{{ oferta.detalles }}</td>
+				<td>{{ oferta.fecha }}</td>
 				<td>{{ oferta.precio }}€</td>
-				<!--<td><a href="/cancion/modificar/{{ cancion._id.toString() }}"">Modificar</a> <br>
-					<a href="/cancion/eliminar/{{ cancion._id.toString() }}">Eliminar</a> <br>
-			    </td>-->
+				<!--<td><a href="/cancion/modificar/{{ cancion._id.toString() }}"">Modificar</a> <br>-->
+				<td>
+					<a href="/oferta/eliminar/{{ oferta._id.toString() }}">Eliminar</a> <br>
+			    </td>
 			</tr>
 		{% endfor %}
 		</tbody>

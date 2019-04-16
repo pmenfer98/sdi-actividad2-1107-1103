@@ -57,7 +57,7 @@ module.exports = function(app, gestorBD) {
     app.delete("/api/cancion/:id", function(req, res) {
         var criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.id)}
 
-        gestorBD.eliminarCancion(criterio,function(canciones){
+        gestorBD.eliminarOferta(criterio,function(canciones){
             if ( canciones == null ){
                 res.status(500);
                 res.json({

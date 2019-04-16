@@ -29,7 +29,13 @@ gestorBD.init(app,mongo);
 var routerUserSession = express.Router();
 routerUserSession.use(function (req, res, next) {
     if (req.session.user != null || req.session.user != undefined) { // dejamos correr la petición
-        next();
+        if (req.session.user.email === app.get('current_user')) { // dejamos correr la petición
+            next();
+        } else {
+            res.redirect("/desconectarse" +
+                "?mensaje=El usuario actual no corresponde con el usuario de la peticion" +
+                "&tipoMensaje=alert-danger ");
+        }
     } else {
         res.redirect("/identificarse");
     }
@@ -43,16 +49,6 @@ routerUserLogged.use(function (req, res, next) {
         res.redirect("/publicaciones");
     }
 });
-var routerUserChecker = express.Router();
-routerUserChecker.use(function (req, res, next) {
-    if (req.session.user.email === app.get('current_user')) { // dejamos correr la petición
-        next();
-    } else {
-        res.redirect("/identificarse" +
-            "?mensaje=El usuario actual no corresponde con el usuario de la peticion" +
-            "&tipoMensaje=alert-danger ");
-    }
-});
 
 app.use('/identificarse', routerUserLogged);
 app.use('/registrarse', routerUserLogged);
@@ -62,10 +58,7 @@ app.use('/publicaciones', routerUserSession);
 app.use('/ofertas/agregar', routerUserSession);
 app.use('/oferta', routerUserSession);
 app.use('/listarUsuarios', routerUserSession);
-
-app.use('/oferta', routerUserChecker);
-app.use('/publicaciones', routerUserChecker);
-
+app.use('/oferta/eliminar/:id', routerUserSession);
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rofertas.js")(app, swig, gestorBD);
