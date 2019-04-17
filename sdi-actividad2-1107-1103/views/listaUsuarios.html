@@ -4,26 +4,33 @@
 <h2>Usuarios en el sistema</h2>
 
 <div class="table-responsive">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Apellidos</th>
-            <th>Email</th>
-            <th class="col-md-1"></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-        <tr>
-            <td>{{ user.nombre }}</td>
-            <td>{{ user.apellidos }}</td>
-            <td>{{user.email}}</td>
-            <td><input type="checkbox" name="idsUser" {{user.id}} class="borrar"/></td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <form action="/borrar" method="post">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+                <th class="col-md-1"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.nombre }}</td>
+                <td>{{ user.apellidos }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <input type="checkbox" name="idsUsers" class="borrar"/>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <input class="btn btn-danger" type="submit" value="Borrar" id="deleteButton"/>
+    </form>
+</div>
+
 </div>
 
 {% endblock %}

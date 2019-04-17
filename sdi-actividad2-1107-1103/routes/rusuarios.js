@@ -97,14 +97,19 @@ module.exports = function (app, swig, gestorBD) {
         };
         gestorBD.obtenerUsuarios(criterioMongo, function (users) {
             if (users !== null) {
-                var respuesta = swig.renderFile('views/listaUsuarios.html', {
+                users.forEach(user => user.ABorrar = 'off');
+                let respuesta = swig.renderFile('views/listaUsuarios.html', {
                     user: req.session.user,
                     users: users
                 });
                 res.send(respuesta);
             } else {
-                res.redirect("/identificarse?mensaje=El email no es valido");
+                res.redirect("/identificarse?mensaje=El email no es válido");
             }
         })
+    });
+
+    app.post('/borrar', function (req, res) {
+        console.log(req);
     });
 };
