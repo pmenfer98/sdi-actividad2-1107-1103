@@ -10,11 +10,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class Sdi211071103LabSpringApplicationTests {
-	// En Windows (Debe ser la versión 65.0.1 y desactivar las actualizacioens
-	// automáticas)):
-	static String PathFirefox64 = "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe";
-	static String Geckdriver022 = "C:\\Users\\Pablo\\Desktop\\SDI\\PL-SDI-Sesión5-material\\geckodriver024win64.exe";
-	// Común a Windows y a MACOSX
+	// En Windows (Debe ser la versiÃ³n 65.0.1 y desactivar las actualizacioens
+	// automÃ¡ticas)):
+	static String PathFirefox64 = "../Firefox/FirefoxPortable.exe";
+	static String Geckdriver022 = "geckodriver024win64.exe";
+	// ComÃºn a Windows y a MACOSX
 	static WebDriver driver = getDriver(PathFirefox64, Geckdriver022);
 	static String URL = "http://localhost:8081";
 
@@ -39,7 +39,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	static public void begin() {
 	}
 
-	// Al finalizar la última prueba
+	// Al finalizar la Ãºltima prueba
 	@AfterClass
 	static public void end() {
 		// Cerramos el navegador al finalizar las pruebas
@@ -47,24 +47,108 @@ public class Sdi211071103LabSpringApplicationTests {
 	}
 
 	@Test
-	public void prueba1() throws Exception {
-		driver.get(URL + "/signup");
-		driver.findElement(By.name("name")).click();
-		driver.findElement(By.name("name")).clear();
-		driver.findElement(By.name("name")).sendKeys("Juan Carlos");
-		driver.findElement(By.name("lastName")).click();
-		driver.findElement(By.name("lastName")).clear();
-		driver.findElement(By.name("lastName")).sendKeys("Álvarez García");
+	public void test1_registrarse_valido() throws Exception {
+		driver.get(URL + "/registrarse");
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+		driver.findElement(By.name("nombre")).click();
+		driver.findElement(By.name("nombre")).clear();
+		driver.findElement(By.name("nombre")).sendKeys("Miguel");
+		driver.findElement(By.name("apellidos")).click();
+		driver.findElement(By.name("apellidos")).clear();
+		driver.findElement(By.name("apellidos")).sendKeys("Suarez Gonzalez");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
 		driver.findElement(By.name("email")).sendKeys("UO123456@uniovi.es");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("ContraseñaContra");
-		driver.findElement(By.name("passwordConfirm")).click();
-		driver.findElement(By.name("passwordConfirm")).clear();
-		driver.findElement(By.name("passwordConfirm"))
+		driver.findElement(By.name("repeatPassword")).click();
+		driver.findElement(By.name("repeatPassword")).clear();
+		driver.findElement(By.name("repeatPassword"))
 				.sendKeys("ContraseñaContra");
 		driver.findElement(By.id("registerButton")).click();
+		driver.findElement(By.id("mTienda"));
+		driver.findElement(By.id("mPublicaciones"));
+		driver.findElement(By.id("mAgregar"));
+		driver.findElement(By.id("idPublicaciones"));
+		driver.get(URL + "/desconectarse");
+	}
+	
+	@Test
+	public void test2_registrarse_emailRegistrado() throws Exception {
+		driver.get(URL + "/registrarse");
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+		driver.findElement(By.name("nombre")).click();
+		driver.findElement(By.name("nombre")).clear();
+		driver.findElement(By.name("nombre")).sendKeys("Pablo");
+		driver.findElement(By.name("apellidos")).click();
+		driver.findElement(By.name("apellidos")).clear();
+		driver.findElement(By.name("apellidos")).sendKeys("Menendez Fernandez");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("ContraseñaContra");
+		driver.findElement(By.name("repeatPassword")).click();
+		driver.findElement(By.name("repeatPassword")).clear();
+		driver.findElement(By.name("repeatPassword"))
+				.sendKeys("ContraseñaContra");
+		driver.findElement(By.id("registerButton")).click();
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+	}
+	
+	@Test
+	public void test3_registrarse_emailVacio() throws Exception {
+		driver.get(URL + "/registrarse");
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+		driver.findElement(By.name("nombre")).click();
+		driver.findElement(By.name("nombre")).clear();
+		driver.findElement(By.name("nombre")).sendKeys("Pablo");
+		driver.findElement(By.name("apellidos")).click();
+		driver.findElement(By.name("apellidos")).clear();
+		driver.findElement(By.name("apellidos")).sendKeys("Menendez Fernandez");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("ContraseñaContra");
+		driver.findElement(By.name("repeatPassword")).click();
+		driver.findElement(By.name("repeatPassword")).clear();
+		driver.findElement(By.name("repeatPassword"))
+				.sendKeys("ContraseñaContra");
+		driver.findElement(By.id("registerButton")).click();
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+	}
+	
+	@Test
+	public void test4_registrarse_repetirContraseñaFallido() throws Exception {
+		driver.get(URL + "/registrarse");
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+		driver.findElement(By.name("nombre")).click();
+		driver.findElement(By.name("nombre")).clear();
+		driver.findElement(By.name("nombre")).sendKeys("Pablo");
+		driver.findElement(By.name("apellidos")).click();
+		driver.findElement(By.name("apellidos")).clear();
+		driver.findElement(By.name("apellidos")).sendKeys("Menendez Fernandez");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("emailEjemplo@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("ContraseñaContra");
+		driver.findElement(By.name("repeatPassword")).click();
+		driver.findElement(By.name("repeatPassword")).clear();
+		driver.findElement(By.name("repeatPassword"))
+				.sendKeys("Contraseña");
+		driver.findElement(By.id("registerButton")).click();
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
 	}
 }
