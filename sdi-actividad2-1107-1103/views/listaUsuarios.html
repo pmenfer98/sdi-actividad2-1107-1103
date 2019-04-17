@@ -19,7 +19,7 @@
             <td>{{ user.nombre }}</td>
             <td>{{ user.apellidos }}</td>
             <td>{{user.email}}</td>
-            <td><a>Eliminar</a></td>
+            <td><input type="checkbox" name="idsUser" {{user.id}} class="borrar"/></td>
         </tr>
         {% endfor %}
         </tbody>
