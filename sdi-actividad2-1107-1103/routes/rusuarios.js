@@ -92,7 +92,7 @@ module.exports = function (app, swig, gestorBD) {
     app.get('/listarUsuarios', function (req, res) {
         let criterioMongo = {
             email: {
-                $ne: req.session.user // $ne es 'not' en Mongo
+                $ne: req.session.user.email // $ne es 'not' en Mongo
             }
         };
         gestorBD.obtenerUsuarios(criterioMongo, function (users) {
