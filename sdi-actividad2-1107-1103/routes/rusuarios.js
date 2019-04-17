@@ -90,23 +90,28 @@ module.exports = function (app, swig, gestorBD) {
         }
     });
     app.get('/listarUsuarios', function (req, res) {
-        let criterioMongo = {
-            email: {
-                $ne: req.session.user.email // $ne es 'not' en Mongo
-            }
-        };
-        gestorBD.obtenerUsuarios(criterioMongo, function (users) {
-            if (users !== null) {
-                users.forEach(user => user.ABorrar = 'off');
-                let respuesta = swig.renderFile('views/listaUsuarios.html', {
-                    user: req.session.user,
-                    users: users
-                });
-                res.send(respuesta);
-            } else {
-                res.redirect("/identificarse?mensaje=El email no es válido");
-            }
-        })
+        if(req.session.user.rol === "user"){
+            res.redirect("/identificarse?mensaje=El usuario no es administrador");
+        }else{
+            let criterioMongo = {
+                email: {
+                    $ne: req.session.user.email // $ne es 'not' en Mongo
+                }
+            };
+            gestorBD.obtenerUsuarios(criterioMongo, function (users) {
+                if (users !== null) {
+                    users.forEach(user => user.ABorrar = 'off');
+                    let respuesta = swig.renderFile('views/listaUsuarios.html', {
+                        user: req.session.user,
+                        users: users
+                    });
+                    res.send(respuesta);
+                } else {
+                    res.redirect("/identificarse?mensaje=El email no es válido");
+                }
+            })
+        }
+
     });
 
     app.post('/borrar', function (req, res) {

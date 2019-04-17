@@ -6,8 +6,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+
+import test.utils.SeleniumUtils;
 
 public class Sdi211071103LabSpringApplicationTests {
 	// En Windows (Debe ser la versiÃ³n 65.0.1 y desactivar las actualizacioens
@@ -17,6 +20,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	// ComÃºn a Windows y a MACOSX
 	static WebDriver driver = getDriver(PathFirefox64, Geckdriver022);
 	static String URL = "http://localhost:8081";
+	
 
 	public static WebDriver getDriver(String PathFirefox, String Geckdriver) {
 		System.setProperty("webdriver.firefox.bin", PathFirefox);
@@ -47,8 +51,15 @@ public class Sdi211071103LabSpringApplicationTests {
 	}
 	
 	@Test
-	public void testUntitledTestCase() throws Exception {
-		
+	public void Adminlogin(String email, String password) throws Exception {
+		driver.get("http://localhost:8081/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys(email);
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys(password);
+	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
 	}
 
 
@@ -76,6 +87,12 @@ public class Sdi211071103LabSpringApplicationTests {
 	
 	@Test
 	public void prueba10() throws Exception {
-			
+		Adminlogin("admin@email.com", "admin");
+		driver.get("http://localhost:8081/publicaciones");
+		driver.findElement(By.linkText("Listar usuarios")).click();
+		SeleniumUtils.textoPresentePagina(driver, "Usuarios en el sistema");
+		SeleniumUtils.textoNoPresentePagina(driver, "admin@email.com");
+		
 	}
+	
 }
