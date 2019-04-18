@@ -10,6 +10,8 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import test.utils.SeleniumUtils;
+
 public class Sdi211071103LabSpringApplicationTests {
 	// En Windows (Debe ser la versiÃ³n 65.0.1 y desactivar las actualizacioens
 	// automÃ¡ticas)):
@@ -264,5 +266,76 @@ public class Sdi211071103LabSpringApplicationTests {
 		}
 		throw new org.openqa.selenium.NoSuchElementException("El elemento no debería aparecer");
 		
+	}
+	
+	/*
+	 * TEST DE SUBIDA DE OFERTAS
+	 */
+	
+	@Test
+	public void test11_subirOferta_valido() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.id("logginButton")).click();
+		driver.findElement(By.id("mTienda"));
+		driver.findElement(By.id("mPublicaciones"));
+		while(true) {//Eliminamos todas las ofertas publicadas por el usuario
+			try {
+				driver.findElement(By.linkText("Eliminar")).click();
+				SeleniumUtils.esperarSegundos(driver, 4);
+			}catch(NoSuchElementException e) {
+				break;
+			}
+		}
+		driver.findElement(By.id("mAgregar")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.id("nombre")).click();
+		driver.findElement(By.id("nombre")).clear();
+		driver.findElement(By.id("nombre")).sendKeys("Articulo de prueba");
+		driver.findElement(By.id("detalles")).click();
+		driver.findElement(By.id("detalles")).clear();
+		driver.findElement(By.id("detalles")).sendKeys("Probando la insercion de articulos");
+		driver.findElement(By.id("precio")).click();
+		driver.findElement(By.id("precio")).clear();
+		driver.findElement(By.id("precio")).sendKeys("10.50");
+		driver.findElement(By.id("botonAgregar")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.id("idPublicaciones"));
+		driver.findElement(By.tagName("td"));
+	}
+	
+	@Test
+	public void test12_subirOferta_invalido() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.id("logginButton")).click();
+		driver.findElement(By.id("mTienda"));
+		driver.findElement(By.id("mPublicaciones"));
+		driver.findElement(By.id("mAgregar")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.id("nombre")).click();
+		driver.findElement(By.id("nombre")).clear();
+		driver.findElement(By.id("detalles")).click();
+		driver.findElement(By.id("detalles")).clear();
+		driver.findElement(By.id("detalles")).sendKeys("Probando la insercion de articulos");
+		driver.findElement(By.id("precio")).click();
+		driver.findElement(By.id("precio")).clear();
+		driver.findElement(By.id("precio")).sendKeys("10.50");
+		driver.findElement(By.id("botonAgregar")).click();
+		driver.findElement(By.id("idAgregarOferta"));
 	}
 }

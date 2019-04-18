@@ -97,6 +97,8 @@ module.exports = function (app, swig, gestorBD) {
             oferta.detalles === null || oferta.detalles === undefined || oferta.detalles === '' ||
             oferta.precio === null || oferta.precio === undefined || oferta.precio <= 0) {
             res.redirect("/ofertas/agregar?mensaje=Los campos no son validos");
+        }else if(isNaN(oferta.precio)){
+            res.redirect("/ofertas/agregar?mensaje=El valor del precio debe ser numerico");
         } else {
             gestorBD.insertarOferta(oferta, function (id) {
                 if (id == null) {
