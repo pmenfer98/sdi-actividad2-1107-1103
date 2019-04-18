@@ -1,20 +1,20 @@
 {% extends "base.html" %} 
 
-{% block titulo %} Detalles {{ cancion.nombre }} {% endblock %}
+{% block titulo %} Detalles {{ oferta.nombre }} {% endblock %}
 
 {% block contenido_principal %}
 	 <div class="row">
 		<div class="media col-xs-10">
-		  <div class="media-left media-middle">
+		  <!--<div class="media-left media-middle">
 			<img class="media-object" src="/portadas/{{ cancion._id.toString() }}.png" >
-		  </div>
+		  </div>-->
 		  <div class="media-body">
-			  <h2>{{ cancion.nombre }}</h2>
-			  <p>{{ cancion.autor }}</p>
-			  <p>{{ cancion.genero }}</p>
-			  <a class="btn btn-primary pull-right"
+			  <h2>{{ oferta.nombre }}</h2>
+			  <p>{{ oferta.propietario }}</p>
+			  <p>{{ oferta.detalles }}</p>
+			  <!--<a class="btn btn-primary pull-right"
 				 href="/cancion/comprar/{{cancion._id.toString()}}">{{ cancion.precio
-				  }} €</a>
+				  }} €</a>-->
 
 			  <!-- Cambiar el precio por "reproducir" si ya está comprada -->
 		  </div>
