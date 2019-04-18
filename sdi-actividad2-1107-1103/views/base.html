@@ -34,8 +34,9 @@
                 {% endif %}
                 {% endif %}
             </ul>
-            <ul class="nav navbar-nav navbar-right">
+            <ul id="opcionesUsuario" class="nav navbar-nav navbar-right">
                 {% if user != null ||  user != undefined %}
+                <li><a id="nickName">{{user.nombre}} {{user.apellidos}}</a></li>
                 <li id="dinero" class="active"> Dinero <input type="text" value={{user.dinero}}€ disabled/></li>
                 {% endif %}
                 {% if user == null ||  user == undefined %}

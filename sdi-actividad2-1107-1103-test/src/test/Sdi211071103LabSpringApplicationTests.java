@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -46,6 +47,10 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.quit();
 	}
 
+	/*
+	 * TESTS DE REGISTRO DE USUARIO
+	 */
+
 	@Test
 	public void test1_registrarse_valido() throws Exception {
 		driver.get(URL + "/registrarse");
@@ -59,14 +64,14 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("apellidos")).sendKeys("Suarez Gonzalez");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("UO123456@uniovi.es");
+		driver.findElement(By.name("email")).sendKeys("UO123456@uniovi.es");// Comprobar base de datos, si esta,
+																			// borrarlo para que el test no falle
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("ContraseñaContra");
 		driver.findElement(By.name("repeatPassword")).click();
 		driver.findElement(By.name("repeatPassword")).clear();
-		driver.findElement(By.name("repeatPassword"))
-				.sendKeys("ContraseñaContra");
+		driver.findElement(By.name("repeatPassword")).sendKeys("ContraseñaContra");
 		driver.findElement(By.id("registerButton")).click();
 		driver.findElement(By.id("mTienda"));
 		driver.findElement(By.id("mPublicaciones"));
@@ -74,7 +79,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.id("idPublicaciones"));
 		driver.get(URL + "/desconectarse");
 	}
-	
+
 	@Test
 	public void test2_registrarse_emailRegistrado() throws Exception {
 		driver.get(URL + "/registrarse");
@@ -94,13 +99,12 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("password")).sendKeys("ContraseñaContra");
 		driver.findElement(By.name("repeatPassword")).click();
 		driver.findElement(By.name("repeatPassword")).clear();
-		driver.findElement(By.name("repeatPassword"))
-				.sendKeys("ContraseñaContra");
+		driver.findElement(By.name("repeatPassword")).sendKeys("ContraseñaContra");
 		driver.findElement(By.id("registerButton")).click();
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
 	}
-	
+
 	@Test
 	public void test3_registrarse_emailVacio() throws Exception {
 		driver.get(URL + "/registrarse");
@@ -119,13 +123,12 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("password")).sendKeys("ContraseñaContra");
 		driver.findElement(By.name("repeatPassword")).click();
 		driver.findElement(By.name("repeatPassword")).clear();
-		driver.findElement(By.name("repeatPassword"))
-				.sendKeys("ContraseñaContra");
+		driver.findElement(By.name("repeatPassword")).sendKeys("ContraseñaContra");
 		driver.findElement(By.id("registerButton")).click();
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
 	}
-	
+
 	@Test
 	public void test4_registrarse_repetirContraseñaFallido() throws Exception {
 		driver.get(URL + "/registrarse");
@@ -145,10 +148,121 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("password")).sendKeys("ContraseñaContra");
 		driver.findElement(By.name("repeatPassword")).click();
 		driver.findElement(By.name("repeatPassword")).clear();
-		driver.findElement(By.name("repeatPassword"))
-				.sendKeys("Contraseña");
+		driver.findElement(By.name("repeatPassword")).sendKeys("Contraseña");
 		driver.findElement(By.id("registerButton")).click();
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
+	}
+
+	/*
+	 * TESTS DE INICIO DE SESION
+	 */
+
+	@Test
+	public void test5_identificarse_valido() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.id("logginButton")).click();
+		driver.findElement(By.id("mTienda"));
+		driver.findElement(By.id("mPublicaciones"));
+		driver.findElement(By.id("mAgregar"));
+		driver.findElement(By.id("idPublicaciones"));
+		driver.get(URL + "/desconectarse");
+	}
+
+	@Test
+	public void test6_identificarse_contraseñaErronea() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("contraseñaErronea");
+		driver.findElement(By.id("logginButton")).click();
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+	}
+
+	@Test
+	public void test7_identificarse_emailVacio() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.id("logginButton")).click();
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+	}
+
+	@Test
+	public void test8_identificarse_emailInexistente() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("emailInexistente@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.id("logginButton")).click();
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+	}
+
+	/*
+	 * TESTS DE CIERRE DE SESION
+	 */
+
+	@Test
+	public void test9_desconectarse_redireccionAlLogin() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.id("logginButton")).click();
+		driver.findElement(By.id("mTienda"));
+		driver.findElement(By.id("mPublicaciones"));
+		driver.findElement(By.id("mAgregar"));
+		driver.findElement(By.id("idPublicaciones"));
+		driver.findElement(By.id("mDesconectarse")).click();
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+		driver.findElement(By.name("email"));
+		driver.findElement(By.name("password"));
+		driver.findElement(By.id("logginButton"));
+	}
+	
+	@Test
+	public void test10_desconectarse_comprobarBotonLoggin() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.id("mIdentificarse"));
+		driver.findElement(By.id("mRegistrarse"));
+		try {
+			driver.findElement(By.id("mDesconectarse"));
+		}catch(NoSuchElementException e){
+			return;
+		}
+		throw new org.openqa.selenium.NoSuchElementException("El elemento no debería aparecer");
+		
 	}
 }
