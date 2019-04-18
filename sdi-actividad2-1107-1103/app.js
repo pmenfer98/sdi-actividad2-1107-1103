@@ -77,6 +77,7 @@ app.use('/ofertas/agregar', routerUserSession);
 app.use('/oferta', routerUserSession);
 app.use('/listarUsuarios', routerUserSession);
 app.use('/oferta/eliminar/:id', routerUserSession);
+app.use('/tienda', routerUserSession);
 
 app.use('/listarUsuarios', routerAdmin);
 
@@ -84,6 +85,7 @@ app.use('/publicaciones', routerUser);
 app.use('/ofertas/agregar', routerUser);
 app.use('/oferta', routerUser);
 app.use('/oferta/eliminar/:id', routerUser);
+app.use('/tienda', routerUser);
 
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);

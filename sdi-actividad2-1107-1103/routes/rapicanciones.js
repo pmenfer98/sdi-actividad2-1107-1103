@@ -1,7 +1,7 @@
 module.exports = function(app, gestorBD) {
 
     app.get("/api/cancion", function(req, res) {
-        gestorBD.obtenerMisOfertas( {} , function(canciones) {
+        gestorBD.obtenerOfertas( {} , function(canciones) {
             if (canciones == null) {
                 res.status(500);
                 res.json({
@@ -41,7 +41,7 @@ module.exports = function(app, gestorBD) {
         app.get("/api/cancion/:id", function(req, res) {
         var criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.id)}
 
-        gestorBD.obtenerMisOfertas(criterio,function(canciones){
+        gestorBD.obtenerOfertas(criterio,function(canciones){
             if ( canciones == null ){
                 res.status(500);
                 res.json({
