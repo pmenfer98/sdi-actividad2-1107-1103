@@ -66,15 +66,16 @@ module.exports = function (app, swig, gestorBD) {
         res.send(String(respuesta));
     });
 
-    app.get('/cancion/:id', function (req, res) {
+    app.get('/oferta/:id', function (req, res) {
         var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        gestorBD.obtenerOfertas(criterio, function (canciones) {
-            if (canciones == null) {
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas == null) {
                 res.send(respuesta);
             } else {
-                var respuesta = swig.renderFile('views/bcancion.html',
+                var respuesta = swig.renderFile('views/boferta.html',
                     {
-                        cancion: canciones[0]
+                        user: req.session.user,
+                        oferta: ofertas[0]
                     });
                 res.send(respuesta);
             }
@@ -97,7 +98,7 @@ module.exports = function (app, swig, gestorBD) {
             oferta.detalles === null || oferta.detalles === undefined || oferta.detalles === '' ||
             oferta.precio === null || oferta.precio === undefined || oferta.precio <= 0) {
             res.redirect("/ofertas/agregar?mensaje=Los campos no son validos");
-        }else if(isNaN(oferta.precio)){
+        } else if (isNaN(oferta.precio)) {
             res.redirect("/ofertas/agregar?mensaje=El valor del precio debe ser numerico");
         } else {
             gestorBD.insertarOferta(oferta, function (id) {
@@ -123,9 +124,17 @@ module.exports = function (app, swig, gestorBD) {
                 $ne: req.session.user.email // $ne es 'not' en Mongo
             }
         };
-        /*if (req.query.busqueda != null) {
-            criterio = {"nombre": req.query.busqueda};
-        }*/
+        if (req.query.busqueda != null) {
+            //var word = "/^" + req.query.busqueda + "$/";
+            var word = req.query.busqueda;
+            criterio = {
+                nombre: { $regex : new RegExp(word, "i") } ,
+                propietario: {
+                    $ne: req.session.user.email // $ne es 'not' en Mongo
+                }
+            };
+        }
+        console.log("Objeto busqueda " + req.query.busqueda);
         var pg = parseInt(req.query.pg); // Es String !!!
         if (req.query.pg == null) { // Puede no venir el param
             pg = 1;
@@ -236,7 +245,7 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/publicaciones" +
                 "?mensaje=Error al eliminar la publicacion" +
                 "&tipoMensaje=alert-danger ");
-        }else{
+        } else {
             var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
             gestorBD.eliminarOferta(criterio, function (canciones) {
                 if (canciones == null) {
