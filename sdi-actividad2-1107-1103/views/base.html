@@ -26,9 +26,11 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 {% if user != null ||  user != undefined %}
+                {% if user.rol == 'user' %}
                 <li id="mTienda" class="active"><a href="/tienda">Tienda</a></li>
                 <li id="mPublicaciones"><a href="/publicaciones">Publicaciones</a></li>
                 <li id="mAgregar"><a href="/ofertas/agregar">Añadir oferta</a></li>
+                {% endif %}
                 {% if user.rol == 'admin' %}
                     <li id="mUsuarios"><a href="/listarUsuarios">Listar usuarios</a></li>
                 {% endif %}
@@ -36,8 +38,13 @@
             </ul>
             <ul id="opcionesUsuario" class="nav navbar-nav navbar-right">
                 {% if user != null ||  user != undefined %}
+                {% if user.rol == 'user' %}
                 <li><a id="nickName">{{user.nombre}} {{user.apellidos}}</a></li>
                 <li id="dinero" class="active"> Dinero <input type="text" value={{user.dinero}}€ disabled/></li>
+                {% endif %}
+                {% if user.rol == 'admin' %}
+                <li><a id="nickAdmin">Administrador</a></li>
+                {% endif %}
                 {% endif %}
                 {% if user == null ||  user == undefined %}
                 <li><a id="mRegistrarse" href="/registrarse"><span class="glyphicon glyphicon-user"></span> Registrate</a></li>

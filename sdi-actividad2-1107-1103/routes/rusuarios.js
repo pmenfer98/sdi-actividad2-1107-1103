@@ -37,7 +37,12 @@ module.exports = function (app, swig, gestorBD) {
                 } else {
                     req.session.user = usuarios[0];
                     app.set('current_user', usuarios[0].email);
-                    res.redirect("/publicaciones");
+                    if(req.session.user.rol==='admin'){
+                        console.log("Identificado como administrador");
+                        res.redirect("/listarUsuarios")
+                    }else {
+                        res.redirect("/publicaciones");
+                    }
                 }
             });
         }

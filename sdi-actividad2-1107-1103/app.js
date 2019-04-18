@@ -50,6 +50,24 @@ routerUserLogged.use(function (req, res, next) {
     }
 });
 
+var routerAdmin = express.Router();
+routerAdmin.use(function (req, res, next) {
+    if (req.session.user.rol === 'admin' && req.session.user.email === 'admin@email.com') { // dejamos correr la petición
+        next();
+    } else {
+        res.redirect("/desconectarse?mensaje=Debes ser administrador para acceder a esta opcion");
+    }
+});
+
+var routerUser = express.Router();
+routerUser.use(function (req, res, next) {
+    if (req.session.user.rol === 'user') { // dejamos correr la petición
+        next();
+    } else {
+        res.redirect("/desconectarse?mensaje=Debes ser usuario estandar para acceder a esta opcion");
+    }
+});
+
 app.use('/identificarse', routerUserLogged);
 app.use('/registrarse', routerUserLogged);
 app.use('/usuario', routerUserLogged);
@@ -59,6 +77,14 @@ app.use('/ofertas/agregar', routerUserSession);
 app.use('/oferta', routerUserSession);
 app.use('/listarUsuarios', routerUserSession);
 app.use('/oferta/eliminar/:id', routerUserSession);
+
+app.use('/listarUsuarios', routerAdmin);
+
+app.use('/publicaciones', routerUser);
+app.use('/ofertas/agregar', routerUser);
+app.use('/oferta', routerUser);
+app.use('/oferta/eliminar/:id', routerUser);
+
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rofertas.js")(app, swig, gestorBD);
