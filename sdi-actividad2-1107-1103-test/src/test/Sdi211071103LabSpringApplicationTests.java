@@ -283,6 +283,8 @@ public class Sdi211071103LabSpringApplicationTests {
 	    driver.findElement(By.name("password")).sendKeys("admin");
 	    driver.findElement(By.id("logginButton")).click();
 	    driver.findElement(By.linkText("Listar usuarios")).click();
+	    SeleniumUtils.textoPresentePagina(driver, "Usuarios en el sistema");
+	    SeleniumUtils.textoNoPresentePagina(driver, "admin@email.com"); //Comprueba que no figure el administrador en la lista
 	    
 	}
 	
