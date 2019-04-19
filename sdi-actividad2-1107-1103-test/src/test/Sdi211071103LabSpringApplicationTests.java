@@ -267,6 +267,21 @@ public class Sdi211071103LabSpringApplicationTests {
 		throw new org.openqa.selenium.NoSuchElementException("El elemento no debería aparecer");
 		
 	}
+	/*
+	 * TEST DE LISTADO DE USUARIOS
+	 */
+	@Test
+	public void test10_listarUsuarios() throws Exception {
+	 driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("admin");
+	    driver.findElement(By.id("logginButton")).click();
+	    driver.findElement(By.linkText("Listar usuarios")).click();
+	}
 	
 	/*
 	 * TEST DE SUBIDA DE OFERTAS
