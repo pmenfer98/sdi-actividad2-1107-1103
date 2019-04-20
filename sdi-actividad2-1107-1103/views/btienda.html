@@ -24,12 +24,12 @@
     {% for oferta in ofertas %}
     <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3">
         <div class="elementoTienda">
-            <a> <!--href="/cancion/{{ cancion._id.toString() }}"-->
+            <a href="/oferta/{{ oferta._id.toString() }}">
                 <!-- http://www.socicon.com/generator.php -->
                 <div class="wrap">{{ oferta.nombre }}</div>
                 <div class="small">Publicado por:  {{ oferta.propietario }} </div>
+                <div class="small">{{ oferta.fecha }} </div>
                 <div class="text-right">{{ oferta.precio }} €</div>
-
             </a>
         </div>
     </div>

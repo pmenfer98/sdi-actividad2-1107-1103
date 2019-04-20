@@ -18,39 +18,51 @@ module.exports = function (app, swig, gestorBD) {
 
     });
 
-    app.get('/cancion/comprar/:id', function (req, res) {
-        var cancionId = gestorBD.mongo.ObjectID(req.params.id);
-        var compra = {
-            usuario: req.session.usuario,
-            cancionId: cancionId
-        }
-        gestorBD.insertarCompra(compra, function (idCompra) {
-            if (idCompra == null) {
-                res.send(respuesta);
+    app.get('/oferta/comprar/:id', function (req, res) {
+        var ofertaId = gestorBD.mongo.ObjectID(req.params.id);
+        gestorBD.restarDinero(ofertaId, req.session.user.email,function(dineroActual) {
+            if (dineroActual == null) {
+                res.redirect("/tienda?mensaje=Error al comprar");
+            }else if(dineroActual<0){
+                res.redirect("/tienda?mensaje=No tienes suficiente dinero");
             } else {
-                res.redirect("/compras");
+                var criterio = {"_id": ofertaId};
+                gestorBD.obtenerOfertas(criterio, function(ofertas){
+                    if(ofertas==null){
+                        res.redirect("/tienda?mensaje=La oferta no existe");
+                    }else{
+                        gestorBD.sumarDinero(ofertaId, ofertas[0].propietario, function(dineroPropietario){
+                            if (dineroPropietario == null) {
+                                res.redirect("/tienda?mensaje=Error al comprar");
+                            }else{
+                                gestorBD.insertarCompra(ofertaId, req.session.user.email,function(idCompra) {
+                                    if (idCompra == null) {
+                                        res.redirect("/tienda?mensaje=Error al comprar");
+                                    } else {
+                                        req.session.user.dinero = dineroActual;
+                                        res.redirect("/compras");
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
             }
         });
     });
-
     app.get('/compras', function (req, res) {
-        var criterio = {"usuario": req.session.usuario};
-        gestorBD.obtenerCompras(criterio, function (compras) {
+        var criterio = {"comprador": req.session.user.email};
+        gestorBD.obtenerOfertas(criterio, function (compras) {
             if (compras == null) {
                 res.send("Error al listar ");
             } else {
-                var cancionesCompradasIds = [];
-                for (i = 0; i < compras.length; i++) {
-                    cancionesCompradasIds.push(compras[i].cancionId);
-                }
-                var criterio = {"_id": {$in: cancionesCompradasIds}}
-                gestorBD.obtenerOfertas(criterio, function (canciones) {
-                    var respuesta = swig.renderFile('views/bcompras.html',
-                        {
-                            canciones: canciones
-                        });
-                    res.send(respuesta);
-                });
+                console.log("Compras encontradas: " + compras.length);
+                var respuesta = swig.renderFile('views/bcompras.html',
+                    {
+                        user: req.session.user,
+                        ofertas: compras
+                    });
+                res.send(respuesta);
             }
         });
     });
@@ -66,15 +78,16 @@ module.exports = function (app, swig, gestorBD) {
         res.send(String(respuesta));
     });
 
-    app.get('/cancion/:id', function (req, res) {
+    app.get('/oferta/:id', function (req, res) {
         var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        gestorBD.obtenerOfertas(criterio, function (canciones) {
-            if (canciones == null) {
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas == null) {
                 res.send(respuesta);
             } else {
-                var respuesta = swig.renderFile('views/bcancion.html',
+                var respuesta = swig.renderFile('views/boferta.html',
                     {
-                        cancion: canciones[0]
+                        user: req.session.user,
+                        oferta: ofertas[0]
                     });
                 res.send(respuesta);
             }
@@ -97,7 +110,7 @@ module.exports = function (app, swig, gestorBD) {
             oferta.detalles === null || oferta.detalles === undefined || oferta.detalles === '' ||
             oferta.precio === null || oferta.precio === undefined || oferta.precio <= 0) {
             res.redirect("/ofertas/agregar?mensaje=Los campos no son validos");
-        }else if(isNaN(oferta.precio)){
+        } else if (isNaN(oferta.precio)) {
             res.redirect("/ofertas/agregar?mensaje=El valor del precio debe ser numerico");
         } else {
             gestorBD.insertarOferta(oferta, function (id) {
@@ -119,18 +132,27 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get("/tienda", function (req, res) {
         let criterio = {
-            propietario: {
+            $and: [{propietario: {
                 $ne: req.session.user.email // $ne es 'not' en Mongo
-            }
+            }},
+        {comprador: null}]
         };
-        /*if (req.query.busqueda != null) {
-            criterio = {"nombre": req.query.busqueda};
-        }*/
+        if (req.query.busqueda != null) {
+            //var word = "/^" + req.query.busqueda + "$/";
+            var word = req.query.busqueda;
+            criterio = {
+                $and: [{propietario: {
+                        $ne: req.session.user.email // $ne es 'not' en Mongo
+                    }},
+                    {comprador: null}]
+            };
+        }
+        console.log("Objeto busqueda " + req.query.busqueda);
         var pg = parseInt(req.query.pg); // Es String !!!
         if (req.query.pg == null) { // Puede no venir el param
             pg = 1;
         }
-        gestorBD.obtenerOfertasPg(criterio, pg, function (ofertas, total) {
+        gestorBD.obtenerOfertasPg(criterio, criterio,pg, function (ofertas, total) {
             if (ofertas == null) {
                 res.send("Error al listar ");
             } else {
@@ -236,7 +258,7 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/publicaciones" +
                 "?mensaje=Error al eliminar la publicacion" +
                 "&tipoMensaje=alert-danger ");
-        }else{
+        } else {
             var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
             gestorBD.eliminarOferta(criterio, function (canciones) {
                 if (canciones == null) {

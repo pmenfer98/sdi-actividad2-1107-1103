@@ -1,27 +1,25 @@
 {% extends "base.html" %} 
 
-{% block titulo %} Detalles {{ cancion.nombre }} {% endblock %}
+{% block titulo %} Detalles {{ oferta.nombre }} {% endblock %}
 
 {% block contenido_principal %}
 	 <div class="row">
 		<div class="media col-xs-10">
-		  <div class="media-left media-middle">
+		  <!--<div class="media-left media-middle">
 			<img class="media-object" src="/portadas/{{ cancion._id.toString() }}.png" >
-		  </div>
+		  </div>-->
 		  <div class="media-body">
-			  <h2>{{ cancion.nombre }}</h2>
-			  <p>{{ cancion.autor }}</p>
-			  <p>{{ cancion.genero }}</p>
+			  <h2>{{ oferta.nombre }}</h2>
+			  <p>Propietario: {{oferta.propietario}}</p>
+			  <p>Detalles: {{ oferta.detalles }}</p>
+			  <p>Publicado en: {{oferta.fecha}}</p>
 			  <a class="btn btn-primary pull-right"
-				 href="/cancion/comprar/{{cancion._id.toString()}}">{{ cancion.precio
-				  }} €</a>
-
-			  <!-- Cambiar el precio por "reproducir" si ya está comprada -->
+				 href="/oferta/comprar/{{oferta._id.toString()}}">{{ oferta.precio}} €</a>
 		  </div>
 		</div>
 	  </div>
 	  
-	 <!-- -->
+	 <!--
 	 <div class="row" style="margin-top: 20px;" >
 		<div class="media col-xs-10">
 			  <div class="media-left media-middle">
@@ -56,5 +54,5 @@
 				Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
 			  </div>
 		  </div>
-	  </div>
+	  </div>-->
 {% endblock %}
