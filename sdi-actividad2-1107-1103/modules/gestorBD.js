@@ -182,6 +182,51 @@ module.exports = {
             }
         });
     },
+    sumarDinero: function (ofertaId, email, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('ofertas');
+                var criterio = {"_id": ofertaId};
+                collection.find(criterio).toArray(function (err, ofertas) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        var precioOferta = ofertas[0].precio;
+                        collection = db.collection('usuarios');
+                        criterio ={"email":email};
+                        collection.find(criterio).toArray(function (err, usuarios) {
+                            if (err) {
+                                funcionCallback(null);
+                            } else {
+                                var dineroUsuario = usuarios[0].dinero;
+                                console.log("Dinero del usuario: " + dineroUsuario);
+                                console.log("Dinero del oferta: " + precioOferta);
+                                if(dineroUsuario==null || precioOferta==null) {
+                                    funcionCallback(null);
+                                }else{
+                                    var dineroFinal = Number.parseFloat(dineroUsuario) + Number.parseFloat(precioOferta);
+                                    if(dineroFinal<0) {
+                                        funcionCallback(dineroFinal);
+                                    }else{
+                                        collection.update(criterio, {$set: {dinero: dineroFinal}}, function (err, result) {
+                                            if (err) {
+                                                funcionCallback(null);
+                                            } else {
+                                                funcionCallback(dineroFinal);
+                                            }
+                                            db.close();
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    },
     insertarOferta : function(oferta, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {

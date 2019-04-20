@@ -26,12 +26,25 @@ module.exports = function (app, swig, gestorBD) {
             }else if(dineroActual<0){
                 res.redirect("/tienda?mensaje=No tienes suficiente dinero");
             } else {
-                gestorBD.insertarCompra(ofertaId, req.session.user.email,function(idCompra) {
-                    if (idCompra == null) {
-                        res.redirect("/tienda?mensaje=Error al comprar");
-                    } else {
-                        req.session.user.dinero = dineroActual;
-                        res.redirect("/compras");
+                var criterio = {"_id": ofertaId};
+                gestorBD.obtenerOfertas(criterio, function(ofertas){
+                    if(ofertas==null){
+                        res.redirect("/tienda?mensaje=La oferta no existe");
+                    }else{
+                        gestorBD.sumarDinero(ofertaId, ofertas[0].propietario, function(dineroPropietario){
+                            if (dineroPropietario == null) {
+                                res.redirect("/tienda?mensaje=Error al comprar");
+                            }else{
+                                gestorBD.insertarCompra(ofertaId, req.session.user.email,function(idCompra) {
+                                    if (idCompra == null) {
+                                        res.redirect("/tienda?mensaje=Error al comprar");
+                                    } else {
+                                        req.session.user.dinero = dineroActual;
+                                        res.redirect("/compras");
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
             }
