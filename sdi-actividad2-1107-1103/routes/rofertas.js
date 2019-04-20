@@ -18,39 +18,38 @@ module.exports = function (app, swig, gestorBD) {
 
     });
 
-    app.get('/cancion/comprar/:id', function (req, res) {
-        var cancionId = gestorBD.mongo.ObjectID(req.params.id);
-        var compra = {
-            usuario: req.session.usuario,
-            cancionId: cancionId
-        }
-        gestorBD.insertarCompra(compra, function (idCompra) {
-            if (idCompra == null) {
-                res.send(respuesta);
+    app.get('/oferta/comprar/:id', function (req, res) {
+        var ofertaId = gestorBD.mongo.ObjectID(req.params.id);
+        gestorBD.restarDinero(ofertaId, req.session.user.email,function(dineroActual) {
+            if (dineroActual == null) {
+                res.redirect("/tienda?mensaje=Error al comprar");
+            }else if(dineroActual<0){
+                res.redirect("/tienda?mensaje=No tienes suficiente dinero");
             } else {
-                res.redirect("/compras");
+                gestorBD.insertarCompra(ofertaId, req.session.user.email,function(idCompra) {
+                    if (idCompra == null) {
+                        res.redirect("/tienda?mensaje=Error al comprar");
+                    } else {
+                        req.session.user.dinero = dineroActual;
+                        res.redirect("/compras");
+                    }
+                });
             }
         });
     });
-
     app.get('/compras', function (req, res) {
-        var criterio = {"usuario": req.session.usuario};
-        gestorBD.obtenerCompras(criterio, function (compras) {
+        var criterio = {"comprador": req.session.user.email};
+        gestorBD.obtenerOfertas(criterio, function (compras) {
             if (compras == null) {
                 res.send("Error al listar ");
             } else {
-                var cancionesCompradasIds = [];
-                for (i = 0; i < compras.length; i++) {
-                    cancionesCompradasIds.push(compras[i].cancionId);
-                }
-                var criterio = {"_id": {$in: cancionesCompradasIds}}
-                gestorBD.obtenerOfertas(criterio, function (canciones) {
-                    var respuesta = swig.renderFile('views/bcompras.html',
-                        {
-                            canciones: canciones
-                        });
-                    res.send(respuesta);
-                });
+                console.log("Compras encontradas: " + compras.length);
+                var respuesta = swig.renderFile('views/bcompras.html',
+                    {
+                        user: req.session.user,
+                        ofertas: compras
+                    });
+                res.send(respuesta);
             }
         });
     });
@@ -120,18 +119,19 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get("/tienda", function (req, res) {
         let criterio = {
-            propietario: {
+            $and: [{propietario: {
                 $ne: req.session.user.email // $ne es 'not' en Mongo
-            }
+            }},
+        {comprador: null}]
         };
         if (req.query.busqueda != null) {
             //var word = "/^" + req.query.busqueda + "$/";
             var word = req.query.busqueda;
             criterio = {
-                nombre: { $regex : new RegExp(word, "i") } ,
-                propietario: {
-                    $ne: req.session.user.email // $ne es 'not' en Mongo
-                }
+                $and: [{propietario: {
+                        $ne: req.session.user.email // $ne es 'not' en Mongo
+                    }},
+                    {comprador: null}]
             };
         }
         console.log("Objeto busqueda " + req.query.busqueda);
@@ -139,7 +139,7 @@ module.exports = function (app, swig, gestorBD) {
         if (req.query.pg == null) { // Puede no venir el param
             pg = 1;
         }
-        gestorBD.obtenerOfertasPg(criterio, pg, function (ofertas, total) {
+        gestorBD.obtenerOfertasPg(criterio, criterio,pg, function (ofertas, total) {
             if (ofertas == null) {
                 res.send("Error al listar ");
             } else {
