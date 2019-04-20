@@ -75,6 +75,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("repeatPassword")).clear();
 		driver.findElement(By.name("repeatPassword")).sendKeys("ContraseñaContra");
 		driver.findElement(By.id("registerButton")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
 		driver.findElement(By.id("mTienda"));
 		driver.findElement(By.id("mPublicaciones"));
 		driver.findElement(By.id("mAgregar"));
@@ -247,6 +248,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.id("mAgregar"));
 		driver.findElement(By.id("idPublicaciones"));
 		driver.findElement(By.id("mDesconectarse")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
 		driver.findElement(By.name("email"));
@@ -266,6 +268,24 @@ public class Sdi211071103LabSpringApplicationTests {
 		}
 		throw new org.openqa.selenium.NoSuchElementException("El elemento no debería aparecer");
 		
+	}
+	/*
+	 * TEST DE LISTADO DE USUARIOS
+	 */
+	@Test
+	public void test10_listarUsuarios() throws Exception {
+	 driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("admin");
+	    driver.findElement(By.id("logginButton")).click();
+	    driver.findElement(By.linkText("Listar usuarios")).click();
+	    SeleniumUtils.textoPresentePagina(driver, "Usuarios en el sistema");
+	    SeleniumUtils.textoNoPresentePagina(driver, "admin@email.com"); //Comprueba que no figure el administrador en la lista
+	    
 	}
 	
 	/*
