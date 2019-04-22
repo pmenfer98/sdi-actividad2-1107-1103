@@ -20,22 +20,22 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get('/oferta/comprar/:id', function (req, res) {
         var ofertaId = gestorBD.mongo.ObjectID(req.params.id);
-        gestorBD.restarDinero(ofertaId, req.session.user.email,function(dineroActual) {
+        gestorBD.restarDinero(ofertaId, req.session.user.email, function (dineroActual) {
             if (dineroActual == null) {
                 res.redirect("/tienda?mensaje=Error al comprar");
-            }else if(dineroActual<0){
+            } else if (dineroActual < 0) {
                 res.redirect("/tienda?mensaje=No tienes suficiente dinero");
             } else {
                 var criterio = {"_id": ofertaId};
-                gestorBD.obtenerOfertas(criterio, function(ofertas){
-                    if(ofertas==null){
+                gestorBD.obtenerOfertas(criterio, function (ofertas) {
+                    if (ofertas == null) {
                         res.redirect("/tienda?mensaje=La oferta no existe");
-                    }else{
-                        gestorBD.sumarDinero(ofertaId, ofertas[0].propietario, function(dineroPropietario){
+                    } else {
+                        gestorBD.sumarDinero(ofertaId, ofertas[0].propietario, function (dineroPropietario) {
                             if (dineroPropietario == null) {
                                 res.redirect("/tienda?mensaje=Error al comprar");
-                            }else{
-                                gestorBD.insertarCompra(ofertaId, req.session.user.email,function(idCompra) {
+                            } else {
+                                gestorBD.insertarCompra(ofertaId, req.session.user.email, function (idCompra) {
                                     if (idCompra == null) {
                                         res.redirect("/tienda?mensaje=Error al comprar");
                                     } else {
@@ -132,19 +132,20 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get("/tienda", function (req, res) {
         let criterio = {
-            $and: [{propietario: {
-                $ne: req.session.user.email // $ne es 'not' en Mongo
-            }},
-        {comprador: null}]
+            propietario: {
+                $ne: req.session.user.email
+            },// $ne es 'not' en Mong,
+            comprador: null
         };
         if (req.query.busqueda != null) {
             //var word = "/^" + req.query.busqueda + "$/";
             var word = req.query.busqueda;
             criterio = {
-                $and: [{propietario: {
-                        $ne: req.session.user.email // $ne es 'not' en Mongo
-                    }},
-                    {comprador: null}]
+                nombre: {$regex: new RegExp(word, "i")},
+                propietario: {
+                    $ne: req.session.user.email
+                },// $ne es 'not' en Mong,
+                comprador: null
             };
         }
         console.log("Objeto busqueda " + req.query.busqueda);
@@ -152,7 +153,7 @@ module.exports = function (app, swig, gestorBD) {
         if (req.query.pg == null) { // Puede no venir el param
             pg = 1;
         }
-        gestorBD.obtenerOfertasPg(criterio, criterio,pg, function (ofertas, total) {
+        gestorBD.obtenerOfertasPg(criterio, criterio, pg, function (ofertas, total) {
             if (ofertas == null) {
                 res.send("Error al listar ");
             } else {
@@ -171,7 +172,8 @@ module.exports = function (app, swig, gestorBD) {
                         user: req.session.user,
                         ofertas: ofertas,
                         paginas: paginas,
-                        actual: pg
+                        actual: pg,
+                        busqueda: req.query.busqueda
                     });
                 res.send(respuesta);
             }
