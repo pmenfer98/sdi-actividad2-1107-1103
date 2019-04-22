@@ -91,6 +91,44 @@ module.exports = {
             }
         });
     },
+    destacarOferta: function (criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('ofertas');
+                collection.find(criterio).toArray(function (err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        if(result[0].destacada != null){
+                            funcionCallback(null);
+                        }else{
+                            var usuarios = db.collection('usuarios');
+                            var email = result[0].propietario;
+                            usuarios.find({"email": email}).toArray(function(err,resultado){
+                                if(err) {
+                                    funcionCallback(null);
+                                } else if(resultado[0].dinero<20){
+                                    funcionCallback(-1);
+                                }else{
+                                    collection.update(criterio, {$set:{destacada:true}}, function (err, resultado) {
+                                        if (err) {
+                                            funcionCallback(null);
+                                        } else {
+                                            funcionCallback(resultado);
+                                        }
+                                        db.close();
+                                    });
+                                }
+                            });
+                        }
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
     insertarCompra: function (compraID, email,funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {

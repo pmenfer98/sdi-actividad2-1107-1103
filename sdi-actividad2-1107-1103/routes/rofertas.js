@@ -272,6 +272,29 @@ module.exports = function (app, swig, gestorBD) {
         }
     });
 
+    app.get('/oferta/destacar/:id', function (req, res) {
+        if (req.params.id === null || req.params.id === undefined || req.params.id === '') {
+            res.redirect("/publicaciones" +
+                "?mensaje=Error al destacar la publicacion" +
+                "&tipoMensaje=alert-danger ");
+        } else{
+            var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+            gestorBD.destacarOferta(criterio, function (ofertas) {
+                if (ofertas == null) {
+                    res.redirect("/publicaciones" +
+                        "?mensaje=No se puede destacar esta publicacion" +
+                        "&tipoMensaje=alert-danger ");
+                }else if(ofertas == -1){
+                    res.redirect("/publicaciones" +
+                        "?mensaje=No tienes suficiente dinero, necesitas 20€" +
+                        "&tipoMensaje=alert-danger ");
+                } else {
+                    res.redirect("/publicaciones");
+                }
+            });
+        }
+    });
+
 
 };
 

@@ -28,8 +28,15 @@
 				<td>{{ oferta.precio }}€</td>
 				<!--<td><a href="/cancion/modificar/{{ cancion._id.toString() }}"">Modificar</a> <br>-->
 				<td>
-					<a href="/oferta/eliminar/{{ oferta._id.toString() }}">Eliminar</a> <br>
+					<a class="btn btn-danger" href="/oferta/eliminar/{{ oferta._id.toString() }}">Eliminar</a> <br>
 			    </td>
+				<td>
+					{% if oferta.destacada === null || oferta.destacada ===undefined %}
+					<a class="btn btn-warning" href="/oferta/destacar/{{ oferta._id.toString() }}">Destacar</a> <br>
+					{% else %}
+					<a class="btn btn-warning disabled">Destacar</a> <br>
+					{% endif %}
+				</td>
 			</tr>
 		{% endfor %}
 		</tbody>
