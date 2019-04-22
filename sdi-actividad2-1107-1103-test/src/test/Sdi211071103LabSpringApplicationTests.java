@@ -438,7 +438,9 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user123");
 		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+		SeleniumUtils.esperarSegundos(driver, 5);
 		driver.findElement(By.linkText("Compras")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
 		SeleniumUtils.textoPresentePagina(driver, "Mis compras");
 		SeleniumUtils.textoPresentePagina(driver, "Nombre");
 		SeleniumUtils.textoPresentePagina(driver, "Detalles");
