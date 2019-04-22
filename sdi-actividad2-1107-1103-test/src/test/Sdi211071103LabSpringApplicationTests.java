@@ -284,8 +284,16 @@ public class Sdi211071103LabSpringApplicationTests {
 	    driver.findElement(By.name("password")).sendKeys("admin");
 	    driver.findElement(By.id("logginButton")).click();
 	    driver.findElement(By.linkText("Listar usuarios")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
 	    SeleniumUtils.textoPresentePagina(driver, "Usuarios en el sistema");
-	    SeleniumUtils.textoNoPresentePagina(driver, "admin@email.com"); //Comprueba que no figure el administrador en la lista
+	    SeleniumUtils.textoNoPresentePagina(driver, "admin@email.com");
+	    SeleniumUtils.textoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "ejemplo@uniovi.es");
+	    SeleniumUtils.textoPresentePagina(driver, "qwerty@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "nachoAcebal@feumierda.com");
+	    SeleniumUtils.textoPresentePagina(driver, "ruizber@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "dallama@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "UO123456@uniovi.es");
 	    
 	}
 	
