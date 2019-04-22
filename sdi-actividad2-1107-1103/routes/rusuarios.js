@@ -41,7 +41,7 @@ module.exports = function (app, swig, gestorBD) {
                         console.log("Identificado como administrador");
                         res.redirect("/listarUsuarios")
                     }else {
-                        res.redirect("/publicaciones");
+                        res.redirect("/tienda");
                     }
                 }
             });

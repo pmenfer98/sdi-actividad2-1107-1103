@@ -9,12 +9,18 @@
 		<thead>
 			<tr>
 				<th>Nombre</th>
+				<th>Detalles</th>
+				<th>Precio</th>
+				<th>Vendedor</th>
 			</tr>
 		</thead>
 		<tbody>
 		{% for oferta in ofertas %}
 			<tr>
 				<td>{{ oferta.nombre }}</td>
+				<td>{{ oferta.detalles }}</td>
+				<td>{{ oferta.precio }}€</td>
+				<td>{{ oferta.propietario }}</td>
 			</tr>
 		{% endfor %}
 		</tbody>

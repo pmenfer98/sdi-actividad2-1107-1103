@@ -134,8 +134,7 @@ module.exports = function (app, swig, gestorBD) {
         let criterio = {
             propietario: {
                 $ne: req.session.user.email
-            },// $ne es 'not' en Mong,
-            comprador: null
+            }
         };
         if (req.query.busqueda != null) {
             //var word = "/^" + req.query.busqueda + "$/";
@@ -144,8 +143,7 @@ module.exports = function (app, swig, gestorBD) {
                 nombre: {$regex: new RegExp(word, "i")},
                 propietario: {
                     $ne: req.session.user.email
-                },// $ne es 'not' en Mong,
-                comprador: null
+                }
             };
         }
         console.log("Objeto busqueda " + req.query.busqueda);
@@ -157,8 +155,8 @@ module.exports = function (app, swig, gestorBD) {
             if (ofertas == null) {
                 res.send("Error al listar ");
             } else {
-                var ultimaPg = total / 4;
-                if (total % 4 > 0) { // Sobran decimales
+                var ultimaPg = total / 5;
+                if (total % 5 > 0) { // Sobran decimales
                     ultimaPg = ultimaPg + 1;
                 }
                 var paginas = []; // paginas mostrar
