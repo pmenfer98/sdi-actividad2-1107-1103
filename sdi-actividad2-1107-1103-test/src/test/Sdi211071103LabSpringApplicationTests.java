@@ -425,7 +425,27 @@ public class Sdi211071103LabSpringApplicationTests {
 		SeleniumUtils.textoNoPresentePagina(driver, "Pelota de tenis seminueva");
 		SeleniumUtils.textoPresentePagina(driver, "Zapatillas Adidas");
 		SeleniumUtils.textoPresentePagina(driver, "Acordeón de plástico");
-		
+
+	}
+
+	@Test
+	public void test25_listadoOfertasCompradas() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+		driver.findElement(By.linkText("Compras")).click();
+		SeleniumUtils.textoPresentePagina(driver, "Mis compras");
+		SeleniumUtils.textoPresentePagina(driver, "Nombre");
+		SeleniumUtils.textoPresentePagina(driver, "Detalles");
+		SeleniumUtils.textoPresentePagina(driver, "Precio");
+		SeleniumUtils.textoPresentePagina(driver, "Vendedor");
+		SeleniumUtils.textoPresentePagina(driver, "Disco ACDC");
+		SeleniumUtils.textoPresentePagina(driver, "Samsung Galaxy 100XPlus");
 	}
 
 }
