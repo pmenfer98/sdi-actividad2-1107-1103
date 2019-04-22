@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -358,4 +359,41 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.id("botonAgregar")).click();
 		driver.findElement(By.id("idAgregarOferta"));
 	}
+	
+	@Test
+	  public void test16_listadoDeOfertasPropias() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("user123");
+	    driver.findElement(By.id("logginButton")).click();
+	    driver.findElement(By.linkText("Publicaciones")).click();
+	    SeleniumUtils.textoPresentePagina(driver,"Mis publicaciones");
+	    SeleniumUtils.textoPresentePagina(driver,"Nombre");
+	    SeleniumUtils.textoPresentePagina(driver,"Detalles");
+	    SeleniumUtils.textoPresentePagina(driver,"Fecha");
+	    SeleniumUtils.textoPresentePagina(driver,"Precio");
+	    SeleniumUtils.textoPresentePagina(driver,"Articulo de prueba");
+	    SeleniumUtils.textoPresentePagina(driver, "Oferta de prueba para destacar");
+	  }
+	
+	@Test
+	  public void test17_darDeBajaUnaOferta() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("user123");
+	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+	    driver.findElement(By.linkText("Publicaciones")).click();
+	    driver.findElement(By.linkText("Eliminar")).click();
+	    SeleniumUtils.textoNoPresentePagina(driver, "Artículo de prueba");
+	    SeleniumUtils.textoPresentePagina(driver, "Oferta de prueba para destacar");
+	  }
+	
 }
