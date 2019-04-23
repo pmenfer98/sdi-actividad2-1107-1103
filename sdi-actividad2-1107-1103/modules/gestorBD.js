@@ -170,10 +170,12 @@ module.exports = {
                 funcionCallback(null);
             } else {
                 var collection = db.collection('ofertas');
+
                 collection.count(criterioContar, function (err, count) {
-                    collection.find(criterio).skip((pg - 1) * 5).limit(5)
+                    collection.find(criterio).sort({"destacada": -1}).skip((pg - 1) * 5).limit(5)
                         .toArray(function (err, canciones) {
                             if (err) {
+                                console.log(err);
                                 funcionCallback(null);
                             } else {
                                 console.log(count);
