@@ -275,23 +275,35 @@ module.exports = function (app, swig, gestorBD) {
     app.get('/oferta/destacar/:id', function (req, res) {
         if (req.params.id === null || req.params.id === undefined || req.params.id === '') {
             res.redirect("/publicaciones" +
-                "?mensaje=Error al destacar la publicacion" +
+                "?mensaje=El valor de la oferta no es valido" +
                 "&tipoMensaje=alert-danger ");
-        } else{
+        } else {
             var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-            gestorBD.destacarOferta(criterio, function (ofertas) {
-                if (ofertas == null) {
-                    res.redirect("/publicaciones" +
-                        "?mensaje=No se puede destacar esta publicacion" +
-                        "&tipoMensaje=alert-danger ");
-                }else if(ofertas == -1){
-                    res.redirect("/publicaciones" +
-                        "?mensaje=No tienes suficiente dinero, necesitas 20€" +
-                        "&tipoMensaje=alert-danger ");
-                } else {
-                    res.redirect("/publicaciones");
-                }
-            });
+            if (req.session.user.dinero < 20) {
+                res.redirect("/publicaciones" +
+                    "?mensaje=No tienes suficiente dinero, necesitas 20€" +
+                    "&tipoMensaje=alert-danger ");
+            } else {
+                gestorBD.destacarOferta(criterio, function (ofertas) {
+                    if (ofertas == null) {
+                        res.redirect("/publicaciones" +
+                            "?mensaje=No se puede destacar esta publicacion" +
+                            "&tipoMensaje=alert-danger ");
+                    } else {
+                        gestorBD.usuarioDestaca({"email":req.session.user.email}, function (result) {
+                            if (result == null) {
+                                res.redirect("/publicaciones" +
+                                    "?mensaje=Error destacando la oferta" +
+                                    "&tipoMensaje=alert-danger ");
+                            } else {
+                                res.redirect("/publicaciones" +
+                                    "?mensaje=Publicacion destacada" +
+                                    "&tipoMensaje=alert-success ");
+                            }
+                        });
+                    }
+                });
+            }
         }
     });
 
