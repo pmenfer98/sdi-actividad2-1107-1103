@@ -13,3 +13,17 @@
     background-color: lightcyan;
     border-radius: 20px;
 }
+
+#elementoDestacado{
+    padding: 20px;
+    background-color: #ffeea4;
+    border-radius: 20px;
+}
+
+#lblDestacada{
+    color: #452f00;
+    font-stretch: ultra-expanded;
+    padding: 10px;
+    background-color: #fffbd5;
+    border-radius: 10px;
+}
