@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -255,7 +256,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("password"));
 		driver.findElement(By.id("logginButton"));
 	}
-	
+
 	@Test
 	public void test10_desconectarse_comprobarBotonLoggin() throws Exception {
 		driver.get(URL + "/identificarse");
@@ -263,35 +264,44 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.id("mRegistrarse"));
 		try {
 			driver.findElement(By.id("mDesconectarse"));
-		}catch(NoSuchElementException e){
+		} catch (NoSuchElementException e) {
 			return;
 		}
 		throw new org.openqa.selenium.NoSuchElementException("El elemento no debería aparecer");
-		
+
 	}
+
 	/*
 	 * TEST DE LISTADO DE USUARIOS
 	 */
 	@Test
 	public void test10_listarUsuarios() throws Exception {
-	 driver.get(URL + "/identificarse");
-	    driver.findElement(By.name("email")).click();
-	    driver.findElement(By.name("email")).clear();
-	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
-	    driver.findElement(By.name("password")).click();
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("admin");
-	    driver.findElement(By.id("logginButton")).click();
-	    driver.findElement(By.linkText("Listar usuarios")).click();
-	    SeleniumUtils.textoPresentePagina(driver, "Usuarios en el sistema");
-	    SeleniumUtils.textoNoPresentePagina(driver, "admin@email.com"); //Comprueba que no figure el administrador en la lista
-	    
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("admin@email.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("admin");
+		driver.findElement(By.id("logginButton")).click();
+		driver.findElement(By.linkText("Listar usuarios")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		SeleniumUtils.textoPresentePagina(driver, "Usuarios en el sistema");
+		SeleniumUtils.textoNoPresentePagina(driver, "admin@email.com");
+		SeleniumUtils.textoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "ejemplo@uniovi.es");
+		SeleniumUtils.textoPresentePagina(driver, "qwerty@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "nachoAcebal@feumierda.com");
+		SeleniumUtils.textoPresentePagina(driver, "ruizber@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "dallama@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "UO123456@uniovi.es");
+
 	}
-	
+
 	/*
 	 * TEST DE SUBIDA DE OFERTAS
 	 */
-	
+
 	@Test
 	public void test11_subirOferta_valido() throws Exception {
 		driver.get(URL + "/identificarse");
@@ -306,11 +316,11 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.id("logginButton")).click();
 		driver.findElement(By.id("mTienda"));
 		driver.findElement(By.id("mPublicaciones"));
-		while(true) {//Eliminamos todas las ofertas publicadas por el usuario
+		while (true) {// Eliminamos todas las ofertas publicadas por el usuario
 			try {
 				driver.findElement(By.linkText("Eliminar")).click();
 				SeleniumUtils.esperarSegundos(driver, 4);
-			}catch(NoSuchElementException e) {
+			} catch (NoSuchElementException e) {
 				break;
 			}
 		}
@@ -330,7 +340,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.id("idPublicaciones"));
 		driver.findElement(By.tagName("td"));
 	}
-	
+
 	@Test
 	public void test12_subirOferta_invalido() throws Exception {
 		driver.get(URL + "/identificarse");
@@ -358,4 +368,86 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.id("botonAgregar")).click();
 		driver.findElement(By.id("idAgregarOferta"));
 	}
+
+	@Test
+	public void test16_listadoDeOfertasPropias() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.id("logginButton")).click();
+		driver.findElement(By.linkText("Publicaciones")).click();
+		SeleniumUtils.textoPresentePagina(driver, "Mis publicaciones");
+		SeleniumUtils.textoPresentePagina(driver, "Nombre");
+		SeleniumUtils.textoPresentePagina(driver, "Detalles");
+		SeleniumUtils.textoPresentePagina(driver, "Fecha");
+		SeleniumUtils.textoPresentePagina(driver, "Precio");
+		SeleniumUtils.textoPresentePagina(driver, "Articulo de prueba");
+		SeleniumUtils.textoPresentePagina(driver, "Oferta de prueba para destacar");
+	}
+
+	/*
+	 * TEST DE DAR DE BAJA UNA OFERTA
+	 */
+
+	@Test
+	public void test17_darDeBajaUnaOferta_primera() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+		driver.findElement(By.linkText("Publicaciones")).click();
+		driver.findElement(By.linkText("Eliminar")).click();
+		SeleniumUtils.textoNoPresentePagina(driver, "Artículo de prueba");
+		SeleniumUtils.textoPresentePagina(driver, "Oferta de prueba para destacar");
+	}
+
+	@Test
+	public void test17_darDeBajaUnaOferta_ultima() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("qwerty@gmail.com");
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+		driver.findElement(By.linkText("Publicaciones")).click();
+		driver.findElement(By.xpath(
+				"(.//*[normalize-space(text()) and normalize-space(.)='Pelota de tenis con 7 años de antigüedad, en perfecto estado'])[1]/following::a[1]"))
+				.click();
+		SeleniumUtils.textoNoPresentePagina(driver, "Pelota de tenis seminueva");
+		SeleniumUtils.textoPresentePagina(driver, "Zapatillas Adidas");
+		SeleniumUtils.textoPresentePagina(driver, "Acordeón de plástico");
+
+	}
+
+	@Test
+	public void test25_listadoOfertasCompradas() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.linkText("Compras")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		SeleniumUtils.textoPresentePagina(driver, "Mis compras");
+		SeleniumUtils.textoPresentePagina(driver, "Nombre");
+		SeleniumUtils.textoPresentePagina(driver, "Detalles");
+		SeleniumUtils.textoPresentePagina(driver, "Precio");
+		SeleniumUtils.textoPresentePagina(driver, "Vendedor");
+		SeleniumUtils.textoPresentePagina(driver, "Disco ACDC");
+		SeleniumUtils.textoPresentePagina(driver, "Samsung Galaxy 100XPlus");
+	}
+
 }
