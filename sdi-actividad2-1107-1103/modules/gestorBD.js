@@ -294,19 +294,15 @@ module.exports = {
                 });
             }
         });
-    }
-    ,
-
-
-    deleteUsers: function (criterio,nuevoCriterio,funcionCallback) {
+    },
+    deleteUsers: function (usuarios, usuariosActualizados, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {
                 funcionCallback(null);
             } else {
-                var collection = db.collection('usuarios');
-                collection.updateMany(criterio, {
-                    $set: nuevoCriterio
-
+                let collection = db.collection('usuarios');
+                collection.updateMany(usuarios, {
+                    $set: usuariosActualizados
                 }, function (err, result) {
                     if (err) {
                         funcionCallback(null);

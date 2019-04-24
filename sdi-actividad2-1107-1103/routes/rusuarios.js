@@ -37,10 +37,10 @@ module.exports = function (app, swig, gestorBD) {
                 } else {
                     req.session.user = usuarios[0];
                     app.set('current_user', usuarios[0].email);
-                    if(req.session.user.rol==='admin'){
+                    if (req.session.user.rol === 'admin') {
                         console.log("Identificado como administrador");
                         res.redirect("/listarUsuarios")
-                    }else {
+                    } else {
                         res.redirect("/tienda");
                     }
                 }
@@ -123,6 +123,19 @@ module.exports = function (app, swig, gestorBD) {
             idsUsers = [];
             idsUsers.push(aux);
         }
+        let criterio = {
+            email: req.body.email
+        };
+        let nuevoCriterio = {valid: false};
+        gestorBD.deleteUsers(criterio, nuevoCriterio, function (usuarios) {
+            if (usuarios == null || usuarios.length === 0) {
+                res.redirect("/listarUsuarios" +
+                    "?mensaje=Los usuarios no pudieron eliminarse");
+            } else {
 
+                res.redirect("/listarUsuarios" +
+                    "?mensaje=Los usuarios se eliminaron correctamente");
+            }
+        });
     });
 };

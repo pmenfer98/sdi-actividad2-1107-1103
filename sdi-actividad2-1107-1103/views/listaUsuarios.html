@@ -4,34 +4,36 @@
 <h2>Usuarios en el sistema</h2>
 
 <div class="table-responsive">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Apellidos</th>
-            <th>Email</th>
-            <th class="col-md-1"></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-        <tr>
-            <td>{{ user.nombre }}</td>
-            <td>{{ user.apellidos }}</td>
-            <td>{{user.email}}</td>
-            <td><input type="checkbox" name="idsUser" class="check"
-                       value='{{ user.email }}'/></td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    div class="form-group">
-    <input class="btn btn-danger" type="submit" id="DeleteButton"
-           value="Eliminar"/>
-
-
+    <form method="post" action="/user/delete">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+                <th class="col-md-1">
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.nombre }}</td>
+                <td>{{ user.apellidos }}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.valid}}</td>
+                <td>
+                    <input type="checkbox" name="idsUser" class="check"
+                           value='{{ user.email }}'/>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="form-group">
+            <input class="btn btn-danger" type="submit" id="DeleteButton"
+                   value="Eliminar"/>
+        </div>
+    </form>
 </div>
-</div>
-
 {% endblock %}
