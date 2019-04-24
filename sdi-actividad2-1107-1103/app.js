@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 
+var jwt = require('jsonwebtoken'); //Para realizar las encriptaciones (tokens)
+app.set('jwt', jwt);
+
 var mongo = require('mongodb');
 var swig = require('swig-templates');
 var crypto = require('crypto');
@@ -13,18 +16,18 @@ app.use(expressSession({
 }));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static('public'));
 
 app.set('port', 8081);
 app.set('db', 'mongodb://pablo:sdi@sdi-actividad2-1107-1103-shard-00-00-fj6ok.mongodb.net:27017,sdi-actividad2-1107-1103-shard-00-01-fj6ok.mongodb.net:27017,sdi-actividad2-1107-1103-shard-00-02-fj6ok.mongodb.net:27017/test?ssl=true&replicaSet=sdi-actividad2-1107-1103-shard-0&authSource=admin&retryWrites=true');
-app.set('clave','abcdefg');
+app.set('clave', 'abcdefg');
 app.set('crypto', crypto);
 
 
 var gestorBD = require("./modules/gestorBD.js");
-gestorBD.init(app,mongo);
+gestorBD.init(app, mongo);
 
 var routerUserSession = express.Router();
 routerUserSession.use(function (req, res, next) {
@@ -61,12 +64,46 @@ routerAdmin.use(function (req, res, next) {
 
 var routerUser = express.Router();
 routerUser.use(function (req, res, next) {
-    if (req.session.user.rol === 'user') { // dejamos correr la petición
+    if (req.session.user.rol === 'user') {
         next();
     } else {
         res.redirect("/desconectarse?mensaje=Debes ser usuario estandar para acceder a esta opcion");
     }
 });
+
+
+var routerUsuarioToken = express.Router();
+routerUsuarioToken.use(function (req, res, next) {
+
+    var token = req.headers['token'] || req.body.token || req.query.token;
+    if (token != null) {
+
+        jwt.verify(token, 'secreto', function (err, infoToken) {
+            if (err || (Date.now() / 1000 - infoToken.tiempo) > 240) {
+                res.status(403); // Forbidden
+                res.json({
+                    acceso: false,
+                    error: 'Token invalido o caducado'
+                });
+
+                return;
+
+            } else {
+
+                res.usuario = infoToken.usuario;
+                next();
+            }
+        });
+
+    } else {
+        res.status(403); // Forbidden
+        res.json({
+            acceso: false,
+            mensaje: 'No hay Token'
+        });
+    }
+});
+
 
 app.use('/identificarse', routerUserLogged);
 app.use('/registrarse', routerUserLogged);
@@ -93,6 +130,8 @@ app.use('/oferta/comprar/:id', routerUser);
 app.use('/compras', routerUser);
 app.use('/oferta/:id', routerUser);
 
+app.use('/api/tienda', routerUsuarioToken);
+
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rofertas.js")(app, swig, gestorBD);
@@ -104,6 +143,6 @@ app.get('/', function (req, res) {
 });
 
 // lanzar el servidor
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function () {
     console.log("Servidor activo");
 });
