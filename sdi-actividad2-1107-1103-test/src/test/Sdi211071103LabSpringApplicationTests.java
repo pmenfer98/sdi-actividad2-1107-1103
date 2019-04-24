@@ -297,6 +297,53 @@ public class Sdi211071103LabSpringApplicationTests {
 		SeleniumUtils.textoPresentePagina(driver, "UO123456@uniovi.es");
 
 	}
+	
+	
+	/*
+	 * TEST DE BORRADO MÚLTIPLE DE USUARIOS
+	 */
+	 @Test
+	  public void test11_borradoDeUsuarios_primerUsuario() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("admin");
+	    driver.findElement(By.id("logginButton")).click();
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[3]/following::input[1]")).click();
+	    driver.findElement(By.id("DeleteButton")).click();
+	  }
+	 
+	 @Test
+	  public void test12_borradoDeUsuarios_ultimoUsuario() throws Exception {
+		 driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("admin");
+	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]")).click();
+	    driver.findElement(By.id("DeleteButton")).click();
+	  }
+	 
+	 @Test
+	  public void test13_borradoDeUsuarios_tresUsuarios() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("admin");
+	    driver.findElement(By.id("logginButton")).click();
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]")).click();
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[6]/following::input[1]")).click();
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[5]/following::input[1]")).click();
+	    driver.findElement(By.id("DeleteButton")).click();
+	  }
 
 	/*
 	 * TEST DE SUBIDA DE OFERTAS
@@ -407,6 +454,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.linkText("Eliminar")).click();
 		SeleniumUtils.textoNoPresentePagina(driver, "Artículo de prueba");
 		SeleniumUtils.textoPresentePagina(driver, "Oferta de prueba para destacar");
+		
 	}
 
 	@Test
