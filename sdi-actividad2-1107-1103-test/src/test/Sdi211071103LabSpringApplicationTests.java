@@ -312,7 +312,9 @@ public class Sdi211071103LabSpringApplicationTests {
 	    driver.findElement(By.name("password")).sendKeys("admin");
 	    driver.findElement(By.id("logginButton")).click();
 	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[3]/following::input[1]")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
 	    driver.findElement(By.id("DeleteButton")).click();
+	    SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
 	  }
 	 
 	 @Test
@@ -326,7 +328,9 @@ public class Sdi211071103LabSpringApplicationTests {
 	    driver.findElement(By.name("password")).sendKeys("admin");
 	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
 	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
 	    driver.findElement(By.id("DeleteButton")).click();
+	    SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
 	  }
 	 
 	 @Test
@@ -342,7 +346,12 @@ public class Sdi211071103LabSpringApplicationTests {
 	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]")).click();
 	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[6]/following::input[1]")).click();
 	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[5]/following::input[1]")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
 	    driver.findElement(By.id("DeleteButton")).click();
+	    SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
+	    SeleniumUtils.textoNoPresentePagina(driver, "ruizber@gmail.com");
+	    SeleniumUtils.textoNoPresentePagina(driver, "dallama@gmail.com");
+	    SeleniumUtils.textoNoPresentePagina(driver, "UO123456@uniovi.es");
 	  }
 
 	/*
