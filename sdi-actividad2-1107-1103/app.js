@@ -96,6 +96,7 @@ app.use('/oferta/:id', routerUser);
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rofertas.js")(app, swig, gestorBD);
+require("./routes/rapitienda.js")(app, gestorBD);
 
 
 app.get('/', function (req, res) {
