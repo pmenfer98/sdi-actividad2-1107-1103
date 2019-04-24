@@ -114,4 +114,15 @@ module.exports = function (app, swig, gestorBD) {
             }
         })
     });
+
+    app.post('/user/delete', function (req, res) {
+        let idsUsers = req.body.idsUsers;
+        //si es solo un usuario, creamos un array y lo metemos para trabajar con forEach
+        if (!Array.isArray(idsUsers)) {
+            let aux = idsUsers;
+            idsUsers = [];
+            idsUsers.push(aux);
+        }
+
+    });
 };

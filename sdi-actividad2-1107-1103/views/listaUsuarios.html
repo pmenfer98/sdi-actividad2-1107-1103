@@ -19,11 +19,19 @@
             <td>{{ user.nombre }}</td>
             <td>{{ user.apellidos }}</td>
             <td>{{user.email}}</td>
-            <td><input type="checkbox" name="idsUser" {{user.id}} class="borrar"/></td>
+            <td><input type="checkbox" name="idsUser" class="check"
+                       value='{{ user.email }}'/></td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    div class="form-group">
+    <input class="btn btn-danger" type="submit" id="DeleteButton"
+           value="Eliminar"/>
+
+
+</div>
 </div>
 
 {% endblock %}
