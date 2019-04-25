@@ -49,7 +49,7 @@ routerUserLogged.use(function (req, res, next) {
     if (req.session.user == null || req.session.user == undefined) { // dejamos correr la petición
         next();
     } else {
-        res.redirect("/publicaciones");
+        res.redirect("/home");
     }
 });
 
@@ -118,6 +118,7 @@ app.use('/tienda', routerUserSession);
 app.use('/oferta/comprar/:id', routerUserSession);
 app.use('/compras', routerUserSession);
 app.use('/oferta/:id', routerUserSession);
+app.use('/home', routerUserSession);
 
 app.use('/listarUsuarios', routerAdmin);
 
@@ -129,6 +130,7 @@ app.use('/tienda', routerUser);
 app.use('/oferta/comprar/:id', routerUser);
 app.use('/compras', routerUser);
 app.use('/oferta/:id', routerUser);
+app.use('/home', routerUserSession);
 
 app.use('/api/tienda', routerUsuarioToken);
 

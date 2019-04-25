@@ -41,7 +41,7 @@ module.exports = function (app, swig, gestorBD) {
                         console.log("Identificado como administrador");
                         res.redirect("/listarUsuarios")
                     } else {
-                        res.redirect("/tienda");
+                        res.redirect("/home");
                     }
                 }
             });
@@ -81,7 +81,7 @@ module.exports = function (app, swig, gestorBD) {
                             } else {
                                 req.session.user = usuario;
                                 app.set('current_user', usuario.email);
-                                res.redirect("/publicaciones");
+                                res.redirect("/home");
                             }
                         });
                     } else {
