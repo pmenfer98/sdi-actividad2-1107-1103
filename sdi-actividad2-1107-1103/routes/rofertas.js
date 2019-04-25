@@ -1,23 +1,4 @@
 module.exports = function (app, swig, gestorBD) {
-    app.get("/nuevas/canciones", function (req, res) {
-        var canciones = [{
-            "nombre": "Blank space",
-            "precio": "1.2"
-        }, {
-            "nombre": "See you again",
-            "precio": "1.3"
-        }, {
-            "nombre": "Uptown Funk",
-            "precio": "1.1"
-        }];
-        var respuesta = swig.renderFile('views/btienda.html', {
-            vendedor: 'Tienda de canciones',
-            canciones: canciones
-        });
-        res.send(respuesta);
-
-    });
-
     app.get('/oferta/comprar/:id', function (req, res) {
         var ofertaId = gestorBD.mongo.ObjectID(req.params.id);
         gestorBD.restarDinero(ofertaId, req.session.user.email, function (dineroActual) {
@@ -56,7 +37,6 @@ module.exports = function (app, swig, gestorBD) {
             if (compras == null) {
                 res.send("Error al listar ");
             } else {
-                console.log("Compras encontradas: " + compras.length);
                 var respuesta = swig.renderFile('views/bcompras.html',
                     {
                         user: req.session.user,
@@ -71,11 +51,6 @@ module.exports = function (app, swig, gestorBD) {
     app.get('/ofertas/agregar', function (req, res) {
         var respuesta = swig.renderFile('views/bagregar.html', {user: req.session.user});
         res.send(respuesta);
-    })
-
-    app.get('/suma', function (req, res) {
-        var respuesta = parseInt(req.query.num1) + parseInt(req.query.num2);
-        res.send(String(respuesta));
     });
 
     app.get('/oferta/:id', function (req, res) {
@@ -141,12 +116,6 @@ module.exports = function (app, swig, gestorBD) {
     )
     ;
 
-    app.get('/canciones/:genero/:id', function (req, res) {
-        var respuesta = 'id: ' + req.params.id + '<br>'
-            + 'Genero: ' + req.params.genero;
-        res.send(respuesta);
-    });
-
     app.get("/tienda", function (req, res) {
         let criterio = {
             propietario: {
@@ -163,7 +132,6 @@ module.exports = function (app, swig, gestorBD) {
                 }
             };
         }
-        console.log("Objeto busqueda " + req.query.busqueda);
         var pg = parseInt(req.query.pg); // Es String !!!
         if (req.query.pg == null) { // Puede no venir el param
             pg = 1;
@@ -227,25 +195,6 @@ module.exports = function (app, swig, gestorBD) {
                         paginas: paginas,
                         actual: pg,
                         busqueda: req.query.busqueda
-                    });
-                res.send(respuesta);
-            }
-        });
-    });
-
-
-    app.get('/cancion/modificar/:id', function (req, res) {
-        var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        gestorBD.obtenerOfertas(criterio, function (canciones) {
-            if (canciones == null) {
-                res.send(respuesta);
-                res.redirect("/identificarse" +
-                    "?mensaje=Email o password incorrecto" +
-                    "&tipoMensaje=alert-danger ");
-            } else {
-                var respuesta = swig.renderFile('views/bcancionModificar.html',
-                    {
-                        cancion: canciones[0]
                     });
                 res.send(respuesta);
             }
@@ -329,71 +278,40 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.get('/oferta/destacar/:id', function (req, res) {
-        if (req.params.id === null || req.params.id === undefined || req.params.id === '') {
-            res.redirect("/publicaciones" +
-                "?mensaje=El valor de la oferta no es valido" +
-                "&tipoMensaje=alert-danger ");
-        } else {
-            var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-            if (req.session.user.dinero < 20) {
-                res.redirect("/publicaciones" +
-                    "?mensaje=No tienes suficiente dinero, necesitas 20€" +
-                    "&tipoMensaje=alert-danger ");
-            } else {
-                gestorBD.destacarOferta(criterio, function (ofertas) {
-                    if (ofertas == null) {
+        gestorBD.obtenerOfertas({_id: req.params.id}, function (ofe) {
+                if (req.params.id === null || req.params.id === undefined || req.params.id === '') {
+                    res.redirect("/publicaciones" +
+                        "?mensaje=El valor de la oferta no es valido" +
+                        "&tipoMensaje=alert-danger ");
+                } else {
+                    var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+                    if (req.session.user.dinero < 20) {
                         res.redirect("/publicaciones" +
-                            "?mensaje=No se puede destacar esta publicacion" +
+                            "?mensaje=No tienes suficiente dinero, necesitas 20€" +
                             "&tipoMensaje=alert-danger ");
                     } else {
-                        gestorBD.usuarioDestaca({"email": req.session.user.email}, function (result) {
-                            if (result == null) {
+                        gestorBD.destacarOferta(criterio, function (ofertas) {
+                            if (ofertas == null) {
                                 res.redirect("/publicaciones" +
-                                    "?mensaje=Error destacando la oferta" +
+                                    "?mensaje=No se puede destacar esta publicacion" +
                                     "&tipoMensaje=alert-danger ");
                             } else {
-                                req.session.user.dinero -= 20;
-                                res.redirect("/publicaciones" +
-                                    "?mensaje=Publicacion destacada" +
-                                    "&tipoMensaje=alert-success ");
+                                gestorBD.usuarioDestaca({"email": req.session.user.email}, function (result) {
+                                    if (result == null) {
+                                        res.redirect("/publicaciones" +
+                                            "?mensaje=Error destacando la oferta" +
+                                            "&tipoMensaje=alert-danger ");
+                                    } else {
+                                        req.session.user.dinero -= 20;
+                                        res.redirect("/publicaciones" +
+                                            "?mensaje=Publicacion destacada" +
+                                            "&tipoMensaje=alert-success ");
+                                    }
+                                });
                             }
                         });
                     }
-                });
-            }
-        }
+                }
+        });
     });
-
-
-}
-;
-
-function paso1ModificarPortada(files, id, callback) {
-    if (files.portada != null) {
-        var imagen = files.portada;
-        imagen.mv('public/portadas/' + id + '.png', function (err) {
-            if (err) {
-                callback(null); // ERROR
-            } else {
-                paso2ModificarAudio(files, id, callback); // SIGUIENTE
-            }
-        });
-    } else {
-        paso2ModificarAudio(files, id, callback); // SIGUIENTE
-    }
-};
-
-function paso2ModificarAudio(files, id, callback) {
-    if (files.audio != null) {
-        var audio = files.audio;
-        audio.mv('public/audios/' + id + '.mp3', function (err) {
-            if (err) {
-                callback(null); // ERROR
-            } else {
-                callback(true); // FIN
-            }
-        });
-    } else {
-        callback(true); // FIN
-    }
 };
