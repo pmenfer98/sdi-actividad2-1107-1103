@@ -98,10 +98,20 @@ module.exports = function (app, swig, gestorBD) {
     });
     app.get('/listarUsuarios', function (req, res) {
         let criterioMongo = {
-            email: {
-                $ne: req.session.user.email // $ne es 'not' en Mongo
-            }
+            $and: [
+                {
+                    email: {
+                        $ne: req.session.user.email
+                    }
+                },
+                {
+                    valid: {
+                        $ne: false
+                    }
+                }
+            ]
         };
+
         gestorBD.obtenerUsuarios(criterioMongo, function (users) {
             if (users !== null) {
                 var respuesta = swig.renderFile('views/listaUsuarios.html', {
