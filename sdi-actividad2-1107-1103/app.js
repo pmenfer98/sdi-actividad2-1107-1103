@@ -79,18 +79,17 @@ routerUsuarioToken.use(function (req, res, next) {
     if (token != null) {
 
         jwt.verify(token, 'secreto', function (err, infoToken) {
-            if (err || (Date.now() / 1000 - infoToken.tiempo) > 240) {
+            console.log(infoToken)
+            if (err || (Date.now() / 1000 - infoToken.tiempo) > 24000) {
                 res.status(403); // Forbidden
                 res.json({
                     acceso: false,
                     error: 'Token invalido o caducado'
                 });
 
-                return;
-
             } else {
-
                 res.usuario = infoToken.usuario;
+                console.log(res.usuario)
                 next();
             }
         });
@@ -133,6 +132,7 @@ app.use('/oferta/:id', routerUser);
 app.use('/home', routerUserSession);
 
 app.use('/api/tienda', routerUsuarioToken);
+app.use('/api/oferta', routerUsuarioToken);
 
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);
