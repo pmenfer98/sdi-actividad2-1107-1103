@@ -77,28 +77,33 @@ module.exports = function (app, gestorBD) {
                     error: "se ha producido un error"
                 })
             } else {
-                res.status(200);
-                res.send(JSON.stringify(ofertas[0]));
+                let oferta = ofertas[0];
+                let usuario= res.usuario;
+                let mensaje = {
+                    emisor: usuario,
+                    oferta: oferta,
+                    mensaje: req.body.mensaje,
+                    fecha: new Date(),
+                    leido: false
+                }      ;          console.log(mensaje);
+
+
+                gestorBD.insertarMensaje(mensaje, function (mensajes) {
+                    if (mensajes == null) {
+                        res.status(500);
+                        res.json({
+                            error: "se ha producido un error"
+                        })
+                    } else {
+                        res.status(200);
+                        console.log(mensajes)
+                        res.send(JSON.stringify(mensajes));
+                    }
+                })
             }
         })
 
-        let oferta = ofertas[0];
-        let mensaje = {
-            emisor: req.user,
-            oferta: oferta,
-            mensaje: req.body.mensaje,
-            fecha: new Date(),
-            leido: false
-        }
-        gestorBD.insertarMensaje(mensaje, function (id) {
-            if (id == null) {
-                res.redirect("/registrarse?mensaje=Error al registrar usuario");
-            } else {
-                req.session.user = usuario;
-                app.set('current_user', usuario.email);
-                res.redirect("/home");
-            }
-        })
+
     });
 
 

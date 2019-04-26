@@ -89,7 +89,6 @@ routerUsuarioToken.use(function (req, res, next) {
 
             } else {
                 res.usuario = infoToken.usuario;
-                console.log(res.usuario)
                 next();
             }
         });
