@@ -133,6 +133,7 @@ app.use('/home', routerUserSession);
 
 app.use('/api/tienda', routerUsuarioToken);
 app.use('/api/oferta', routerUsuarioToken);
+app.use('/api/mensaje/oferta/:id', routerUsuarioToken);
 
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);
