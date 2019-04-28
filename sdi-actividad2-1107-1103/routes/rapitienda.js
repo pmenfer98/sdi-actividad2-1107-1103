@@ -78,16 +78,15 @@ module.exports = function (app, gestorBD) {
                 })
             } else {
                 let oferta = ofertas[0];
-                let usuario= res.usuario;
+                let usuario = res.usuario;
                 let mensaje = {
                     emisor: usuario,
+                    receptor: req.body.receptor,
                     oferta: oferta,
                     mensaje: req.body.mensaje,
                     fecha: new Date(),
                     leido: false
-                }      ;          console.log(mensaje);
-
-
+                };
                 gestorBD.insertarMensaje(mensaje, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
@@ -102,10 +101,79 @@ module.exports = function (app, gestorBD) {
                 })
             }
         })
-
-
     });
 
+    app.get("/api/conversacion/oferta/:id", function (req, res) {
+        let criterioMongo = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        gestorBD.obtenerOfertas(criterioMongo, function (ofertas) {
+            if (ofertas == null) {
+                res.status(500);
+                res.json({
+                    error: "se ha producido un error"
+                })
+            } else if (ofertas.length === 0) {
+                res.status(400);
+                res.json({
+                    error: "Oferta no encontrada"
+                })
+            } else {
+                let oferta = ofertas[0];
+                let propietario = oferta.propietario;
+                let usuario = res.usuario;
+                let criterio = {
+                    $or: [
+                        {
+                            $and: [
+                                {
+                                    emisor: usuario
+                                },
+                                {
+                                    receptor: propietario
+                                }
+                            ]
+                        },
+                        {
+                            $and: [
+                                {
+                                    emisor: propietario
+                                },
+                                {
+                                    receptor: usuario
+                                }
+                            ]
+                        }
+                    ]
+                };
+                gestorBD.obtenerMensajes(criterio, function (mensajes) {
+                    if (mensajes == null) {
+                        res.status(500);
+                        res.json({
+                            error: "se ha producido un error"
+                        })
+                    } else {
+                        res.status(200);
+                        res.send(JSON.stringify(mensajes));
+                    }
+                });
+            }
+        });
+    });
+
+
+    app.get("/api/mensaje/leido/:id", function (req, res) {
+        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
+        gestorBD.marcarMensajeComoLeido(criterio, function (mensajes) {
+            if (mensajes == null) {
+                res.status(500);
+                res.json({
+                    error: "se ha producido un error"
+                })
+            } else {
+                res.status(200);
+                res.send(JSON.stringify(mensajes));
+            }
+        })
+    });
 
     app.post("/api/cancion", function (req, res) {
         var cancion = {
