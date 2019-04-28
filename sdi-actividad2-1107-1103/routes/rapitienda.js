@@ -78,16 +78,15 @@ module.exports = function (app, gestorBD) {
                 })
             } else {
                 let oferta = ofertas[0];
-                let usuario= res.usuario;
+                let usuario = res.usuario;
                 let mensaje = {
                     emisor: usuario,
+                    receptor: req.body.receptor,
                     oferta: oferta,
                     mensaje: req.body.mensaje,
                     fecha: new Date(),
                     leido: false
-                }      ;          console.log(mensaje);
-
-
+                };
                 gestorBD.insertarMensaje(mensaje, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);

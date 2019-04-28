@@ -325,7 +325,7 @@ module.exports = {
                     if (err) {
                         funcionCallback(null);
                     } else {
-                        funcionCallback(result.ops[0]._id);
+                        funcionCallback(result.ops[0]);
                         console.log("Mensaje añadido")
                     }
                     db.close();
