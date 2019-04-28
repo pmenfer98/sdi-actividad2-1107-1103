@@ -1,5 +1,7 @@
 package test;
 
+import java.text.ParseException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -40,7 +42,9 @@ public class Sdi211071103LabSpringApplicationTests {
 	}
 
 	@BeforeClass
-	static public void begin() {
+	static public void begin() throws ParseException {
+        JavaMongodbInsertData javaMongodbInsertData = new JavaMongodbInsertData();
+        javaMongodbInsertData.dataInsertion();
 	}
 
 	// Al finalizar la Ãºltima prueba
