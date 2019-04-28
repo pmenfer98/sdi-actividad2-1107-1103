@@ -103,20 +103,59 @@ module.exports = function (app, gestorBD) {
         })
     });
 
-    app.get("/api/mensaje", function (req, res) {
-        let criterioMongo = {
-        };
-
-        gestorBD.obtenerMensajes(criterioMongo, function (mensajes) {
-            if (mensajes == null) {
+    app.get("/api/conversacion/oferta/:id", function (req, res) {
+        let criterioMongo = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas == null) {
                 res.status(500);
                 res.json({
                     error: "se ha producido un error"
                 })
+            } else if (ofertas.length === 0) {
+                res.status(400);
+                res.json({
+                    error: "Oferta no encontrada"
+                })
             } else {
-                res.status(200);
-                res.send(JSON.stringify(mensajes));
+                let oferta = ofertas[0];
+                let propietario = oferta.propietario;
+                let usuario = res.usuario;
+                let criterio = {
+                    $or: [
+                        {
+                            $and: [
+                                {
+                                    emisor: usuario
+                                },
+                                {
+                                    receptor: propietario
+                                }
+                            ]
+                        },
+                        {
+                            $and: [
+                                {
+                                    emisor: propietario
+                                },
+                                {
+                                    receptor: usuario
+                                }
+                            ]
+                        }
+                    ]
+                }
             }
+            gestorBD.obtenerMensajes(criterio, function (mensajes) {
+                if (mensajes == null) {
+                    res.status(500);
+                    res.json({
+                        error: "se ha producido un error"
+                    })
+                } else {
+                    res.status(200);
+                    res.send(JSON.stringify(mensajes));
+                }
+            });
         });
     });
 
