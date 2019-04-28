@@ -101,10 +101,24 @@ module.exports = function (app, gestorBD) {
                 })
             }
         })
-
-
     });
 
+    app.get("/api/mensaje", function (req, res) {
+        let criterioMongo = {
+        };
+
+        gestorBD.obtenerMensajes(criterioMongo, function (mensajes) {
+            if (mensajes == null) {
+                res.status(500);
+                res.json({
+                    error: "se ha producido un error"
+                })
+            } else {
+                res.status(200);
+                res.send(JSON.stringify(mensajes));
+            }
+        });
+    });
 
     app.post("/api/cancion", function (req, res) {
         var cancion = {
