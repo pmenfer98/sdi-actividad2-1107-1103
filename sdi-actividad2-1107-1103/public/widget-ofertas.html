@@ -1,14 +1,11 @@
 <div id="widget-canciones" >
-    <input type="text" class="form-control" placeholder="Filtrar por nombre"
-           id="filtro-nombre"/>
-    <button class="btn btn-primary" onclick="widgetAgregar()">Nueva Canción</button>
-    <button class="btn" onclick="cargarCanciones()" >Actualizar</button>
     <table class="table table-hover">
         <thead>
         <tr>
-            <th><a onclick="ordenarPorNombre()">Nombre</a></th>
-            <th>Genero</th>
-            <th><a onclick="ordenarPorPrecio()">Precio</a></th>
+            <th>Nombre</th>
+            <th>Detalles</th>
+            <th>Precio</th>
+            <th>Vendedor</th>
             <th class="col-md-1"></th>
         </tr>
         </thead>
@@ -18,97 +15,46 @@
     </table>
 </div>
 <script>
-    window.history.pushState("", "", "/cliente.html?w=canciones");
+    window.history.pushState("", "", "/cliente.html?w=ofertas");
 
-    var canciones;
-    function cargarCanciones(){
+    var ofertas;
+    function cargarOfertas(){
         $.ajax({
-            url: URLbase + "/cancion",
+            url: URLbase + "/oferta",
             type: "GET",
             data: { },
             dataType: 'json',
             headers: { "token": token },
             success: function(respuesta) {
-                canciones = respuesta;
-                actualizarTabla(canciones);
+                ofertas = respuesta;
+                actualizarTabla(ofertas);
             },
             error : function (error){
                 $( "#contenedor-principal" ).load("widget-login.html");
             }
         });
     }
-    function actualizarTabla(cancionesMostrar){
+    function actualizarTabla(ofertasMostrar){
         $( "#tablaCuerpo" ).empty(); // Vaciar la tabla
-        for (i = 0; i < cancionesMostrar.length; i++) {
+        for (i = 0; i < ofertasMostrar.length; i++) {
+            if(ofertasMostrar[i].propietario != token.usuario)
             $( "#tablaCuerpo" ).append(
-                "<tr id="+cancionesMostrar[i]._id+">"+
-                "<td>"+cancionesMostrar[i].nombre+"</td>" +
-                "<td>"+cancionesMostrar[i].genero+"</td>" +
-                "<td>"+cancionesMostrar[i].precio+"</td>" +
+                "<tr id="+ofertasMostrar[i]._id+">"+
+                "<td>"+ofertasMostrar[i].nombre+"</td>" +
+                "<td>"+ofertasMostrar[i].detalles+"</td>" +
+                "<td>"+ofertasMostrar[i].precio+" € </td>" +
+                "<td>"+ofertasMostrar[i].propietario+"</td>" +
                 "<td>"+
-                "<a onclick=detalles('"+cancionesMostrar[i]._id+"')>Detalles</a><br>"+
-                "<a onclick=eliminar('"+cancionesMostrar[i]._id+"')>Eliminar</a>"+
+                "<a onclick=mensajes('"+ofertasMostrar[i]._id+"')>Mensajes</a><br>"+
                 "</td>"+
                 "</tr>" );
-            // Mucho cuidado con las comillas del eliminarCancion
-            //la id tiene que ir entre comillas ' '
         }
     }
-    cargarCanciones();
+    cargarOfertas();
 
-    function detalles(_id) {
-        idCancionSeleccionada = _id;
-        $( "#contenedor-principal" ).load( "widget-detalles.html");
+    function mensajes(_id) {
+        idOfertaSeleccionada = _id;
+        $( "#contenedor-principal" ).load( "widget-mensajes.html");
     }
-
-    function widgetAgregar() {
-        $( "#contenedor-principal" ).load( "widget-agregar.html");
-    }
-
-    $('#filtro-nombre').on('input',function(e){
-        var cancionesFiltradas = [];
-        var nombreFiltro = $("#filtro-nombre").val();
-
-        for (i = 0; i < canciones.length; i++) {
-            if (canciones[i].nombre.indexOf(nombreFiltro) != -1 ){
-                cancionesFiltradas.push(canciones[i]);
-            }
-        }
-        actualizarTabla(cancionesFiltradas);
-    });
-
-    function ordenarPorPrecio(){
-        canciones.sort(function(a, b) {
-            if (parseFloat(a.precio) > parseFloat(b.precio)) return -1;
-            if (parseFloat(a.precio) < parseFloat(b.precio)) return 1;
-            return 0
-            // Dependiendo de retorno >0 =0 o <0
-        });
-        actualizarTabla(canciones);
-    }
-    function ordenarPorNombre(){
-        canciones.sort(function(a, b) {
-            if(a.nombre > b.nombre ) return 1;
-            if(a.nombre < b.nombre ) return -1;
-            return 0;
-        });
-        actualizarTabla(canciones);
-    }
-
-    var precioDsc = true;
-    function ordenarPorPrecio(){
-        if (precioDsc){
-            canciones.sort(function(a, b) {
-                return parseFloat(a.precio) - parseFloat(b.precio);
-            });
-        } else {
-            canciones.sort(function(a, b) {
-                return parseFloat(b.precio) - parseFloat(a.precio);
-            });
-        }
-        actualizarTabla(canciones);
-        precioDsc = !precioDsc; //invertir
-    }
-
 
 </script>
