@@ -32,6 +32,22 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 20%;
+    width: 50%;
     padding: 30px;
+}
+
+#mensajeEnviado{
+    color: #452f00;
+    font-stretch: ultra-expanded;
+    padding: 10px;
+    background-color: #e4faff;
+    border-radius: 10px;
+}
+
+#mensajeRecibido{
+    color: #452f00;
+    font-stretch: ultra-expanded;
+    padding: 10px;
+    background-color: #ffe5dc;
+    border-radius: 10px;
 }

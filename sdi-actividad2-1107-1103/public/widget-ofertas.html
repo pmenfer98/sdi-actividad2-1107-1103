@@ -45,12 +45,14 @@
                 "<td>"+ofertasMostrar[i].precio+" € </td>" +
                 "<td>"+ofertasMostrar[i].propietario+"</td>" +
                 "<td>"+
-                "<a onclick=mensajes('"+ofertasMostrar[i]._id+"')>Mensajes</a><br>"+
+                "<a onclick = mensajes('"+ofertasMostrar[i]._id+"')>Mensajes</a><br>"+
                 "</td>"+
                 "</tr>" );
         }
     }
     cargarOfertas();
+
+
 
     function mensajes(_id) {
         idOfertaSeleccionada = _id;

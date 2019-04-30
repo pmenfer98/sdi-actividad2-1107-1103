@@ -1,0 +1,87 @@
+<div id="widget-detalles">
+    <h2>Mensajes</h2>
+    <div id="mensajes" class="row">
+        <div id="mensajeEnviado" class="form-group">
+            <div class="text-right">
+                <span>Texto de prueba</span>
+            </div>
+        </div>
+        <div id="mensajeRecibido" class="form-group">
+            <div class="text-left">
+                <span>Texto de prueba</span>
+            </div>
+        </div>
+    </div>
+    <div>
+        <input id="contenidoMensaje" type="text" class="form-control"
+               placeholder="Envie un mensaje" name="busqueda"/>
+        <button íd = "btnEnviar" class="btn btn-warning">
+            <span>Enviar</span>
+        </button>
+    </div>
+</div>
+
+<script>
+    $("#btnEnviar").click(function(){
+        $.ajax({
+            url: URLbase + "/mensaje/oferta/" + idOfertaSeleccionada,
+            type: "POST",
+            data: {
+                mensaje:$("#contenidoMensaje").val()
+            },
+            dataType: 'json',
+            success: function(respuesta) {
+                console.log(respuesta.token); // <- Prueba
+                token = respuesta.token;
+                $( "#contenedor-principal" ).load( "widget-mensajes.html");
+            },
+            error : function (error){
+                console.log( URLbase + "/ofertas");
+                console.log(error);
+                $("#alertMessage").remove();
+                $("#widget-login")
+                    .prepend("<div id='alertMessage' class='alert alert-danger'>Usuario no encontrado</div>");
+            }
+        });
+    });
+
+    function cargarMensajes(){
+        $.ajax({
+            url: URLbase + "/mensaje/oferta/" + idOfertaSeleccionada,
+            type: "GET",
+            data: { },
+            dataType: 'json',
+            headers: { "token": token },
+            success: function(respuesta) {
+                mensaje = respuesta;
+                actualizarMensajes(ofertas);
+            },
+            error : function (error){
+                $( "#contenedor-principal" ).load("widget-mensajes.html");
+            }
+        });
+    }
+
+    function actualizarMensajes(mensajesMostrar){
+        $( "#tablaCuerpo" ).empty(); // Vaciar la tabla
+        for (i = 0; i < mensajesMostrar.length; i++) {
+            if(mensajesMostrar[i].emisor === token.usuario){
+                $("#mensajes").append(
+                    "<div id='mensajeEnviado' class='form-group'>" +
+                    "<div class='text-right'>" +
+                    "<span>Texto de prueba</span>"+
+                    "</div>"+
+                    "</div>"
+                );}
+            else{
+                $("#mensajes").append(
+                    "<div id='mensajeRecibido' class='form-group'>" +
+                    "<div class='text-right'>" +
+                    "<span>mensajesMostrar[i].mensaje</span>"+
+                    "</div>"+
+                    "</div>"
+                );
+            }
+        }
+    }
+</script>
