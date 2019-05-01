@@ -186,7 +186,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	}
 
 	@Test
-	public void test6_identificarse_contraseñaErronea() throws Exception {
+	public void test5_identificarse_contraseñaErronea() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -202,7 +202,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	}
 
 	@Test
-	public void test7_identificarse_emailVacio() throws Exception {
+	public void test6_identificarse_emailVacio() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -217,7 +217,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	}
 
 	@Test
-	public void test8_identificarse_emailInexistente() throws Exception {
+	public void test7_identificarse_emailInexistente() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -237,7 +237,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	 */
 
 	@Test
-	public void test9_desconectarse_redireccionAlLogin() throws Exception {
+	public void test8_desconectarse_redireccionAlLogin() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -259,15 +259,17 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("email"));
 		driver.findElement(By.name("password"));
 		driver.findElement(By.id("logginButton"));
+		SeleniumUtils.textoPresentePagina(driver, "Identificación de usuario");
 	}
 
 	@Test
-	public void test10_desconectarse_comprobarBotonLoggin() throws Exception {
+	public void test9_desconectarse_comprobarBotonLoggin() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
 		try {
 			driver.findElement(By.id("mDesconectarse"));
+			SeleniumUtils.textoNoPresentePagina(driver, "Desconectarse");
 		} catch (NoSuchElementException e) {
 			return;
 		}
@@ -291,15 +293,20 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.linkText("Listar usuarios")).click();
 		SeleniumUtils.esperarSegundos(driver, 5);
 		SeleniumUtils.textoPresentePagina(driver, "Usuarios en el sistema");
+		
 		SeleniumUtils.textoNoPresentePagina(driver, "admin@email.com");
+		
 		SeleniumUtils.textoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "ejemplo@uniovi.es");
-		SeleniumUtils.textoPresentePagina(driver, "qwerty@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "nachoAcebal@feumierda.com");
-		SeleniumUtils.textoPresentePagina(driver, "ruizber@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "dallama@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "UO123456@uniovi.es");
-
+		SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user9@gmail.com");
 	}
 	
 	
@@ -319,6 +326,18 @@ public class Sdi211071103LabSpringApplicationTests {
 	    SeleniumUtils.esperarSegundos(driver, 5);
 	    driver.findElement(By.id("DeleteButton")).click();
 	    SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
+	    SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user9@gmail.com");
 	  }
 	 
 	 @Test
@@ -335,6 +354,21 @@ public class Sdi211071103LabSpringApplicationTests {
 	    SeleniumUtils.esperarSegundos(driver, 5);
 	    driver.findElement(By.id("DeleteButton")).click();
 	    SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
+	    
+	    SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
+		
+		SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
+	    
 	  }
 	 
 	 @Test
@@ -353,9 +387,21 @@ public class Sdi211071103LabSpringApplicationTests {
 	    SeleniumUtils.esperarSegundos(driver, 5);
 	    driver.findElement(By.id("DeleteButton")).click();
 	    SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
-	    SeleniumUtils.textoNoPresentePagina(driver, "ruizber@gmail.com");
-	    SeleniumUtils.textoNoPresentePagina(driver, "dallama@gmail.com");
-	    SeleniumUtils.textoNoPresentePagina(driver, "UO123456@uniovi.es");
+	    
+	    SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com"); 
+	    SeleniumUtils.textoNoPresentePagina(driver, "user0@gmail.com");
+		SeleniumUtils.textoNoPresentePagina(driver, "user1@gmail.com");
+		SeleniumUtils.textoNoPresentePagina(driver, "user2@gmail.com");
+		
+		SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
+		SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
+		
+		SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
+	    
 	  }
 
 	/*
