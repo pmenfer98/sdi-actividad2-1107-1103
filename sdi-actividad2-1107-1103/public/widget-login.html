@@ -31,11 +31,13 @@
             },
             dataType: 'json',
             success: function(respuesta) {
-                console.log(respuesta.token); // <- Prueba
                 token = respuesta.token;
+                Cookies.set('email', $("#email").val());
+                Cookies.set('token', respuesta.token);
                 $( "#contenedor-principal" ).load( "widget-ofertas.html");
             },
             error : function (error){
+                Cookies.remove('token');
                 $("#alertMessage").remove();
                 $("#widget-login")
                     .prepend("<div id='alertMessage' class='alert alert-danger'>Usuario no encontrado</div>");

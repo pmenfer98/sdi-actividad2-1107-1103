@@ -95,7 +95,7 @@ module.exports = function (app, gestorBD) {
                         })
                     } else {
                         res.status(200);
-                        console.log(mensajes)
+                        console.log("MENSAJEEEEEEEEEEEEEEEEEEEEEEEES" + mensajes)
                         res.send(JSON.stringify(mensajes));
                     }
                 })

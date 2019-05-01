@@ -24,12 +24,16 @@
             type: "GET",
             data: { },
             dataType: 'json',
-            headers: { "token": token },
+            headers: {
+                "token": Cookies.get('token')
+            },
             success: function(respuesta) {
                 ofertas = respuesta;
                 actualizarTabla(ofertas);
             },
             error : function (error){
+                alert('Error al listar los amigos. Intentelo de nuevo');
+                Cookies.remove('token');
                 $( "#contenedor-principal" ).load("widget-login.html");
             }
         });
