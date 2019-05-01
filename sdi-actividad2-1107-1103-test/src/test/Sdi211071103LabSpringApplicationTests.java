@@ -251,6 +251,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.id("mTienda"));
 		driver.findElement(By.id("mPublicaciones"));
 		driver.findElement(By.id("mAgregar"));
+		SeleniumUtils.esperarSegundos(driver, 5);
 		driver.findElement(By.id("idPublicaciones"));
 		driver.findElement(By.id("mDesconectarse")).click();
 		SeleniumUtils.esperarSegundos(driver, 5);
@@ -409,7 +410,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	 */
 
 	@Test
-	public void test11_subirOferta_valido() throws Exception {
+	public void test14_subirOferta_valido() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -443,12 +444,14 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.id("precio")).sendKeys("10.50");
 		driver.findElement(By.id("botonAgregar")).click();
 		SeleniumUtils.esperarSegundos(driver, 5);
+		SeleniumUtils.textoPresentePagina(driver, "Articulo de prueba");
 		driver.findElement(By.id("idPublicaciones"));
 		driver.findElement(By.tagName("td"));
+		
 	}
 
 	@Test
-	public void test12_subirOferta_invalido() throws Exception {
+	public void test15_subirOferta_invalido() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -473,6 +476,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.id("precio")).sendKeys("10.50");
 		driver.findElement(By.id("botonAgregar")).click();
 		driver.findElement(By.id("idAgregarOferta"));
+		SeleniumUtils.textoPresentePagina(driver, "Completa este campo");
 	}
 
 	@Test
@@ -480,7 +484,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+		driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user123");
@@ -491,8 +495,12 @@ public class Sdi211071103LabSpringApplicationTests {
 		SeleniumUtils.textoPresentePagina(driver, "Detalles");
 		SeleniumUtils.textoPresentePagina(driver, "Fecha");
 		SeleniumUtils.textoPresentePagina(driver, "Precio");
-		SeleniumUtils.textoPresentePagina(driver, "Articulo de prueba");
-		SeleniumUtils.textoPresentePagina(driver, "Oferta de prueba para destacar");
+		
+		for(int i = 0; i<10; i++) {
+			SeleniumUtils.textoPresentePagina(driver, "oferta5" + i);
+		}
+		
+		
 	}
 
 	/*
@@ -504,34 +512,36 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+		driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user123");
 		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+		SeleniumUtils.esperarSegundos(driver, 5);
 		driver.findElement(By.linkText("Publicaciones")).click();
 		driver.findElement(By.linkText("Eliminar")).click();
-		SeleniumUtils.textoNoPresentePagina(driver, "Artículo de prueba");
-		SeleniumUtils.textoPresentePagina(driver, "Oferta de prueba para destacar");
+		SeleniumUtils.textoNoPresentePagina(driver, "Oferta50");
+		SeleniumUtils.textoNoPresentePagina(driver, "Detalles de la oferta 50");
 		
 	}
 
 	@Test
-	public void test17_darDeBajaUnaOferta_ultima() throws Exception {
+	public void test18_darDeBajaUnaOferta_ultima() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("qwerty@gmail.com");
+		driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user123");
 		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+		SeleniumUtils.esperarSegundos(driver, 5);
 		driver.findElement(By.linkText("Publicaciones")).click();
 		driver.findElement(By.xpath(
 				"(.//*[normalize-space(text()) and normalize-space(.)='Pelota de tenis con 7 años de antigüedad, en perfecto estado'])[1]/following::a[1]"))
 				.click();
-		SeleniumUtils.textoNoPresentePagina(driver, "Pelota de tenis seminueva");
-		SeleniumUtils.textoPresentePagina(driver, "Zapatillas Adidas");
-		SeleniumUtils.textoPresentePagina(driver, "Acordeón de plástico");
+		SeleniumUtils.textoNoPresentePagina(driver, "Articulo de prueba");
+		SeleniumUtils.textoNoPresentePagina(driver,"Probando la insercion de articulos");
+		
 
 	}
 
