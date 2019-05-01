@@ -506,7 +506,13 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.id("precio")).sendKeys("10.50");
 		driver.findElement(By.id("botonAgregar")).click();
 		driver.findElement(By.id("idAgregarOferta"));
-		SeleniumUtils.textoPresentePagina(driver, "Completa este campo");
+		
+		SeleniumUtils.textoPresentePagina(driver, "Titulo");
+		SeleniumUtils.textoPresentePagina(driver, "Detalles");
+		SeleniumUtils.textoPresentePagina(driver, "Precio");
+		SeleniumUtils.textoPresentePagina(driver, "Destacar");
+	
+		
 	}
 
 	@Test
@@ -551,25 +557,31 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.linkText("Eliminar")).click();
 		SeleniumUtils.esperarSegundos(driver, 5);
 		driver.findElement(By.id("mDesconectarse")).click();
+		
+		SeleniumUtils.textoNoPresentePagina(driver, "oferta50");
+		SeleniumUtils.textoNoPresentePagina(driver, "Detalles de la oferta 50");
+		
+		
 
 	}
 
 	@Test
 	public void test18_darDeBajaUnaOferta_ultima() throws Exception {
 		driver.get(URL + "/identificarse");
-		driver.findElement(By.name("email")).click();
-		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
-		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("user123");
-		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
-		SeleniumUtils.esperarSegundos(driver, 5);
-		driver.findElement(By.linkText("Publicaciones")).click();
-		driver.findElement(By.xpath(
-				"(.//*[normalize-space(text()) and normalize-space(.)='Pelota de tenis con 7 años de antigüedad, en perfecto estado'])[1]/following::a[1]"))
-				.click();
-		SeleniumUtils.textoNoPresentePagina(driver, "Articulo de prueba");
-		SeleniumUtils.textoNoPresentePagina(driver, "Probando la insercion de articulos");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("user123");
+	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("Publicaciones")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Detalles de la oferta destacada 59'])[1]/following::a[1]")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.id("mDesconectarse")).click();
+	    
 
 	}
 
