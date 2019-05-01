@@ -584,6 +584,89 @@ public class Sdi211071103LabSpringApplicationTests {
 	    
 
 	}
+	
+	@Test
+	public void test19_buscarOfertasCampoVacío() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("user123");
+	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("Tienda")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.name("busqueda")).click();
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Desconectarse'])[1]/following::span[2]")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    
+	    // Mostrando que aparece el listado de ofertas disponibles en el sistema
+	    SeleniumUtils.textoPresentePagina(driver, "Ofertas");
+	    SeleniumUtils.textoPresentePagina(driver, "destacada0");
+	    SeleniumUtils.textoPresentePagina(driver, "destacada1");
+	    SeleniumUtils.textoPresentePagina(driver, "destacada2");
+	    SeleniumUtils.textoPresentePagina(driver, "destacada3");
+	    SeleniumUtils.textoPresentePagina(driver, "destacada4");
+	    
+	    driver.findElement(By.id("mDesconectarse")).click();
+	}
+	
+	@Test
+	public void test20_buscarOfertasTextoInexistente() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("user123");
+	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("Tienda")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.name("busqueda")).click();
+	    driver.findElement(By.name("busqueda")).clear();
+	    driver.findElement(By.name("busqueda")).sendKeys("dinosaurio");
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "Ofertas");
+	    
+	    //Mostrando que no figura ninguna oferta, ya que no hay ningún botón "Comprar"
+	    SeleniumUtils.textoNoPresentePagina(driver, "Comprar");
+	    
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Desconectarse'])[1]/following::button[1]")).click();
+	}
+	
+	@Test
+	public void test21_buscarOfertasExistentes() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("user123");
+	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("Tienda")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.name("busqueda")).click();
+	    driver.findElement(By.name("busqueda")).clear();
+	    driver.findElement(By.name("busqueda")).sendKeys("oferta1");
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "Ofertas");
+	    
+	    // Mostrando las primeras ofertas que aparecen al introducir oferta1
+	    SeleniumUtils.textoPresentePagina(driver, "oferta1");
+	    SeleniumUtils.textoPresentePagina(driver, "oferta10");
+	    SeleniumUtils.textoPresentePagina(driver, "oferta11");
+	    SeleniumUtils.textoPresentePagina(driver, "oferta12");
+	    SeleniumUtils.textoPresentePagina(driver, "oferta13");
+	    
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Desconectarse'])[1]/following::button[1]")).click();
+	}
+	
 
 	@Test
 	public void test25_listadoOfertasCompradas() throws Exception {
