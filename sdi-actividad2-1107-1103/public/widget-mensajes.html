@@ -14,7 +14,7 @@
     </div>
     <div>
         <input id="contenidoMensaje" type="text" class="form-control"
-               placeholder="Envie un mensaje" name="busqueda"/>
+               placeholder="Envie un mensaje" name="contenido"/>
         <button íd = "btnEnviar" class="btn btn-warning">
             <span>Enviar</span>
         </button>
@@ -22,20 +22,25 @@
 </div>
 
 <script>
+    cargarMensajes();
+
     $("#btnEnviar").click(function(){
         $.ajax({
             url: URLbase + "/mensaje/oferta/" + idOfertaSeleccionada,
             type: "POST",
             data: {
-                mensaje:$("#contenidoMensaje").val()
+                mensaje:$("#contenidoMensaje").val(),
+                receptor: 'user9@gmail.com',
+                
             },
             dataType: 'json',
             success: function(respuesta) {
-                console.log(respuesta.token); // <- Prueba
+                console.log("Algo hace");
                 token = respuesta.token;
                 $( "#contenedor-principal" ).load( "widget-mensajes.html");
             },
             error : function (error){
+                console.log("Esto peta");
                 console.log( URLbase + "/ofertas");
                 console.log(error);
                 $("#alertMessage").remove();
@@ -47,37 +52,38 @@
 
     function cargarMensajes(){
         $.ajax({
-            url: URLbase + "/mensaje/oferta/" + idOfertaSeleccionada,
+            url: URLbase + "/conversacion/oferta/" + idOfertaSeleccionada,
             type: "GET",
             data: { },
             dataType: 'json',
             headers: { "token": token },
             success: function(respuesta) {
-                mensaje = respuesta;
-                actualizarMensajes(ofertas);
+                actualizarMensajes(respuesta);
             },
             error : function (error){
-                $( "#contenedor-principal" ).load("widget-mensajes.html");
+                $( "#contenedor-principal" ).load("widget-ofertas.html");
             }
         });
     }
 
     function actualizarMensajes(mensajesMostrar){
         $( "#tablaCuerpo" ).empty(); // Vaciar la tabla
+        console.log("Mensajes de la conversacion: " + mensajesMostrar.length);
         for (i = 0; i < mensajesMostrar.length; i++) {
+            console.log(mensajesMostrar.length[i]);
             if(mensajesMostrar[i].emisor === token.usuario){
                 $("#mensajes").append(
                     "<div id='mensajeEnviado' class='form-group'>" +
                     "<div class='text-right'>" +
-                    "<span>Texto de prueba</span>"+
+                    "<span>"+ mensajesMostrar[i].mensaje + "</span>"+
                     "</div>"+
                     "</div>"
                 );}
             else{
                 $("#mensajes").append(
                     "<div id='mensajeRecibido' class='form-group'>" +
-                    "<div class='text-right'>" +
-                    "<span>mensajesMostrar[i].mensaje</span>"+
+                    "<div class='text-left'>" +
+                    "<span>"+ mensajesMostrar[i].mensaje+"</span>"+
                     "</div>"+
                     "</div>"
                 );

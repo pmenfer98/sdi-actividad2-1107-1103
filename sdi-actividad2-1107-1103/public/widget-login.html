@@ -36,8 +36,6 @@
                 $( "#contenedor-principal" ).load( "widget-ofertas.html");
             },
             error : function (error){
-                console.log( URLbase + "/autenticar");
-                console.log(error);
                 $("#alertMessage").remove();
                 $("#widget-login")
                     .prepend("<div id='alertMessage' class='alert alert-danger'>Usuario no encontrado</div>");
