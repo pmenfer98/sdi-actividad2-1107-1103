@@ -43,8 +43,8 @@ public class Sdi211071103LabSpringApplicationTests {
 
 	@BeforeClass
 	static public void begin() throws ParseException {
-        JavaMongodbInsertData javaMongodbInsertData = new JavaMongodbInsertData();
-        javaMongodbInsertData.dataInsertion();
+		JavaMongodbInsertData javaMongodbInsertData = new JavaMongodbInsertData();
+		javaMongodbInsertData.dataInsertion();
 	}
 
 	// Al finalizar la Ãºltima prueba
@@ -81,11 +81,11 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("repeatPassword")).sendKeys("ContraseñaContra");
 		driver.findElement(By.id("registerButton")).click();
 		SeleniumUtils.esperarSegundos(driver, 5);
-		driver.findElement(By.id("mTienda"));
-		driver.findElement(By.id("mPublicaciones"));
-		driver.findElement(By.id("mAgregar"));
-		driver.findElement(By.id("idPublicaciones"));
-		driver.get(URL + "/desconectarse");
+		SeleniumUtils.textoPresentePagina(driver, "Home");
+		SeleniumUtils.textoPresentePagina(driver, "Tienda");
+		SeleniumUtils.textoPresentePagina(driver, "Publicaciones");
+		SeleniumUtils.textoPresentePagina(driver, "Añadir oferta");
+		SeleniumUtils.textoPresentePagina(driver, "Compras");
 	}
 
 	@Test
@@ -167,7 +167,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	 */
 
 	@Test
-	public void test5_identificarse_valido() throws Exception {
+	public void test4_identificarse_valido() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -179,10 +179,16 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("password")).sendKeys("user123");
 		driver.findElement(By.id("logginButton")).click();
 		driver.findElement(By.id("mTienda"));
-		driver.findElement(By.id("mPublicaciones"));
-		driver.findElement(By.id("mAgregar"));
-		driver.findElement(By.id("idPublicaciones"));
+		SeleniumUtils.esperarSegundos(driver, 5);
+
+		SeleniumUtils.textoPresentePagina(driver, "Home");
+		SeleniumUtils.textoPresentePagina(driver, "Tienda");
+		SeleniumUtils.textoPresentePagina(driver, "Publicaciones");
+		SeleniumUtils.textoPresentePagina(driver, "Añadir oferta");
+		SeleniumUtils.textoPresentePagina(driver, "Compras");
+
 		driver.get(URL + "/desconectarse");
+
 	}
 
 	@Test
@@ -197,6 +203,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("contraseñaErronea");
 		driver.findElement(By.id("logginButton")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
 	}
@@ -248,19 +255,33 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user123");
 		driver.findElement(By.id("logginButton")).click();
-		driver.findElement(By.id("mTienda"));
-		driver.findElement(By.id("mPublicaciones"));
-		driver.findElement(By.id("mAgregar"));
 		SeleniumUtils.esperarSegundos(driver, 5);
-		driver.findElement(By.id("idPublicaciones"));
+		SeleniumUtils.textoPresentePagina(driver, "Home");
+		SeleniumUtils.textoPresentePagina(driver, "Tienda");
+		SeleniumUtils.textoPresentePagina(driver, "Publicaciones");
+		SeleniumUtils.textoPresentePagina(driver, "Añadir oferta");
+		SeleniumUtils.textoPresentePagina(driver, "Compras");
+		SeleniumUtils.textoPresentePagina(driver, "Desconectarse");
+
 		driver.findElement(By.id("mDesconectarse")).click();
+
 		SeleniumUtils.esperarSegundos(driver, 5);
-		driver.findElement(By.id("mIdentificarse"));
-		driver.findElement(By.id("mRegistrarse"));
-		driver.findElement(By.name("email"));
-		driver.findElement(By.name("password"));
-		driver.findElement(By.id("logginButton"));
+
 		SeleniumUtils.textoPresentePagina(driver, "Identificación de usuario");
+		SeleniumUtils.textoPresentePagina(driver, "Email:");
+		SeleniumUtils.textoPresentePagina(driver, "Password:");
+		SeleniumUtils.textoPresentePagina(driver, "Aceptar");
+
+		SeleniumUtils.textoNoPresentePagina(driver, "Desconectarse");
+
+		/*
+		 * driver.findElement(By.id("mIdentificarse"));
+		 * driver.findElement(By.id("mRegistrarse"));
+		 * driver.findElement(By.name("email"));
+		 * driver.findElement(By.name("password"));
+		 * driver.findElement(By.id("logginButton"));
+		 * SeleniumUtils.textoPresentePagina(driver, "Identificación de usuario");
+		 */
 	}
 
 	@Test
@@ -294,9 +315,9 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.linkText("Listar usuarios")).click();
 		SeleniumUtils.esperarSegundos(driver, 5);
 		SeleniumUtils.textoPresentePagina(driver, "Usuarios en el sistema");
-		
+
 		SeleniumUtils.textoNoPresentePagina(driver, "admin@email.com");
-		
+
 		SeleniumUtils.textoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
@@ -309,27 +330,28 @@ public class Sdi211071103LabSpringApplicationTests {
 		SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user9@gmail.com");
 	}
-	
-	
+
 	/*
 	 * TEST DE BORRADO MÚLTIPLE DE USUARIOS
 	 */
-	 @Test
-	  public void test11_borradoDeUsuarios_primerUsuario() throws Exception {
+	@Test
+	public void test11_borradoDeUsuarios_primerUsuario() throws Exception {
 		driver.get(URL + "/identificarse");
-	    driver.findElement(By.name("email")).clear();
-	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
-	    driver.findElement(By.name("password")).click();
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("admin");
-	    driver.findElement(By.id("logginButton")).click();
-	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[3]/following::input[1]")).click();
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    driver.findElement(By.id("DeleteButton")).click();
-	    SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
-	    SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
-	    
-	    SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("admin@email.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("admin");
+		driver.findElement(By.id("logginButton")).click();
+		driver.findElement(
+				By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[3]/following::input[1]"))
+				.click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.id("DeleteButton")).click();
+		SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
+		SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
+
+		SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
@@ -339,26 +361,28 @@ public class Sdi211071103LabSpringApplicationTests {
 		SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user9@gmail.com");
-	  }
-	 
-	 @Test
-	  public void test12_borradoDeUsuarios_ultimoUsuario() throws Exception {
-		 driver.get(URL + "/identificarse");
-	    driver.findElement(By.name("email")).click();
-	    driver.findElement(By.name("email")).clear();
-	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
-	    driver.findElement(By.name("password")).click();
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("admin");
-	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
-	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]")).click();
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    driver.findElement(By.id("DeleteButton")).click();
-	    SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
-	    
-	    SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
-	    
-	    SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
+	}
+
+	@Test
+	public void test12_borradoDeUsuarios_ultimoUsuario() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("admin@email.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("admin");
+		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+		driver.findElement(
+				By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]"))
+				.click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.id("DeleteButton")).click();
+		SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
+
+		SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
+
+		SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
@@ -367,43 +391,49 @@ public class Sdi211071103LabSpringApplicationTests {
 		SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
-		
+
 		SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
-	    
-	  }
-	 
-	 @Test
-	  public void test13_borradoDeUsuarios_tresUsuarios() throws Exception {
+
+	}
+
+	@Test
+	public void test13_borradoDeUsuarios_tresUsuarios() throws Exception {
 		driver.get(URL + "/identificarse");
-	    driver.findElement(By.name("email")).click();
-	    driver.findElement(By.name("email")).clear();
-	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
-	    driver.findElement(By.name("password")).click();
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("admin");
-	    driver.findElement(By.id("logginButton")).click();
-	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]")).click();
-	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[6]/following::input[1]")).click();
-	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[5]/following::input[1]")).click();
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    driver.findElement(By.id("DeleteButton")).click();
-	    SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
-	    
-	    SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com"); 
-	    SeleniumUtils.textoNoPresentePagina(driver, "user0@gmail.com");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("admin@email.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("admin");
+		driver.findElement(By.id("logginButton")).click();
+		driver.findElement(
+				By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]"))
+				.click();
+		driver.findElement(
+				By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[6]/following::input[1]"))
+				.click();
+		driver.findElement(
+				By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[5]/following::input[1]"))
+				.click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.id("DeleteButton")).click();
+		SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
+
+		SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
+		SeleniumUtils.textoNoPresentePagina(driver, "user0@gmail.com");
 		SeleniumUtils.textoNoPresentePagina(driver, "user1@gmail.com");
 		SeleniumUtils.textoNoPresentePagina(driver, "user2@gmail.com");
-		
+
 		SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
 		SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
-		
+
 		SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
-	    
-	  }
+
+	}
 
 	/*
 	 * TEST DE SUBIDA DE OFERTAS
@@ -447,7 +477,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		SeleniumUtils.textoPresentePagina(driver, "Articulo de prueba");
 		driver.findElement(By.id("idPublicaciones"));
 		driver.findElement(By.tagName("td"));
-		
+
 	}
 
 	@Test
@@ -495,12 +525,11 @@ public class Sdi211071103LabSpringApplicationTests {
 		SeleniumUtils.textoPresentePagina(driver, "Detalles");
 		SeleniumUtils.textoPresentePagina(driver, "Fecha");
 		SeleniumUtils.textoPresentePagina(driver, "Precio");
-		
-		for(int i = 0; i<10; i++) {
+
+		for (int i = 0; i < 10; i++) {
 			SeleniumUtils.textoPresentePagina(driver, "oferta5" + i);
 		}
-		
-		
+
 	}
 
 	/*
@@ -516,13 +545,13 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user123");
-		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
-		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.id("logginButton")).click();
 		driver.findElement(By.linkText("Publicaciones")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
 		driver.findElement(By.linkText("Eliminar")).click();
-		SeleniumUtils.textoNoPresentePagina(driver, "Oferta50");
-		SeleniumUtils.textoNoPresentePagina(driver, "Detalles de la oferta 50");
-		
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.id("mDesconectarse")).click();
+
 	}
 
 	@Test
@@ -540,8 +569,7 @@ public class Sdi211071103LabSpringApplicationTests {
 				"(.//*[normalize-space(text()) and normalize-space(.)='Pelota de tenis con 7 años de antigüedad, en perfecto estado'])[1]/following::a[1]"))
 				.click();
 		SeleniumUtils.textoNoPresentePagina(driver, "Articulo de prueba");
-		SeleniumUtils.textoNoPresentePagina(driver,"Probando la insercion de articulos");
-		
+		SeleniumUtils.textoNoPresentePagina(driver, "Probando la insercion de articulos");
 
 	}
 
