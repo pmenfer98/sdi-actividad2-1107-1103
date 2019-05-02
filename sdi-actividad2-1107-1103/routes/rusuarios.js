@@ -123,15 +123,16 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.post('/user/delete', function (req, res) {
-        let idsUsers = req.body.idsUsers;
+        let idsUsers = req.body.idsUser;
         //si es solo un usuario, creamos un array y lo metemos para trabajar con forEach
         if (!Array.isArray(idsUsers)) {
             let aux = idsUsers;
             idsUsers = [];
             idsUsers.push(aux);
         }
+
         let criterio = {
-            email: req.body.email
+            email: {$in: idsUsers}
         };
         let nuevoCriterio = {valid: false};
         gestorBD.deleteUsers(criterio, nuevoCriterio, function (usuarios) {
