@@ -62,7 +62,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	 */
 
 	@Test
-	public void test1_registrarse_valido() throws Exception {
+	public void test01_registrarse_valido() throws Exception {
 		driver.get(URL + "/registrarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -92,7 +92,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	}
 
 	@Test
-	public void test2_registrarse_emailRegistrado() throws Exception {
+	public void test02_registrarse_emailRegistrado() throws Exception {
 		driver.get(URL + "/registrarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -117,7 +117,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	}
 
 	@Test
-	public void test3_registrarse_emailVacio() throws Exception {
+	public void test03_registrarse_emailVacio() throws Exception {
 		driver.get(URL + "/registrarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -141,7 +141,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	}
 
 	@Test
-	public void test4_registrarse_repetirContraseñaFallido() throws Exception {
+	public void test04_registrarse_repetirContraseñaFallido() throws Exception {
 		driver.get(URL + "/registrarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -170,7 +170,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	 */
 
 	@Test
-	public void test4_identificarse_valido() throws Exception {
+	public void test04_identificarse_valido() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -195,7 +195,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	}
 
 	@Test
-	public void test5_identificarse_contraseñaErronea() throws Exception {
+	public void test05_identificarse_contraseñaErronea() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -212,7 +212,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	}
 
 	@Test
-	public void test6_identificarse_emailVacio() throws Exception {
+	public void test06_identificarse_emailVacio() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -227,7 +227,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	}
 
 	@Test
-	public void test7_identificarse_emailInexistente() throws Exception {
+	public void test07_identificarse_emailInexistente() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -247,7 +247,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	 */
 
 	@Test
-	public void test8_desconectarse_redireccionAlLogin() throws Exception {
+	public void test08_desconectarse_redireccionAlLogin() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -288,7 +288,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	}
 
 	@Test
-	public void test9_desconectarse_comprobarBotonLoggin() throws Exception {
+	public void test09_desconectarse_comprobarBotonLoggin() throws Exception {
 		driver.get(URL + "/identificarse");
 		driver.findElement(By.id("mIdentificarse"));
 		driver.findElement(By.id("mRegistrarse"));
@@ -777,6 +777,115 @@ public class Sdi211071103LabSpringApplicationTests {
 
 	    SeleniumUtils.textoNoPresentePagina(driver, "oferta4");
 	    
+	    driver.findElement(By.id("mDesconectarse")).click();
+	}
+	
+	@Test
+	public void test26_marcarComoDestacada1() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("user8@gmail.com");
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("user123");
+	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("Añadir oferta")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.id("nombre")).click();
+	    driver.findElement(By.id("nombre")).clear();
+	    driver.findElement(By.id("nombre")).sendKeys("Oferta para destacar");
+	    driver.findElement(By.id("detalles")).clear();
+	    driver.findElement(By.id("detalles")).sendKeys("Esto es una prueba");
+	    driver.findElement(By.id("precio")).click();
+	    driver.findElement(By.id("precio")).clear();
+	    driver.findElement(By.id("precio")).sendKeys("30");
+	    driver.findElement(By.id("destacada")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.id("botonAgregar")).click();
+	    
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    SeleniumUtils.textoPresentePagina(driver, "Nueva oferta añadida");
+	    driver.findElement(By.id("cantidad")).getAttribute("80€");
+	    
+	    driver.findElement(By.id("mDesconectarse")).click();
+	}
+	
+	@Test
+	public void test27_marcarComoDestacada2() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("user8@gmail.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("user123");
+	    driver.findElement(By.id("logginButton")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("Tienda")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.name("busqueda")).click();
+	    driver.findElement(By.name("busqueda")).clear();
+	    driver.findElement(By.name("busqueda")).sendKeys("oferta6");
+	    driver.findElement(By.name("busqueda")).sendKeys(Keys.ENTER);
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("Comprar")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("60 €")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("Añadir oferta")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.id("nombre")).click();
+	    driver.findElement(By.id("nombre")).clear();
+	    driver.findElement(By.id("nombre")).sendKeys("Nueva oferta para destacar");
+	    driver.findElement(By.id("detalles")).click();
+	    driver.findElement(By.id("detalles")).clear();
+	    driver.findElement(By.id("detalles")).sendKeys("Esto es una prueba");
+	    driver.findElement(By.id("precio")).click();
+	    driver.findElement(By.id("precio")).clear();
+	    driver.findElement(By.id("precio")).sendKeys("80");
+	    driver.findElement(By.id("destacada")).click();
+	    driver.findElement(By.id("botonAgregar")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    SeleniumUtils.textoPresentePagina(driver, "Nueva oferta añadida");
+	    driver.findElement(By.id("cantidad")).getAttribute("0€");
+	    driver.findElement(By.id("mDesconectarse")).click();
+	}
+	
+	@Test
+	public void test28_marcarComoDestacada3() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("user8@gmail.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("user123");
+	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='destacada1 - 10 €'])[1]/following::a[1]")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("10 €")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("Añadir oferta")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.id("nombre")).click();
+	    driver.findElement(By.id("nombre")).clear();
+	    driver.findElement(By.id("nombre")).sendKeys("Oferta para destacar");
+	    driver.findElement(By.id("nombre")).clear();
+	    driver.findElement(By.id("nombre")).sendKeys("Oferta para destacar 3");
+	    driver.findElement(By.id("detalles")).click();
+	    driver.findElement(By.id("detalles")).clear();
+	    driver.findElement(By.id("detalles")).sendKeys("Esto es una prueba");
+	    driver.findElement(By.id("precio")).click();
+	    driver.findElement(By.id("precio")).clear();
+	    driver.findElement(By.id("precio")).sendKeys("80");
+	    driver.findElement(By.id("destacada")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.id("botonAgregar")).click();
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Desconectarse'])[1]/following::div[2]")).click(); 
+		
+	    SeleniumUtils.textoPresentePagina(driver, "No tienes suficiente dinero para destacar la oferta");
+		
 	    driver.findElement(By.id("mDesconectarse")).click();
 	}
 
