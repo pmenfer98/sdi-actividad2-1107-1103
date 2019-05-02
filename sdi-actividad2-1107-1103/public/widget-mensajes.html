@@ -22,6 +22,9 @@
 </div>
 
 <script>
+
+    window.history.pushState("", "", "/cliente.html?w=conversations");
+
     cargarMensajes();
 
     $("#btnEnviar").click(function () {
@@ -37,7 +40,6 @@
                 "token": Cookies.get('token')
             },
             success: function (respuesta) {
-                token = respuesta.token;
                 cargarMensajes();
             },
             error: function (error) {
@@ -54,7 +56,7 @@
             type: "GET",
             data: {},
             dataType: 'json',
-            headers: {"token": token},
+            headers: {"token": Cookies.get('token')},
             success: function (respuesta) {
                 $("#alertMessage").remove();
                 actualizarMensajes(respuesta);
@@ -69,15 +71,17 @@
     }
 
     function actualizarMensajes(mensajesMostrar) {
-        $("#tablaCuerpo").empty(); // Vaciar la tabla
+        var i;
+        $("#mensajes").empty(); // Vaciar la tabla
         console.log("Mensajes de la conversacion: " + mensajesMostrar.length);
         for (i = 0; i < mensajesMostrar.length; i++) {
-            console.log(mensajesMostrar.length[i]);
-            if (mensajesMostrar[i].emisor === token.usuario) {
+            console.log(mensajesMostrar[i].emisor + "       " + Cookies.get('email'));
+            if (mensajesMostrar[i].emisor === Cookies.get('email')) {
                 $("#mensajes").append(
                     "<div id='mensajeEnviado' class='form-group'>" +
                     "<div class='text-right'>" +
-                    "<span>" + mensajesMostrar[i].mensaje + "</span>" +
+                    "<p id='nombreEmisor'>    " + mensajesMostrar[i].emisor + "    </p>" +
+                    "<p>" + mensajesMostrar[i].mensaje + "</p>" +
                     "</div>" +
                     "</div>"
                 );
@@ -86,7 +90,8 @@
                 $("#mensajes").append(
                     "<div id='mensajeRecibido' class='form-group'>" +
                     "<div class='text-left'>" +
-                    "<span>" + mensajesMostrar[i].mensaje + "</span>" +
+                    "<p id='nombreReceptor'>    " + mensajesMostrar[i].emisor + "    </p>" +
+                    "<p>" + mensajesMostrar[i].mensaje + "</p>" +
                     "</div>" +
                     "</div>"
                 );

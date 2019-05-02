@@ -38,16 +38,27 @@
 
 #mensajeEnviado{
     color: #452f00;
-    font-stretch: ultra-expanded;
     padding: 10px;
-    background-color: #e4faff;
+    background-color: #cfffc8;
     border-radius: 10px;
 }
 
 #mensajeRecibido{
     color: #452f00;
-    font-stretch: ultra-expanded;
     padding: 10px;
-    background-color: #ffe5dc;
+    background-color: #e6e5ff;
     border-radius: 10px;
+}
+
+#nombreEmisor, #nombreReceptor{
+    text-transform: uppercase;
+    color: white;
+}
+
+#nombreEmisor{
+    background-color: #53a653;
+}
+
+#nombreReceptor{
+    background-color: #798fa6;
 }

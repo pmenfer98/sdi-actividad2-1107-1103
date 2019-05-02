@@ -36,20 +36,20 @@
   <script>
       var token;
       var URLbase = "http://localhost:8081/api";
-      $( "#contenedor-principal" ).load( "widget-login.html");
+      $( "#contenedor-principal" ).load("widget-login.html");
       if (Cookies.get('token') != null) {
           token = Cookies.get('token');
           let url = new URL(window.location.href);
           let w = url.searchParams.get("w");
           switch (w) {
-              /*case "conversations":
-                  $("main").load("widgets/widget-mensa.html");
-                  break;*/
+              case "conversations":
+                  $("#contenedor-principal").load("widget-mensajes.html");
+                  break;
               case "ofertas":
-                  $("#contenedor-principal").load("widgets/widget-ofertas.html");
+                  $("#contenedor-principal").load("widget-ofertas.html");
                   break;
               default:
-                  $("#contenedor-principal").load("widgets/widget-login.html");
+                  $("#contenedor-principal").load("widget-login.html");
                   break;
           }
       }
