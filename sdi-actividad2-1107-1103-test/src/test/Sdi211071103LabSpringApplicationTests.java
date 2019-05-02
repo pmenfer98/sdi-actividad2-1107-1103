@@ -277,14 +277,7 @@ public class Sdi211071103LabSpringApplicationTests {
 
 		SeleniumUtils.textoNoPresentePagina(driver, "Desconectarse");
 
-		/*
-		 * driver.findElement(By.id("mIdentificarse"));
-		 * driver.findElement(By.id("mRegistrarse"));
-		 * driver.findElement(By.name("email"));
-		 * driver.findElement(By.name("password"));
-		 * driver.findElement(By.id("logginButton"));
-		 * SeleniumUtils.textoPresentePagina(driver, "Identificación de usuario");
-		 */
+		
 	}
 
 	@Test
@@ -337,104 +330,199 @@ public class Sdi211071103LabSpringApplicationTests {
 	/*
 	 * TEST DE BORRADO MÚLTIPLE DE USUARIOS
 	 */
+	
+	@Test
+	public void test11_borradoMultipleDeUsuarios_PrimerUsuario() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("admin");
+	    driver.findElement(By.id("logginButton")).click();
+	    driver.findElement(By.name("idsUser")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.id("DeleteButton")).click();
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
+	    SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user9@gmail.com");
 
-	/*
-	 * @Test public void test11_borradoDeUsuarios_primerUsuario() throws Exception {
-	 * driver.get(URL + "/identificarse");
-	 * driver.findElement(By.name("email")).clear();
-	 * driver.findElement(By.name("email")).sendKeys("admin@email.com");
-	 * driver.findElement(By.name("password")).click();
-	 * driver.findElement(By.name("password")).clear();
-	 * driver.findElement(By.name("password")).sendKeys("admin");
-	 * driver.findElement(By.id("logginButton")).click(); driver.findElement( By.
-	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[3]/following::input[1]"
-	 * )) .click(); SeleniumUtils.esperarSegundos(driver, 5);
-	 * driver.findElement(By.id("DeleteButton")).click();
-	 * SeleniumUtils.textoPresentePagina(driver,
-	 * "Los usuarios se eliminaron correctamente");
-	 * SeleniumUtils.textoNoPresentePagina(driver,
-	 * "pablomenendezfernandez@gmail.com");
-	 * 
-	 * SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user9@gmail.com"); }
-	 * 
-	 * @Test public void test12_borradoDeUsuarios_ultimoUsuario() throws Exception {
-	 * driver.get(URL + "/identificarse");
-	 * driver.findElement(By.name("email")).click();
-	 * driver.findElement(By.name("email")).clear();
-	 * driver.findElement(By.name("email")).sendKeys("admin@email.com");
-	 * driver.findElement(By.name("password")).click();
-	 * driver.findElement(By.name("password")).clear();
-	 * driver.findElement(By.name("password")).sendKeys("admin");
-	 * driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
-	 * driver.findElement( By.
-	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]"
-	 * )) .click(); SeleniumUtils.esperarSegundos(driver, 5);
-	 * driver.findElement(By.id("DeleteButton")).click();
-	 * SeleniumUtils.textoPresentePagina(driver,
-	 * "Los usuarios se eliminaron correctamente");
-	 * 
-	 * SeleniumUtils.textoNoPresentePagina(driver,
-	 * "pablomenendezfernandez@gmail.com");
-	 * 
-	 * SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
-	 * 
-	 * SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
-	 * 
-	 * }
-	 * 
-	 * @Test public void test13_borradoDeUsuarios_tresUsuarios() throws Exception {
-	 * driver.get(URL + "/identificarse");
-	 * driver.findElement(By.name("email")).click();
-	 * driver.findElement(By.name("email")).clear();
-	 * driver.findElement(By.name("email")).sendKeys("admin@email.com");
-	 * driver.findElement(By.name("password")).click();
-	 * driver.findElement(By.name("password")).clear();
-	 * driver.findElement(By.name("password")).sendKeys("admin");
-	 * driver.findElement(By.id("logginButton")).click(); driver.findElement( By.
-	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]"
-	 * )) .click(); driver.findElement( By.
-	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[6]/following::input[1]"
-	 * )) .click(); driver.findElement( By.
-	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[5]/following::input[1]"
-	 * )) .click(); SeleniumUtils.esperarSegundos(driver, 5);
-	 * driver.findElement(By.id("DeleteButton")).click();
-	 * SeleniumUtils.textoPresentePagina(driver,
-	 * "Los usuarios se eliminaron correctamente");
-	 * 
-	 * SeleniumUtils.textoNoPresentePagina(driver,
-	 * "pablomenendezfernandez@gmail.com");
-	 * SeleniumUtils.textoNoPresentePagina(driver, "user0@gmail.com");
-	 * SeleniumUtils.textoNoPresentePagina(driver, "user1@gmail.com");
-	 * SeleniumUtils.textoNoPresentePagina(driver, "user2@gmail.com");
-	 * 
-	 * SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
-	 * SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
-	 * 
-	 * SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
-	 * 
-	 * }
-	 */
+	}
+	
+	@Test
+	public void test12_borradoMultipleDeUsuarios_UltimoUsuario() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("admin");
+	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='user9@gmail.com'])[1]/following::input[1]")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.id("DeleteButton")).click();
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
+	    SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
+	    
+	    SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
+
+	}
+	
+	@Test
+	public void test13_borradoMultipleDeUsuarios_TresUsuarios() throws Exception {
+		driver.get("http://localhost:8081/desconectarse");
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("admin");
+	    driver.findElement(By.id("logginButton")).click();
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='user1@gmail.com'])[1]/following::input[1]")).click();
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='user2@gmail.com'])[1]/following::input[1]")).click();
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='user3@gmail.com'])[1]/following::input[1]")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.id("DeleteButton")).click();
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
+	    SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
+	    
+	    SeleniumUtils.textoNoPresentePagina(driver, "user1@gmail.com");
+	    SeleniumUtils.textoNoPresentePagina(driver, "user2@gmail.com");
+	    SeleniumUtils.textoNoPresentePagina(driver, "user3@gmail.com");
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
+	    SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
+	    
+	    SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
+
+	}
+
+//	/*
+
+//	 * driver.get(URL + "/identificarse");
+//	 * driver.findElement(By.name("email")).clear();
+//	 * driver.findElement(By.name("email")).sendKeys("admin@email.com");
+//	 * driver.findElement(By.name("password")).click();
+//	 * driver.findElement(By.name("password")).clear();
+//	 * driver.findElement(By.name("password")).sendKeys("admin");
+//	 * driver.findElement(By.id("logginButton")).click(); driver.findElement( By.
+//	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[3]/following::input[1]"
+//	 * )) .click(); SeleniumUtils.esperarSegundos(driver, 5);
+//	 * driver.findElement(By.id("DeleteButton")).click();
+//	 * SeleniumUtils.textoPresentePagina(driver,
+//	 * "Los usuarios se eliminaron correctamente");
+//	 * SeleniumUtils.textoNoPresentePagina(driver,
+//	 * "pablomenendezfernandez@gmail.com");
+//	 * 
+//	 * SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user9@gmail.com"); }
+//	 * 
+//	 * @Test public void test12_borradoDeUsuarios_ultimoUsuario() throws Exception {
+//	 * driver.get(URL + "/identificarse");
+//	 * driver.findElement(By.name("email")).click();
+//	 * driver.findElement(By.name("email")).clear();
+//	 * driver.findElement(By.name("email")).sendKeys("admin@email.com");
+//	 * driver.findElement(By.name("password")).click();
+//	 * driver.findElement(By.name("password")).clear();
+//	 * driver.findElement(By.name("password")).sendKeys("admin");
+//	 * driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+//	 * driver.findElement( By.
+//	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]"
+//	 * )) .click(); SeleniumUtils.esperarSegundos(driver, 5);
+//	 * driver.findElement(By.id("DeleteButton")).click();
+//	 * SeleniumUtils.textoPresentePagina(driver,
+//	 * "Los usuarios se eliminaron correctamente");
+//	 * 
+//	 * SeleniumUtils.textoNoPresentePagina(driver,
+//	 * "pablomenendezfernandez@gmail.com");
+//	 * 
+//	 * SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
+//	 * 
+//	 * SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
+//	 * 
+//	 * }
+//	 * 
+//	 * @Test public void test13_borradoDeUsuarios_tresUsuarios() throws Exception {
+//	 * driver.get(URL + "/identificarse");
+//	 * driver.findElement(By.name("email")).click();
+//	 * driver.findElement(By.name("email")).clear();
+//	 * driver.findElement(By.name("email")).sendKeys("admin@email.com");
+//	 * driver.findElement(By.name("password")).click();
+//	 * driver.findElement(By.name("password")).clear();
+//	 * driver.findElement(By.name("password")).sendKeys("admin");
+//	 * driver.findElement(By.id("logginButton")).click(); driver.findElement( By.
+//	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]"
+//	 * )) .click(); driver.findElement( By.
+//	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[6]/following::input[1]"
+//	 * )) .click(); driver.findElement( By.
+//	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[5]/following::input[1]"
+//	 * )) .click(); SeleniumUtils.esperarSegundos(driver, 5);
+//	 * driver.findElement(By.id("DeleteButton")).click();
+//	 * SeleniumUtils.textoPresentePagina(driver,
+//	 * "Los usuarios se eliminaron correctamente");
+//	 * 
+//	 * SeleniumUtils.textoNoPresentePagina(driver,
+//	 * "pablomenendezfernandez@gmail.com");
+//	 * SeleniumUtils.textoNoPresentePagina(driver, "user0@gmail.com");
+//	 * SeleniumUtils.textoNoPresentePagina(driver, "user1@gmail.com");
+//	 * SeleniumUtils.textoNoPresentePagina(driver, "user2@gmail.com");
+//	 * 
+//	 * SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
+//	 * SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
+//	 * 
+//	 * SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
+//	 * 
+//	 * }
+//	 */
 	/*
 	 * TEST DE SUBIDA DE OFERTAS
 	 */
