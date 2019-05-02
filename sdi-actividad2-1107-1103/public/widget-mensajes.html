@@ -33,7 +33,7 @@
             type: "POST",
             data: {
                 mensaje: $("#contenidoMensaje").val(),
-                receptor: 'user9@gmail.com'
+                receptor: Cookies.get('receptor')
             },
             dataType: 'json',
             headers: {
@@ -82,6 +82,7 @@
                     "<div class='text-right'>" +
                     "<p id='nombreEmisor'>    " + mensajesMostrar[i].emisor + "    </p>" +
                     "<p>" + mensajesMostrar[i].mensaje + "</p>" +
+                    "<p id='fechaEmisor'>    " + mensajesMostrar[i].fecha + "    </p>" +
                     "</div>" +
                     "</div>"
                 );
@@ -92,6 +93,7 @@
                     "<div class='text-left'>" +
                     "<p id='nombreReceptor'>    " + mensajesMostrar[i].emisor + "    </p>" +
                     "<p>" + mensajesMostrar[i].mensaje + "</p>" +
+                    "<p id='fechaReceptor'>    " + mensajesMostrar[i].fecha + "    </p>" +
                     "</div>" +
                     "</div>"
                 );

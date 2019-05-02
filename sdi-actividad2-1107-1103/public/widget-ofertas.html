@@ -49,7 +49,7 @@
                 "<td>"+ofertasMostrar[i].precio+" € </td>" +
                 "<td>"+ofertasMostrar[i].propietario+"</td>" +
                 "<td>"+
-                "<a onclick = mensajes('"+ofertasMostrar[i]._id+"')>Mensajes</a><br>"+
+                "<a onclick = mensajes('"+ofertasMostrar[i]._id+"','"+ofertasMostrar[i].propietario+"')>Mensajes</a><br>"+
                 "</td>"+
                 "</tr>" );
         }
@@ -58,8 +58,10 @@
 
 
 
-    function mensajes(_id) {
+    function mensajes(_id, receptor) {
         idOfertaSeleccionada = _id;
+        console.log(receptor);
+        Cookies.set("receptor", receptor);
         $( "#contenedor-principal" ).load( "widget-mensajes.html");
     }
 

@@ -62,3 +62,15 @@
 #nombreReceptor{
     background-color: #798fa6;
 }
+
+#fechaEmisor{
+    font-size: 10px;
+    background-color: #53a653;
+    color: white;
+}
+
+#fechaReceptor{
+    font-size: 10px;
+    background-color: #798fa6;
+    color: white;
+}
