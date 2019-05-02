@@ -6,7 +6,9 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -15,6 +17,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import test.utils.SeleniumUtils;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Sdi211071103LabSpringApplicationTests {
 	// En Windows (Debe ser la versiÃ³n 65.0.1 y desactivar las actualizacioens
 	// automÃ¡ticas)):
@@ -57,8 +60,6 @@ public class Sdi211071103LabSpringApplicationTests {
 	/*
 	 * TESTS DE REGISTRO DE USUARIO
 	 */
-	
-	
 
 	@Test
 	public void test1_registrarse_valido() throws Exception {
@@ -336,109 +337,104 @@ public class Sdi211071103LabSpringApplicationTests {
 	/*
 	 * TEST DE BORRADO MÚLTIPLE DE USUARIOS
 	 */
-	
+
 	/*
-	@Test
-	public void test11_borradoDeUsuarios_primerUsuario() throws Exception {
-		driver.get(URL + "/identificarse");
-		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("admin@email.com");
-		driver.findElement(By.name("password")).click();
-		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("admin");
-		driver.findElement(By.id("logginButton")).click();
-		driver.findElement(
-				By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[3]/following::input[1]"))
-				.click();
-		SeleniumUtils.esperarSegundos(driver, 5);
-		driver.findElement(By.id("DeleteButton")).click();
-		SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
-		SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
-
-		SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user9@gmail.com");
-	}
-
-	@Test
-	public void test12_borradoDeUsuarios_ultimoUsuario() throws Exception {
-		driver.get(URL + "/identificarse");
-		driver.findElement(By.name("email")).click();
-		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("admin@email.com");
-		driver.findElement(By.name("password")).click();
-		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("admin");
-		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
-		driver.findElement(
-				By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]"))
-				.click();
-		SeleniumUtils.esperarSegundos(driver, 5);
-		driver.findElement(By.id("DeleteButton")).click();
-		SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
-
-		SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
-
-		SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
-
-		SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
-
-	}
-
-	@Test
-	public void test13_borradoDeUsuarios_tresUsuarios() throws Exception {
-		driver.get(URL + "/identificarse");
-		driver.findElement(By.name("email")).click();
-		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("admin@email.com");
-		driver.findElement(By.name("password")).click();
-		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("admin");
-		driver.findElement(By.id("logginButton")).click();
-		driver.findElement(
-				By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]"))
-				.click();
-		driver.findElement(
-				By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[6]/following::input[1]"))
-				.click();
-		driver.findElement(
-				By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[5]/following::input[1]"))
-				.click();
-		SeleniumUtils.esperarSegundos(driver, 5);
-		driver.findElement(By.id("DeleteButton")).click();
-		SeleniumUtils.textoPresentePagina(driver, "Los usuarios se eliminaron correctamente");
-
-		SeleniumUtils.textoNoPresentePagina(driver, "pablomenendezfernandez@gmail.com");
-		SeleniumUtils.textoNoPresentePagina(driver, "user0@gmail.com");
-		SeleniumUtils.textoNoPresentePagina(driver, "user1@gmail.com");
-		SeleniumUtils.textoNoPresentePagina(driver, "user2@gmail.com");
-
-		SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
-		SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
-
-		SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
-
-	}
-*/
+	 * @Test public void test11_borradoDeUsuarios_primerUsuario() throws Exception {
+	 * driver.get(URL + "/identificarse");
+	 * driver.findElement(By.name("email")).clear();
+	 * driver.findElement(By.name("email")).sendKeys("admin@email.com");
+	 * driver.findElement(By.name("password")).click();
+	 * driver.findElement(By.name("password")).clear();
+	 * driver.findElement(By.name("password")).sendKeys("admin");
+	 * driver.findElement(By.id("logginButton")).click(); driver.findElement( By.
+	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[3]/following::input[1]"
+	 * )) .click(); SeleniumUtils.esperarSegundos(driver, 5);
+	 * driver.findElement(By.id("DeleteButton")).click();
+	 * SeleniumUtils.textoPresentePagina(driver,
+	 * "Los usuarios se eliminaron correctamente");
+	 * SeleniumUtils.textoNoPresentePagina(driver,
+	 * "pablomenendezfernandez@gmail.com");
+	 * 
+	 * SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user9@gmail.com"); }
+	 * 
+	 * @Test public void test12_borradoDeUsuarios_ultimoUsuario() throws Exception {
+	 * driver.get(URL + "/identificarse");
+	 * driver.findElement(By.name("email")).click();
+	 * driver.findElement(By.name("email")).clear();
+	 * driver.findElement(By.name("email")).sendKeys("admin@email.com");
+	 * driver.findElement(By.name("password")).click();
+	 * driver.findElement(By.name("password")).clear();
+	 * driver.findElement(By.name("password")).sendKeys("admin");
+	 * driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+	 * driver.findElement( By.
+	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]"
+	 * )) .click(); SeleniumUtils.esperarSegundos(driver, 5);
+	 * driver.findElement(By.id("DeleteButton")).click();
+	 * SeleniumUtils.textoPresentePagina(driver,
+	 * "Los usuarios se eliminaron correctamente");
+	 * 
+	 * SeleniumUtils.textoNoPresentePagina(driver,
+	 * "pablomenendezfernandez@gmail.com");
+	 * 
+	 * SeleniumUtils.textoPresentePagina(driver, "user0@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user1@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user2@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
+	 * 
+	 * SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
+	 * 
+	 * }
+	 * 
+	 * @Test public void test13_borradoDeUsuarios_tresUsuarios() throws Exception {
+	 * driver.get(URL + "/identificarse");
+	 * driver.findElement(By.name("email")).click();
+	 * driver.findElement(By.name("email")).clear();
+	 * driver.findElement(By.name("email")).sendKeys("admin@email.com");
+	 * driver.findElement(By.name("password")).click();
+	 * driver.findElement(By.name("password")).clear();
+	 * driver.findElement(By.name("password")).sendKeys("admin");
+	 * driver.findElement(By.id("logginButton")).click(); driver.findElement( By.
+	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[7]/following::input[1]"
+	 * )) .click(); driver.findElement( By.
+	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[6]/following::input[1]"
+	 * )) .click(); driver.findElement( By.
+	 * xpath("(.//*[normalize-space(text()) and normalize-space(.)='true'])[5]/following::input[1]"
+	 * )) .click(); SeleniumUtils.esperarSegundos(driver, 5);
+	 * driver.findElement(By.id("DeleteButton")).click();
+	 * SeleniumUtils.textoPresentePagina(driver,
+	 * "Los usuarios se eliminaron correctamente");
+	 * 
+	 * SeleniumUtils.textoNoPresentePagina(driver,
+	 * "pablomenendezfernandez@gmail.com");
+	 * SeleniumUtils.textoNoPresentePagina(driver, "user0@gmail.com");
+	 * SeleniumUtils.textoNoPresentePagina(driver, "user1@gmail.com");
+	 * SeleniumUtils.textoNoPresentePagina(driver, "user2@gmail.com");
+	 * 
+	 * SeleniumUtils.textoPresentePagina(driver, "user3@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user4@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user5@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user6@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user7@gmail.com");
+	 * SeleniumUtils.textoPresentePagina(driver, "user8@gmail.com");
+	 * 
+	 * SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
+	 * 
+	 * }
+	 */
 	/*
 	 * TEST DE SUBIDA DE OFERTAS
 	 */
@@ -510,13 +506,12 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.id("precio")).sendKeys("10.50");
 		driver.findElement(By.id("botonAgregar")).click();
 		driver.findElement(By.id("idAgregarOferta"));
-		
+
 		SeleniumUtils.textoPresentePagina(driver, "Titulo");
 		SeleniumUtils.textoPresentePagina(driver, "Detalles");
 		SeleniumUtils.textoPresentePagina(driver, "Precio");
 		SeleniumUtils.textoPresentePagina(driver, "Destacar");
-	
-		
+
 	}
 
 	@Test
@@ -561,164 +556,228 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.linkText("Eliminar")).click();
 		SeleniumUtils.esperarSegundos(driver, 5);
 		driver.findElement(By.id("mDesconectarse")).click();
-		
+
 		SeleniumUtils.textoNoPresentePagina(driver, "oferta50");
 		SeleniumUtils.textoNoPresentePagina(driver, "Detalles de la oferta 50");
-		
-		
 
 	}
 
 	@Test
 	public void test18_darDeBajaUnaOferta_ultima() throws Exception {
 		driver.get(URL + "/identificarse");
-	    driver.findElement(By.name("email")).click();
-	    driver.findElement(By.name("email")).clear();
-	    driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
-	    driver.findElement(By.name("password")).click();
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("user123");
-	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    driver.findElement(By.linkText("Publicaciones")).click();
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Detalles de la oferta destacada 59'])[1]/following::a[1]")).click();
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    driver.findElement(By.id("mDesconectarse")).click();
-	    
-
-	}
-	
-	@Test
-	public void test19_buscarOfertasCampoVacío() throws Exception {
-		driver.get(URL + "/identificarse");
-	    driver.findElement(By.name("email")).click();
-	    driver.findElement(By.name("email")).clear();
-	    driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("user123");
-	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    driver.findElement(By.linkText("Tienda")).click();
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    driver.findElement(By.name("busqueda")).click();
-	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Desconectarse'])[1]/following::span[2]")).click();
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    
-	    // Mostrando que aparece el listado de ofertas disponibles en el sistema
-	    SeleniumUtils.textoPresentePagina(driver, "Ofertas");
-	    SeleniumUtils.textoPresentePagina(driver, "destacada0");
-	    SeleniumUtils.textoPresentePagina(driver, "destacada1");
-	    SeleniumUtils.textoPresentePagina(driver, "destacada2");
-	    SeleniumUtils.textoPresentePagina(driver, "destacada3");
-	    SeleniumUtils.textoPresentePagina(driver, "destacada4");
-	    
-	    driver.findElement(By.id("mDesconectarse")).click();
-	}
-	
-	@Test
-	public void test20_buscarOfertasTextoInexistente() throws Exception {
-		driver.get(URL + "/identificarse");
-	    driver.findElement(By.name("email")).click();
-	    driver.findElement(By.name("email")).clear();
-	    driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
-	    driver.findElement(By.name("password")).click();
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("user123");
-	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    driver.findElement(By.linkText("Tienda")).click();
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    driver.findElement(By.name("busqueda")).click();
-	    driver.findElement(By.name("busqueda")).clear();
-	    driver.findElement(By.name("busqueda")).sendKeys("dinosaurio");
-	    driver.findElement(By.name("busqueda")).sendKeys(Keys.ENTER);
-	    
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    SeleniumUtils.textoPresentePagina(driver, "Ofertas");
-	    
-	    //Mostrando que no figura ninguna oferta, ya que no hay ningún botón "Comprar"
-	    SeleniumUtils.textoNoPresentePagina(driver, "Comprar");
-	    
-	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Desconectarse'])[1]/following::button[1]")).click();
-	}
-	
-	@Test
-	public void test21_buscarOfertasExistentes() throws Exception {
-		driver.get(URL + "/identificarse");
-		SeleniumUtils.esperarSegundos(driver, 5);
-	    driver.findElement(By.name("email")).click();
-	    driver.findElement(By.name("email")).clear();
-	    driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
-	    driver.findElement(By.name("password")).click();
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("user123");
-	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    driver.findElement(By.linkText("Tienda")).click();
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    driver.findElement(By.name("busqueda")).click();
-	    driver.findElement(By.name("busqueda")).clear();
-	    driver.findElement(By.name("busqueda")).sendKeys("oferta1");
-	    driver.findElement(By.name("busqueda")).sendKeys(Keys.ENTER);
-	    SeleniumUtils.esperarSegundos(driver, 5);
-	    
-	    SeleniumUtils.textoPresentePagina(driver, "Ofertas");
-	    
-	    // Mostrando las primeras ofertas que aparecen al introducir oferta1
-	    SeleniumUtils.textoPresentePagina(driver, "oferta1");
-	    SeleniumUtils.textoPresentePagina(driver, "oferta10");
-	    SeleniumUtils.textoPresentePagina(driver, "oferta11");
-	    SeleniumUtils.textoPresentePagina(driver, "oferta12");
-	    SeleniumUtils.textoPresentePagina(driver, "oferta13");
-	    
-	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Desconectarse'])[1]/following::button[1]")).click();
-	}
-	
-	@Test
-	public void test22_buscarOfertasExistentes() throws Exception {
-		driver.get(URL + "/identificarse");
-	    driver.findElement(By.name("email")).clear();
-	    driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
-	    driver.findElement(By.name("password")).clear();
-	    driver.findElement(By.name("password")).sendKeys("user123");
-	    driver.findElement(By.id("logginButton")).click();
-	    driver.findElement(By.linkText("Tienda")).click();
-	    driver.findElement(By.name("busqueda")).click();
-	    driver.findElement(By.name("busqueda")).clear();
-	    driver.findElement(By.name("busqueda")).sendKeys("oferta1");
-	    driver.findElement(By.name("busqueda")).clear();
-	    driver.findElement(By.name("busqueda")).sendKeys("oferta1");
-	    driver.findElement(By.name("busqueda")).sendKeys(Keys.ENTER);
-	    driver.findElement(By.linkText("Comprar")).click();
-	    driver.findElement(By.linkText("10 €")).click();
-	    
-	    SeleniumUtils.textoPresentePagina(driver, "90€");
-	    
-	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Desconectarse'])[1]/following::button[1]")).click();
-	}
-	
-
-	@Test
-	public void test25_listadoOfertasCompradas() throws Exception {
-		driver.get(URL + "/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("pablomenendezfernandez@gmail.com");
+		driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user123");
 		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
 		SeleniumUtils.esperarSegundos(driver, 5);
-		driver.findElement(By.linkText("Compras")).click();
+		driver.findElement(By.linkText("Publicaciones")).click();
 		SeleniumUtils.esperarSegundos(driver, 5);
-		SeleniumUtils.textoPresentePagina(driver, "Mis compras");
-		SeleniumUtils.textoPresentePagina(driver, "Nombre");
-		SeleniumUtils.textoPresentePagina(driver, "Detalles");
-		SeleniumUtils.textoPresentePagina(driver, "Precio");
-		SeleniumUtils.textoPresentePagina(driver, "Vendedor");
-		SeleniumUtils.textoPresentePagina(driver, "Disco ACDC");
-		SeleniumUtils.textoPresentePagina(driver, "Samsung Galaxy 100XPlus");
+		driver.findElement(By.xpath(
+				"(.//*[normalize-space(text()) and normalize-space(.)='Detalles de la oferta destacada 59'])[1]/following::a[1]"))
+				.click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.id("mDesconectarse")).click();
+
+	}
+
+	@Test
+	public void test19_buscarOfertasCampoVacío() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.linkText("Tienda")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.name("busqueda")).click();
+		driver.findElement(By
+				.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Desconectarse'])[1]/following::span[2]"))
+				.click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+
+		// Mostrando que aparece el listado de ofertas disponibles en el sistema
+		SeleniumUtils.textoPresentePagina(driver, "Ofertas");
+		SeleniumUtils.textoPresentePagina(driver, "destacada0");
+		SeleniumUtils.textoPresentePagina(driver, "destacada1");
+		SeleniumUtils.textoPresentePagina(driver, "destacada2");
+		SeleniumUtils.textoPresentePagina(driver, "destacada3");
+		SeleniumUtils.textoPresentePagina(driver, "destacada4");
+
+		driver.findElement(By.id("mDesconectarse")).click();
+	}
+
+	@Test
+	public void test20_buscarOfertasTextoInexistente() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.linkText("Tienda")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.name("busqueda")).click();
+		driver.findElement(By.name("busqueda")).clear();
+		driver.findElement(By.name("busqueda")).sendKeys("dinosaurio");
+		driver.findElement(By.name("busqueda")).sendKeys(Keys.ENTER);
+
+		SeleniumUtils.esperarSegundos(driver, 5);
+		SeleniumUtils.textoPresentePagina(driver, "Ofertas");
+
+		// Mostrando que no figura ninguna oferta, ya que no hay ningún botón "Comprar"
+		SeleniumUtils.textoNoPresentePagina(driver, "Comprar");
+
+		driver.findElement(By.xpath(
+				"(.//*[normalize-space(text()) and normalize-space(.)='Desconectarse'])[1]/following::button[1]"))
+				.click();
+	}
+
+	@Test
+	public void test21_buscarOfertasExistentes() throws Exception {
+		driver.get(URL + "/identificarse");
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.linkText("Tienda")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.name("busqueda")).click();
+		driver.findElement(By.name("busqueda")).clear();
+		driver.findElement(By.name("busqueda")).sendKeys("oferta1");
+		driver.findElement(By.name("busqueda")).sendKeys(Keys.ENTER);
+		SeleniumUtils.esperarSegundos(driver, 5);
+
+		SeleniumUtils.textoPresentePagina(driver, "Ofertas");
+
+		// Mostrando las primeras ofertas que aparecen al introducir oferta1
+		SeleniumUtils.textoPresentePagina(driver, "oferta1");
+		SeleniumUtils.textoPresentePagina(driver, "oferta10");
+		SeleniumUtils.textoPresentePagina(driver, "oferta11");
+		SeleniumUtils.textoPresentePagina(driver, "oferta12");
+		SeleniumUtils.textoPresentePagina(driver, "oferta13");
+
+		driver.findElement(By.xpath(
+				"(.//*[normalize-space(text()) and normalize-space(.)='Desconectarse'])[1]/following::button[1]"))
+				.click();
+	}
+
+	@Test
+	public void test22_comprarSaldoPositivo() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.id("logginButton")).click();
+		driver.findElement(By.linkText("Tienda")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.name("busqueda")).click();
+		driver.findElement(By.name("busqueda")).clear();
+		driver.findElement(By.name("busqueda")).sendKeys("oferta1");
+		driver.findElement(By.name("busqueda")).clear();
+		driver.findElement(By.name("busqueda")).sendKeys("oferta1");
+		driver.findElement(By.name("busqueda")).sendKeys(Keys.ENTER);
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.linkText("Comprar")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.linkText("10 €")).click();
+
+		SeleniumUtils.esperarSegundos(driver, 5);
+
+		driver.findElement(By.id("cantidad")).getAttribute("90€");
+
+		driver.findElement(By.id("mDesconectarse")).click();
+	}
+
+	@Test
+	public void test23_comprarSaldo0() throws Exception {
+		driver.get(URL + "/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("user123");
+		driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.linkText("Tienda")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.name("busqueda")).click();
+		driver.findElement(By.name("busqueda")).clear();
+		driver.findElement(By.name("busqueda")).sendKeys("oferta9");
+		driver.findElement(By.name("busqueda")).sendKeys(Keys.ENTER);
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.linkText("Comprar")).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		driver.findElement(By.linkText("90 €")).click();
+
+		SeleniumUtils.esperarSegundos(driver, 5);
+
+		driver.findElement(By.id("cantidad")).getAttribute("0€");
+
+		driver.findElement(By.id("mDesconectarse")).click();
+	}
+	
+	@Test
+	public void test24_comprarSaldoNegativo() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("user123");
+	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("Tienda")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.name("busqueda")).click();
+	    driver.findElement(By.name("busqueda")).clear();
+	    driver.findElement(By.name("busqueda")).sendKeys("oferta4");
+	    driver.findElement(By.name("busqueda")).sendKeys(Keys.ENTER);   
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='oferta40 - 400 €'])[1]/following::a[1]")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("400 €")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    SeleniumUtils.textoPresentePagina(driver, "No tienes suficiente dinero");
+	    driver.findElement(By.id("mDesconectarse")).click();
+	}
+
+	@Test
+	public void test25_listadoOfertasCompradas() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("user123");
+	    driver.findElement(By.name("password")).sendKeys(Keys.ENTER);
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("Compras")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    SeleniumUtils.textoPresentePagina(driver, "Mis compras");
+	    SeleniumUtils.textoPresentePagina(driver, "oferta1");
+	    SeleniumUtils.textoPresentePagina(driver, "oferta9");
+
+	    SeleniumUtils.textoNoPresentePagina(driver, "oferta4");
+	    
+	    driver.findElement(By.id("mDesconectarse")).click();
 	}
 
 }

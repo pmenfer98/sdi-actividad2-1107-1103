@@ -42,7 +42,7 @@
                 {% if user != null ||  user != undefined %}
                 {% if user.rol == 'user' %}
                 <li><a id="nickName">{{user.nombre}} {{user.apellidos}}</a></li>
-                <li id="dinero" class="active"> Dinero <input type="text" value={{user.dinero}}€ disabled/></li>
+                <li id="dinero" class="active"> Dinero <input type="text" id="cantidad" value={{user.dinero}}€ disabled/></li>
                 {% endif %}
                 {% if user.rol == 'admin' %}
                 <li><a id="nickAdmin">Administrador</a></li>
