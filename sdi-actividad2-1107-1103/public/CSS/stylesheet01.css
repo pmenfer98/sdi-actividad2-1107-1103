@@ -32,6 +32,45 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 20%;
+    width: 50%;
     padding: 30px;
+}
+
+#mensajeEnviado{
+    color: #452f00;
+    padding: 10px;
+    background-color: #cfffc8;
+    border-radius: 10px;
+}
+
+#mensajeRecibido{
+    color: #452f00;
+    padding: 10px;
+    background-color: #e6e5ff;
+    border-radius: 10px;
+}
+
+#nombreEmisor, #nombreReceptor{
+    text-transform: uppercase;
+    color: white;
+}
+
+#nombreEmisor{
+    background-color: #53a653;
+}
+
+#nombreReceptor{
+    background-color: #798fa6;
+}
+
+#fechaEmisor{
+    font-size: 10px;
+    background-color: #53a653;
+    color: white;
+}
+
+#fechaReceptor{
+    font-size: 10px;
+    background-color: #798fa6;
+    color: white;
 }

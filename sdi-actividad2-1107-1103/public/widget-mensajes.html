@@ -1,0 +1,103 @@
+<div id="widget-detalles">
+    <h2>Mensajes</h2>
+    <div id="mensajes" class="row">
+        <div id="mensajeEnviado" class="form-group">
+            <div class="text-right">
+                <span>Texto de prueba</span>
+            </div>
+        </div>
+        <div id="mensajeRecibido" class="form-group">
+            <div class="text-left">
+                <span>Texto de prueba</span>
+            </div>
+        </div>
+    </div>
+    <div>
+        <input id="contenidoMensaje" type="text" class="form-control"
+               placeholder="Envie un mensaje" name="contenido"/>
+        <button id="btnEnviar" class="btn btn-warning">
+            <span>Enviar</span>
+        </button>
+    </div>
+</div>
+
+<script>
+
+    window.history.pushState("", "", "/cliente.html?w=conversations");
+
+    cargarMensajes();
+
+    $("#btnEnviar").click(function () {
+        $.ajax({
+            url: URLbase + "/mensaje/oferta/" + idOfertaSeleccionada,
+            type: "POST",
+            data: {
+                mensaje: $("#contenidoMensaje").val(),
+                receptor: Cookies.get('receptor')
+            },
+            dataType: 'json',
+            headers: {
+                "token": Cookies.get('token')
+            },
+            success: function (respuesta) {
+                cargarMensajes();
+            },
+            error: function (error) {
+                $("#alertMessage").remove();
+                $("#mensajes")
+                    .prepend("<div id='alertMessage' class='alert alert-danger'>Error enviando el mensaje</div>");
+            }
+        });
+    });
+
+    function cargarMensajes() {
+        $.ajax({
+            url: URLbase + "/conversacion/oferta/" + idOfertaSeleccionada,
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {"token": Cookies.get('token')},
+            success: function (respuesta) {
+                $("#alertMessage").remove();
+                actualizarMensajes(respuesta);
+            },
+            error: function (error) {
+                console.log(error.toString());
+                $("#alertMessage").remove();
+                $("#mensajes")
+                    .prepend("<div id='alertMessage' class='alert alert-danger'>Error enviando el mensaje</div>");
+            }
+        });
+    }
+
+    function actualizarMensajes(mensajesMostrar) {
+        var i;
+        $("#mensajes").empty(); // Vaciar la tabla
+        console.log("Mensajes de la conversacion: " + mensajesMostrar.length);
+        for (i = 0; i < mensajesMostrar.length; i++) {
+            console.log(mensajesMostrar[i].emisor + "       " + Cookies.get('email'));
+            if (mensajesMostrar[i].emisor === Cookies.get('email')) {
+                $("#mensajes").append(
+                    "<div id='mensajeEnviado' class='form-group'>" +
+                    "<div class='text-right'>" +
+                    "<p id='nombreEmisor'>    " + mensajesMostrar[i].emisor + "    </p>" +
+                    "<p>" + mensajesMostrar[i].mensaje + "</p>" +
+                    "<p id='fechaEmisor'>    " + mensajesMostrar[i].fecha + "    </p>" +
+                    "</div>" +
+                    "</div>"
+                );
+            }
+            else {
+                $("#mensajes").append(
+                    "<div id='mensajeRecibido' class='form-group'>" +
+                    "<div class='text-left'>" +
+                    "<p id='nombreReceptor'>    " + mensajesMostrar[i].emisor + "    </p>" +
+                    "<p>" + mensajesMostrar[i].mensaje + "</p>" +
+                    "<p id='fechaReceptor'>    " + mensajesMostrar[i].fecha + "    </p>" +
+                    "</div>" +
+                    "</div>"
+                );
+            }
+        }
+    }
+</script>
