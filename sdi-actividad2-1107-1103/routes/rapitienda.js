@@ -231,4 +231,9 @@ module.exports = function (app, gestorBD) {
         });
     });
 
+
+    function fechaMensajeToString(fecha, hora){
+        return fecha.toString() + hora.toString();
+    }
+
 };
