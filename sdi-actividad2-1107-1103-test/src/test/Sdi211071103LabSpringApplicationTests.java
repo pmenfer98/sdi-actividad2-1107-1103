@@ -57,6 +57,8 @@ public class Sdi211071103LabSpringApplicationTests {
 	/*
 	 * TESTS DE REGISTRO DE USUARIO
 	 */
+	
+	
 
 	@Test
 	public void test1_registrarse_valido() throws Exception {
@@ -334,6 +336,8 @@ public class Sdi211071103LabSpringApplicationTests {
 	/*
 	 * TEST DE BORRADO MÚLTIPLE DE USUARIOS
 	 */
+	
+	/*
 	@Test
 	public void test11_borradoDeUsuarios_primerUsuario() throws Exception {
 		driver.get(URL + "/identificarse");
@@ -434,7 +438,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		SeleniumUtils.textoNoPresentePagina(driver, "user9@gmail.com");
 
 	}
-
+*/
 	/*
 	 * TEST DE SUBIDA DE OFERTAS
 	 */
@@ -628,7 +632,9 @@ public class Sdi211071103LabSpringApplicationTests {
 	    driver.findElement(By.name("busqueda")).click();
 	    driver.findElement(By.name("busqueda")).clear();
 	    driver.findElement(By.name("busqueda")).sendKeys("dinosaurio");
+	    driver.findElement(By.name("busqueda")).sendKeys(Keys.ENTER);
 	    
+	    SeleniumUtils.esperarSegundos(driver, 5);
 	    SeleniumUtils.textoPresentePagina(driver, "Ofertas");
 	    
 	    //Mostrando que no figura ninguna oferta, ya que no hay ningún botón "Comprar"
@@ -640,6 +646,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	@Test
 	public void test21_buscarOfertasExistentes() throws Exception {
 		driver.get(URL + "/identificarse");
+		SeleniumUtils.esperarSegundos(driver, 5);
 	    driver.findElement(By.name("email")).click();
 	    driver.findElement(By.name("email")).clear();
 	    driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
@@ -653,6 +660,7 @@ public class Sdi211071103LabSpringApplicationTests {
 	    driver.findElement(By.name("busqueda")).click();
 	    driver.findElement(By.name("busqueda")).clear();
 	    driver.findElement(By.name("busqueda")).sendKeys("oferta1");
+	    driver.findElement(By.name("busqueda")).sendKeys(Keys.ENTER);
 	    SeleniumUtils.esperarSegundos(driver, 5);
 	    
 	    SeleniumUtils.textoPresentePagina(driver, "Ofertas");
@@ -663,6 +671,29 @@ public class Sdi211071103LabSpringApplicationTests {
 	    SeleniumUtils.textoPresentePagina(driver, "oferta11");
 	    SeleniumUtils.textoPresentePagina(driver, "oferta12");
 	    SeleniumUtils.textoPresentePagina(driver, "oferta13");
+	    
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Desconectarse'])[1]/following::button[1]")).click();
+	}
+	
+	@Test
+	public void test22_buscarOfertasExistentes() throws Exception {
+		driver.get(URL + "/identificarse");
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("user5@gmail.com");
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("user123");
+	    driver.findElement(By.id("logginButton")).click();
+	    driver.findElement(By.linkText("Tienda")).click();
+	    driver.findElement(By.name("busqueda")).click();
+	    driver.findElement(By.name("busqueda")).clear();
+	    driver.findElement(By.name("busqueda")).sendKeys("oferta1");
+	    driver.findElement(By.name("busqueda")).clear();
+	    driver.findElement(By.name("busqueda")).sendKeys("oferta1");
+	    driver.findElement(By.name("busqueda")).sendKeys(Keys.ENTER);
+	    driver.findElement(By.linkText("Comprar")).click();
+	    driver.findElement(By.linkText("10 €")).click();
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "90€");
 	    
 	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Desconectarse'])[1]/following::button[1]")).click();
 	}
