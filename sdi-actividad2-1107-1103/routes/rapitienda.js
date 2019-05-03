@@ -19,7 +19,6 @@ module.exports = function (app, gestorBD) {
         });
     });
 
-
     app.get("/api/oferta/:id", function (req, res) {
         var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
 
@@ -78,15 +77,16 @@ module.exports = function (app, gestorBD) {
                 })
             } else {
                 let oferta = ofertas[0];
-                let usuario = res.usuario;
                 let mensaje = {
-                    emisor: usuario,
+                    emisor: res.usuario,
                     receptor: req.body.receptor,
                     oferta: oferta,
                     mensaje: req.body.mensaje,
                     fecha: new Date(),
                     leido: false
                 };
+                console.log(mensaje.emisor + " EMISOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOS");
+                console.log(mensaje.receptor + " RECEPTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR");
                 gestorBD.insertarMensaje(mensaje, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
@@ -103,7 +103,7 @@ module.exports = function (app, gestorBD) {
         })
     });
 
-    app.get("/api/conversacion/oferta/:id", function (req, res) {
+    app.get("/api/conversacion/oferta/:id/:receptor", function (req, res) {
         let criterioMongo = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.obtenerOfertas(criterioMongo, function (ofertas) {
             if (ofertas == null) {
@@ -118,7 +118,7 @@ module.exports = function (app, gestorBD) {
                 })
             } else {
                 let oferta = ofertas[0];
-                let propietario = oferta.propietario;
+                let propietario = req.params.receptor;
                 let usuario = res.usuario;
                 let criterio = {
                     $or: [
@@ -165,9 +165,8 @@ module.exports = function (app, gestorBD) {
         });
     });
 
-    app.get("/api/conversaciones/", function (req, res) {
-        console.log(res.usuario);
-        let criterioMensajes = {$or: {emisor: res.usuario, receptor: res.usuario}};
+    app.get("/api/conversaciones", function (req, res) {
+        let criterioMensajes = {$or:[{emisor: res.usuario}, {receptor: res.usuario}]};
         gestorBD.obtenerConversaciones(criterioMensajes, function (ofertas) {
             if (ofertas == null) {
                 res.status(500);
@@ -180,6 +179,7 @@ module.exports = function (app, gestorBD) {
                     error: "Oferta no encontrada"
                 })
             } else {
+                console.log(ofertas);
                 res.send(JSON.stringify(ofertas));
             }
         });
@@ -255,10 +255,5 @@ module.exports = function (app, gestorBD) {
             }
         });
     });
-
-
-    function fechaMensajeToString(fecha, hora) {
-        return fecha.toString() + hora.toString();
-    }
 
 };

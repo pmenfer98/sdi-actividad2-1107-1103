@@ -400,16 +400,24 @@ module.exports = {
                         funcionCallback(null);
                     } else {
                         var distinct = []
-                        var i;
-                        console.log(result);
+                        var i, j;
                         for (i = 0; i < result.length; i++) {
-                            if (!(result[i].oferta in distinct))
-                            {
-                                distinct.push(result[i].oferta);
-                                console.log(result[i].oferta);
+                            if (result[i]!=null) {
+                                var exist = false;
+                                for (j = 0; j < distinct.length; j++) {
+                                    var ofer = result[i].oferta;
+                                    if (ofer._id.toString() === distinct[j].oferta._id.toString()) {
+                                        console.log(ofer._id.toString());
+                                        exist = true;
+                                        break;
+                                    }
+                                }
+                                if (!exist) {
+                                    distinct.push(result[i]);
+                                }
                             }
                         }
-                        funcionCallback(result);
+                        funcionCallback(distinct);
                     }
                     db.close();
                 });

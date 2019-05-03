@@ -1,8 +1,8 @@
 <div id="widget-canciones">
     <h2>Ofertas</h2>
-    <tbody id="tablaCuerpo">
+    <div id="tablaCuerpo">
 
-    </tbody>
+    </div>
 </div>
 <script>
     window.history.pushState("", "", "/cliente.html?w=conversaciones");
@@ -19,8 +19,8 @@
                 "token": Cookies.get('token')
             },
             success: function (respuesta) {
-                ofertas = respuesta;
-                actualizarTabla(ofertas);
+                console.log(respuesta);
+                actualizarTabla(respuesta);
             },
             error: function (error) {
                 console.log(error.toString());
@@ -31,30 +31,46 @@
         });
     }
 
-    function actualizarTabla(ofertasMostrar) {
+    function actualizarTabla(conversaciones) {
         $("#tablaCuerpo").empty(); // Vaciar la tabla
-        for (i = 0; i < ofertasMostrar.length; i++) {
-            if (ofertasMostrar[i].propietario != token.usuario)
+        for (i = 0; i < conversaciones.length; i++) {
+            console.log(Cookies.get('email').toString());
+            if(conversaciones[i].emisor === Cookies.get('email'))
                 $("#tablaCuerpo").append(
-                    "<tr id=" + ofertasMostrar[i]._id + ">" +
-                    "<td>" + ofertasMostrar[i].nombre + "</td>" +
-                    "<td>" + ofertasMostrar[i].detalles + "</td>" +
-                    "<td>" + ofertasMostrar[i].precio + " € </td>" +
-                    "<td>" + ofertasMostrar[i].propietario + "</td>" +
-                    "<td>" +
-                    "<a onclick = mensajes('" + ofertasMostrar[i]._id + "','" + ofertasMostrar[i].propietario + "')>Mensajes</a><br>" +
-                    "</td>" +
-                    "</tr>");
+                    "<a onclick = mensajes('" + conversaciones[i].oferta._id + "','" + conversaciones[i].receptor + "','" + conversaciones[i].emisor + "')>" +
+                    "<div id='conversacion' class='form-group'>" +
+                    "<div>"+
+                    "<td id = 'propietarioChat'>" + conversaciones[i].receptor.toUpperCase() + "</td>" +
+                    "</div>"+
+                    "<div>"+
+                    "<td>" + conversaciones[i].oferta.nombre + "</td>" +
+                    "</div>"+
+                    "</div>"+
+                    "</a>");
+            else
+                $("#tablaCuerpo").append(
+                    "<a onclick = mensajes('" + conversaciones[i].oferta._id + "','" + conversaciones[i].emisor + "','" + conversaciones[i].receptor + "')>" +
+                    "<div id='conversacion' class='form-group'>" +
+                    "<div>"+
+                    "<td id = 'propietarioChat'>" + conversaciones[i].emisor.toUpperCase() + "</td>" +
+                    "</div>"+
+                    "<div>"+
+                    "<td>" + conversaciones[i].oferta.nombre + "</td>" +
+                    "</div>"+
+                    "</div>"+
+                    "</a>");
         }
+
     }
 
     cargarConversaciones();
 
 
-    function mensajes(_id, receptor) {
+    function mensajes(_id, receptor, emisor) {
         idOfertaSeleccionada = _id;
         console.log(receptor);
         Cookies.set("receptor", receptor);
+        Cookies.set("emisor", emisor);
         $("#contenedor-principal").load("widget-mensajes.html");
     }
 

@@ -39,13 +39,14 @@
                 $("#alertMessage").remove();
                 $("#mensajes")
                     .prepend("<div id='alertMessage' class='alert alert-danger'>Error enviando el mensaje</div>");
+                $("#contenidoMensaje").value = "";
             }
         });
     });
 
     function cargarMensajes() {
         $.ajax({
-            url: URLbase + "/conversacion/oferta/" + idOfertaSeleccionada,
+            url: URLbase + "/conversacion/oferta/" + idOfertaSeleccionada + "/" + Cookies.get('receptor'),
             type: "GET",
             data: {},
             dataType: 'json',
