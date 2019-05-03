@@ -57,20 +57,28 @@
 
 #nombreEmisor{
     background-color: #53a653;
+    border-radius: 7px;
 }
 
 #nombreReceptor{
     background-color: #798fa6;
+    border-radius: 7px;
 }
 
 #fechaEmisor{
     font-size: 10px;
     background-color: #53a653;
     color: white;
+    border-radius: 5px;
 }
 
 #fechaReceptor{
     font-size: 10px;
     background-color: #798fa6;
+    color: white;
+    border-radius: 5px;
+}
+
+#mConversaciones{
     color: white;
 }

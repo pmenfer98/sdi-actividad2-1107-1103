@@ -129,6 +129,9 @@ module.exports = function (app, gestorBD) {
                                 },
                                 {
                                     receptor: propietario
+                                },
+                                {
+                                    oferta: oferta
                                 }
                             ]
                         },
@@ -139,6 +142,9 @@ module.exports = function (app, gestorBD) {
                                 },
                                 {
                                     receptor: usuario
+                                },
+                                {
+                                    oferta: oferta
                                 }
                             ]
                         }
@@ -159,6 +165,25 @@ module.exports = function (app, gestorBD) {
         });
     });
 
+    app.get("/api/conversaciones/", function (req, res) {
+        console.log(res.usuario);
+        let criterioMensajes = {$or: {emisor: res.usuario, receptor: res.usuario}};
+        gestorBD.obtenerConversaciones(criterioMensajes, function (ofertas) {
+            if (ofertas == null) {
+                res.status(500);
+                res.json({
+                    error: "se ha producido un error"
+                })
+            } else if (ofertas.length === 0) {
+                res.status(400);
+                res.json({
+                    error: "Oferta no encontrada"
+                })
+            } else {
+                res.send(JSON.stringify(ofertas));
+            }
+        });
+    });
 
     app.get("/api/mensaje/leido/:id", function (req, res) {
         let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
@@ -232,7 +257,7 @@ module.exports = function (app, gestorBD) {
     });
 
 
-    function fechaMensajeToString(fecha, hora){
+    function fechaMensajeToString(fecha, hora) {
         return fecha.toString() + hora.toString();
     }
 

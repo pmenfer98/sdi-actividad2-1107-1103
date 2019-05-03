@@ -1,28 +1,17 @@
 <div id="widget-canciones">
-    <a id="btnConversaciones" onclick="conversaciones()">Conversaciones</a>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Detalles</th>
-            <th>Precio</th>
-            <th>Vendedor</th>
-            <th class="col-md-1"></th>
-        </tr>
-        </thead>
-        <tbody id="tablaCuerpo">
+    <h2>Ofertas</h2>
+    <tbody id="tablaCuerpo">
 
-        </tbody>
-    </table>
+    </tbody>
 </div>
 <script>
-    window.history.pushState("", "", "/cliente.html?w=ofertas");
+    window.history.pushState("", "", "/cliente.html?w=conversaciones");
 
     var ofertas;
 
-    function cargarOfertas() {
+    function cargarConversaciones() {
         $.ajax({
-            url: URLbase + "/oferta",
+            url: URLbase + "/conversaciones/",
             type: "GET",
             data: {},
             dataType: 'json',
@@ -34,7 +23,8 @@
                 actualizarTabla(ofertas);
             },
             error: function (error) {
-                alert('Error al listar los amigos. Intentelo de nuevo');
+                console.log(error.toString());
+                alert('Error al listar conversaciones');
                 Cookies.remove('token');
                 $("#contenedor-principal").load("widget-login.html");
             }
@@ -58,11 +48,8 @@
         }
     }
 
-    cargarOfertas();
+    cargarConversaciones();
 
-    function conversaciones() {
-        $("#contenedor-principal").load("widget-conversaciones.html");
-    }
 
     function mensajes(_id, receptor) {
         idOfertaSeleccionada = _id;

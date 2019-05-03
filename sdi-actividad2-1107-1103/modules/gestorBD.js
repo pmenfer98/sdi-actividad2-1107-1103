@@ -387,6 +387,34 @@ module.exports = {
                 });
             }
         });
+    },
+
+    obtenerConversaciones: function (criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('mensajes');
+                collection.find(criterio).toArray(function (err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        var distinct = []
+                        var i;
+                        console.log(result);
+                        for (i = 0; i < result.length; i++) {
+                            if (!(result[i].oferta in distinct))
+                            {
+                                distinct.push(result[i].oferta);
+                                console.log(result[i].oferta);
+                            }
+                        }
+                        funcionCallback(result);
+                    }
+                    db.close();
+                });
+            }
+        });
     }
 
 
