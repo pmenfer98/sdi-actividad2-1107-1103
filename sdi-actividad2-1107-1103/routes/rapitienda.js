@@ -87,8 +87,6 @@ module.exports = function (app, gestorBD) {
                     fecha: moment().format('dddd, MMMM Do YYYY, h:mm:ss a'),
                     leido: false
                 };
-                console.log(mensaje.emisor + " EMISOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOS");
-                console.log(mensaje.receptor + " RECEPTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR");
                 gestorBD.insertarMensaje(mensaje, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
@@ -97,7 +95,6 @@ module.exports = function (app, gestorBD) {
                         })
                     } else {
                         res.status(200);
-                        console.log("MENSAJEEEEEEEEEEEEEEEEEEEEEEEES" + mensajes)
                         res.send(JSON.stringify(mensajes));
                     }
                 })
@@ -181,7 +178,6 @@ module.exports = function (app, gestorBD) {
                     error: "Oferta no encontrada"
                 })
             } else {
-                console.log(ofertas);
                 res.send(JSON.stringify(ofertas));
             }
         });
@@ -258,5 +254,71 @@ module.exports = function (app, gestorBD) {
         });
     });
 
+    app.get("/api/conversaciones/eliminar/:id/:propietario/:comprador", function (req, res) {
+        let idOferta = gestorBD.mongo.ObjectID(req.params.id);
+        let criterioMongo = {
+            $or: [
+                {
+                    $and: [
+                        {
+                            emisor: req.params.propietario
+                        },
+                        {
+                            receptor: req.params.comprador
+                        },
+                        {
+                            oferta: {_id: idOferta}
+                        }
+                    ]
+                },
+                {
+                    $and: [
+                        {
+                            emisor: req.params.comprador
+                        },
+                        {
+                            receptor: req.params.propietario
+                        },
+                        {
+                            oferta: {_id: idOferta}
+                        }
+                    ]
+                }
+            ]};
+        gestorBD.obtenerMensajes(criterioMongo, function (mensajes) {
+            if (mensajes == null) {
+                res.status(500);
+                res.json({
+                    error: "se ha producido un error"
+                })
+            } else if (mensajes.length === 0) {
+                console.log("BORRADO");
+                console.log("BORRADO");
+                console.log("BORRADO");
+                console.log("BORRADO");
+                console.log("BORRADO");
+                console.log("BORRADO");
+                console.log(req.params.propietario);
+                console.log(req.params.comprador);
+                console.log(idOferta);
+                res.status(400);
+                res.json({
+                    error: "Oferta no encontrada"
+                })
+            } else {
+                gestorBD.eliminarMensajes(criterioMongo, function (mensajes) {
+                    if (mensajes == null) {
+                        res.status(500);
+                        res.json({
+                            error: "se ha producido un error"
+                        })
+                    } else {
+                        res.status(200);
+                        res.send(JSON.stringify(mensajes));
+                    }
+                });
+            }
+        });
+    });
 
 };

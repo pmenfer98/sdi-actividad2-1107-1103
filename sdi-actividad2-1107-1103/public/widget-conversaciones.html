@@ -19,11 +19,9 @@
                 "token": Cookies.get('token')
             },
             success: function (respuesta) {
-                console.log(respuesta);
                 actualizarTabla(respuesta);
             },
             error: function (error) {
-                console.log(error.toString());
                 alert('Error al listar conversaciones');
                 Cookies.remove('token');
                 $("#contenedor-principal").load("widget-login.html");
@@ -34,7 +32,6 @@
     function actualizarTabla(conversaciones) {
         $("#tablaCuerpo").empty(); // Vaciar la tabla
         for (i = 0; i < conversaciones.length; i++) {
-            console.log(Cookies.get('email').toString());
             if(conversaciones[i].emisor === Cookies.get('email'))
                 $("#tablaCuerpo").append(
                     "<a onclick = mensajes('" + conversaciones[i].oferta._id + "','" + conversaciones[i].receptor + "','" + conversaciones[i].emisor + "')>" +
@@ -44,6 +41,9 @@
                     "</div>"+
                     "<div>"+
                     "<td>" + conversaciones[i].oferta.nombre + "</td>" +
+                    "</div>"+
+                    "<div class='row text-right'>"+
+                    "<a id='eliminarConver' class='btn btn-danger' onclick=eliminarConversacion('" + conversaciones[i].oferta._id + "','" + conversaciones[i].receptor + "','" + conversaciones[i].emisor + "')>Eliminar</a>"+
                     "</div>"+
                     "</div>"+
                     "</a>");
@@ -57,6 +57,9 @@
                     "<div>"+
                     "<td>" + conversaciones[i].oferta.nombre + "</td>" +
                     "</div>"+
+                    "<div class='row text-right'>"+
+                    "<a id='eliminarConver' class='btn btn-danger' onclick=eliminarConversacion('" + conversaciones[i].oferta._id + "','" + conversaciones[i].emisor + "','" + conversaciones[i].receptor + "')>Eliminar</a>"+
+                    "</div>"+
                     "</div>"+
                     "</a>");
         }
@@ -68,10 +71,32 @@
 
     function mensajes(_id, receptor, emisor) {
         idOfertaSeleccionada = _id;
-        console.log(receptor);
         Cookies.set("receptor", receptor);
         Cookies.set("emisor", emisor);
         $("#contenedor-principal").load("widget-mensajes.html");
+    }
+
+    function eliminarConversacion(_id, propietario, comprador){
+        $.ajax({
+            url: URLbase + "/conversaciones/eliminar/" + _id + "/" + propietario + "/" + comprador,
+            type: "GET",
+            data: { },
+            dataType: 'json',
+            headers: {
+                "token": Cookies.get('token')
+            },
+            success: function (respuesta) {
+                console.log("Algo esta haciendo - 000000000000000000000000000000000000000000000000000000000000000000000");
+                $("#contenedor-principal").load("widget-conversaciones.html");
+            },
+            error: function (error) {
+                console.log(error.toString());
+                alert('Error al listar conversaciones');
+                Cookies.remove('token');
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+        $("#contenedor-principal").load("widget-conversaciones.html");
     }
 
 </script>
