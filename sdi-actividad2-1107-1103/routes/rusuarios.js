@@ -26,7 +26,7 @@ module.exports = function (app, swig, gestorBD) {
                 password: seguro
             };
             gestorBD.obtenerUsuarios(criterio, function (usuarios) {
-                if (usuarios == null || usuarios.length === 0) {
+                if (usuarios == null || usuarios.length === 0 || usuarios[0].valid === false) {
                     req.session.user = null;
                     res.redirect("/identificarse" +
                         "?mensaje=Email o password incorrecto" +
