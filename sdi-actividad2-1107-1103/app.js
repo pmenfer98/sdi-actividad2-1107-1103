@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+var moment = require('moment');
+app.set('moment', moment);
 
 var rest = require('request');
 app.set('rest',rest);
