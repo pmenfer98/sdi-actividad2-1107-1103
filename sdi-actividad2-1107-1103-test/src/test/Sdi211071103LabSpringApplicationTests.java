@@ -546,7 +546,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user123");
 		driver.findElement(By.id("logginButton")).click();
-		driver.findElement(By.id("mTienda"));
+		SeleniumUtils.esperarSegundos(driver, 5);
 		driver.findElement(By.id("mPublicaciones"));
 		while (true) {// Eliminamos todas las ofertas publicadas por el usuario
 			try {
@@ -587,7 +587,7 @@ public class Sdi211071103LabSpringApplicationTests {
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user123");
 		driver.findElement(By.id("logginButton")).click();
-		driver.findElement(By.id("mTienda"));
+		SeleniumUtils.esperarSegundos(driver, 5);
 		driver.findElement(By.id("mPublicaciones"));
 		driver.findElement(By.id("mAgregar")).click();
 		SeleniumUtils.esperarSegundos(driver, 5);
@@ -990,5 +990,121 @@ public class Sdi211071103LabSpringApplicationTests {
 
 		driver.findElement(By.id("mDesconectarse")).click();
 	}
+
+	@Test
+	public void test29_login_Valido() throws Exception {
+		driver.get("http://localhost:8081/cliente.html");
+		driver.findElement(By.id("email")).click();
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("email")).sendKeys("user5@gmail.com");
+		driver.findElement(By.id("password")).click();
+		driver.findElement(By.id("password")).clear();
+		driver.findElement(By.id("password")).sendKeys("user123");
+		driver.findElement(By.id("boton-login")).click();
+		
+		SeleniumUtils.esperarSegundos(driver, 5);
+		
+		SeleniumUtils.textoPresentePagina(driver, "Nombre");
+		SeleniumUtils.textoPresentePagina(driver, "Detalles");
+		SeleniumUtils.textoPresentePagina(driver, "Precio");
+		SeleniumUtils.textoPresentePagina(driver, "Vendedor");
+	}
+	
+	@Test
+	public void test30_login_contraseñaIncorrecta() throws Exception {
+		driver.get("http://localhost:8081/cliente.html");
+	    driver.findElement(By.id("email")).click();
+	    driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("user5@gmail.com");
+	    driver.findElement(By.id("password")).click();
+	    driver.findElement(By.id("password")).clear();
+	    driver.findElement(By.id("password")).sendKeys("contraseñaincorrecta");
+	    driver.findElement(By.id("boton-login")).click();
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "Usuario no encontrado");
+	}
+	
+	@Test
+	public void test31_login_contraseñaVacia() throws Exception {
+		driver.get("http://localhost:8081/cliente.html");
+	    driver.findElement(By.id("email")).click();
+	    driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("user5@gmail.com");
+	    driver.findElement(By.id("boton-login")).click();
+	    
+	    SeleniumUtils.textoPresentePagina(driver, "Usuario no encontrado");
+	}
+	
+	@Test
+	public void test32_listadoOfertasDisponibles() throws Exception {
+		driver.get("http://localhost:8081/cliente.html");
+	    driver.findElement(By.id("email")).click();
+	    driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("user5@gmail.com");
+	    driver.findElement(By.id("password")).click();
+	    driver.findElement(By.id("password")).clear();
+	    driver.findElement(By.id("password")).sendKeys("user123");
+	    driver.findElement(By.id("boton-login")).click();
+	    
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    
+	    for(int i = 0; i<20; i++) {
+	    	SeleniumUtils.textoPresentePagina(driver, "oferta" + i);
+	    }
+	    for(int i = 0; i<20; i++) {
+	    	SeleniumUtils.textoPresentePagina(driver, "destacada" + i);
+	    }
+	    
+	}
+	
+	@Test
+	public void test33_enviarMensaje() throws Exception {
+		driver.get("http://localhost:8081/cliente.html");
+	    driver.findElement(By.id("email")).click();
+	    driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("user5@gmail.com");
+	    driver.findElement(By.id("password")).click();
+	    driver.findElement(By.id("password")).clear();
+	    driver.findElement(By.id("password")).sendKeys("user123");
+	    driver.findElement(By.id("boton-login")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("Mensajes")).click();
+	    driver.findElement(By.id("contenidoMensaje")).click();
+	    driver.findElement(By.id("contenidoMensaje")).clear();
+	    driver.findElement(By.id("contenidoMensaje")).sendKeys("Esto es un mensaje de prueba");
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Mensajes'])[1]/following::span[2]")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    SeleniumUtils.textoPresentePagina(driver, "Esto es un mensaje de prueba");
+	   
+	}
+	
+	@Test
+	public void test34_enviarMensaje_conversacionAbierta() throws Exception {
+		driver.get("http://localhost:8081/cliente.html");
+	    driver.findElement(By.id("email")).click();
+	    driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("user5@gmail.com");
+	    driver.findElement(By.id("password")).click();
+	    driver.findElement(By.id("password")).clear();
+	    driver.findElement(By.id("password")).sendKeys("user123");
+	    driver.findElement(By.id("password")).sendKeys(Keys.ENTER);
+	    driver.findElement(By.id("boton-login")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.linkText("Mensajes")).click();
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    driver.findElement(By.id("contenidoMensaje")).click();
+	    driver.findElement(By.id("contenidoMensaje")).clear();
+	    
+	    driver.findElement(By.id("contenidoMensaje")).sendKeys("Segundo mensaje de prueba");
+	    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Mensajes'])[1]/following::span[2]")).click();
+	    
+	    SeleniumUtils.esperarSegundos(driver, 5);
+	    SeleniumUtils.textoPresentePagina(driver, "Esto es un mensaje de prueba");
+	    SeleniumUtils.textoPresentePagina(driver, "Segundo mensaje de prueba");
+	   
+	}
+	
+	
 
 }
