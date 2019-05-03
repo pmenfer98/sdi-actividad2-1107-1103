@@ -9,6 +9,7 @@
     "moment": "^2.24.0",
     "mongodb": "^2.2.33",
     "request": "^2.88.0",
-    "swig-templates": "^2.0.3"
+    "swig-templates": "^2.0.3",
+    "log4js": "^4.1.0"
   }
 }

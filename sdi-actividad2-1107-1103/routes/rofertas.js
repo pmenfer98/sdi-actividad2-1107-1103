@@ -3,24 +3,30 @@ module.exports = function (app, swig, gestorBD) {
         var ofertaId = gestorBD.mongo.ObjectID(req.params.id);
         gestorBD.restarDinero(ofertaId, req.session.user.email, function (dineroActual) {
             if (dineroActual == null) {
+                app.get("logger").info('El usuario no tiene dinero');
                 res.redirect("/tienda?mensaje=Error al comprar");
             } else if (dineroActual < 0) {
+                app.get("logger").info('El dinero es negativo');
                 res.redirect("/tienda?mensaje=No tienes suficiente dinero");
             } else {
                 var criterio = {"_id": ofertaId};
                 gestorBD.obtenerOfertas(criterio, function (ofertas) {
                     if (ofertas == null) {
+                        app.get("logger").info('La oferta no existe');
                         res.redirect("/tienda?mensaje=La oferta no existe");
                     } else {
                         gestorBD.sumarDinero(ofertaId, ofertas[0].propietario, function (dineroPropietario) {
                             if (dineroPropietario == null) {
+                                app.get("logger").info('Error al comprar');
                                 res.redirect("/tienda?mensaje=Error al comprar");
                             } else {
                                 gestorBD.insertarCompra(ofertaId, req.session.user.email, function (idCompra) {
                                     if (idCompra == null) {
+                                        app.get("logger").info('Error al comprar');
                                         res.redirect("/tienda?mensaje=Error al comprar");
                                     } else {
                                         req.session.user.dinero = dineroActual;
+                                        app.get("logger").info('Usuario redirigido a Compras');
                                         res.redirect("/compras");
                                     }
                                 });
@@ -35,6 +41,7 @@ module.exports = function (app, swig, gestorBD) {
         var criterio = {"comprador": req.session.user.email};
         gestorBD.obtenerOfertas(criterio, function (compras) {
             if (compras == null) {
+                app.get("logger").info('Error al listar');
                 res.send("Error al listar ");
             } else {
                 var respuesta = swig.renderFile('views/bcompras.html',
@@ -42,6 +49,7 @@ module.exports = function (app, swig, gestorBD) {
                         user: req.session.user,
                         ofertas: compras
                     });
+                app.get("logger").info('Usuario dirigido a la lista de compras');
                 res.send(respuesta);
             }
         });
@@ -50,6 +58,8 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get('/ofertas/agregar', function (req, res) {
         var respuesta = swig.renderFile('views/bagregar.html', {user: req.session.user});
+        app.get("logger").info('Usuario dirigido a la vista de agregar ofertas');
+
         res.send(respuesta);
     });
 
@@ -57,6 +67,7 @@ module.exports = function (app, swig, gestorBD) {
         var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
+                app.get("logger").info('Error al listar ofertas');
                 res.send(respuesta);
             } else {
                 var respuesta = swig.renderFile('views/boferta.html',
@@ -64,6 +75,7 @@ module.exports = function (app, swig, gestorBD) {
                         user: req.session.user,
                         oferta: ofertas[0]
                     });
+                app.get("logger").info('Usuario dirigido a la lista de ofertas');
                 res.send(respuesta);
             }
         });
@@ -83,30 +95,37 @@ module.exports = function (app, swig, gestorBD) {
                 fecha: dateString
             };
             if (oferta.destacada && req.session.user.dinero < 20) {
+                app.get("logger").info('El usuario no dispone de suficiente dinero');
                 res.redirect("/ofertas/agregar?mensaje=No tienes suficiente dinero para destacar la oferta");
             } else if (oferta.nombre === null || oferta.nombre === undefined || oferta.nombre === '' ||
                 oferta.detalles === null || oferta.detalles === undefined || oferta.detalles === '' ||
                 oferta.precio === null || oferta.precio === undefined || oferta.precio <= 0) {
+                app.get("logger").info('Los campos introducidos no son válidos');
                 res.redirect("/ofertas/agregar?mensaje=Los campos no son validos");
             } else if (isNaN(oferta.precio)) {
-                res.redirect("/ofertas/agregar?mensaje=El valor del precio debe ser numerico");
+                app.get("logger").info('El precio es incorrecto');
+                res.redirect("/ofertas/agregar?mensaje=El valor del precio debe ser numérico");
             } else {
                 gestorBD.insertarOferta(oferta, function (id) {
                     if (id == null) {
+                        app.get("logger").info('Error al añadir la oferta');
                         res.redirect("/publicaciones?mensaje=Error al añadir oferta");
                     } else {
                         if (oferta.destacada) {
                             gestorBD.usuarioDestaca({"email": req.session.user.email}, function (result) {
                                 if (result == null) {
+                                    app.get("logger").info('Error al destacar la oferta');
                                     res.redirect("/publicaciones" +
                                         "?mensaje=Error destacando la oferta" +
                                         "&tipoMensaje=alert-danger ");
                                 } else {
                                     req.session.user.dinero -= 20;
+                                    app.get("logger").info('Usuario dirigido a la lista de publicaciones');
                                     res.redirect("/publicaciones?mensaje=Nueva oferta añadida");
                                 }
                             });
                         } else {
+                            app.get("logger").info('Usuario dirigido a la lista de publicaciones');
                             res.redirect("/publicaciones?mensaje=Nueva oferta añadida");
                         }
                     }
