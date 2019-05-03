@@ -26,13 +26,14 @@ module.exports = function (app, swig, gestorBD) {
                 password: seguro
             };
             gestorBD.obtenerUsuarios(criterio, function (usuarios) {
-                if (usuarios == null || usuarios.length === 0) {
+                if (usuarios == null || usuarios.length === 0 || usuarios[0].valid === false) {
                     req.session.user = null;
                     res.redirect("/identificarse" +
                         "?mensaje=Email o password incorrecto" +
                         "&tipoMensaje=alert-danger ");
                 } else {
                     req.session.user = usuarios[0];
+                    delete req.session.user.password;
                     app.set('current_user', usuarios[0].email);
                     if (req.session.user.rol === 'admin') {
                         console.log("Identificado como administrador");
@@ -77,6 +78,7 @@ module.exports = function (app, swig, gestorBD) {
                                 res.redirect("/registrarse?mensaje=Error al registrar usuario");
                             } else {
                                 req.session.user = usuario;
+                                delete req.session.user.password;
                                 app.set('current_user', usuario.email);
                                 res.redirect("/home");
                             }

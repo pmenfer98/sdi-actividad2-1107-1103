@@ -1,4 +1,6 @@
 module.exports = function (app, gestorBD) {
+    let moment = app.get('moment');
+    moment.locale('es');
     app.get("/api/oferta", function (req, res) {
         let criterioMongo = {
             propietario: {
@@ -82,7 +84,7 @@ module.exports = function (app, gestorBD) {
                     receptor: req.body.receptor,
                     oferta: oferta,
                     mensaje: req.body.mensaje,
-                    fecha: new Date(),
+                    fecha: moment().format('dddd, MMMM Do YYYY, h:mm:ss a'),
                     leido: false
                 };
                 console.log(mensaje.emisor + " EMISOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOS");
@@ -255,5 +257,6 @@ module.exports = function (app, gestorBD) {
             }
         });
     });
+
 
 };
