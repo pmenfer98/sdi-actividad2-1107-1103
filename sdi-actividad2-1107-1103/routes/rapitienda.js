@@ -11,11 +11,13 @@ module.exports = function (app, gestorBD) {
         gestorBD.obtenerOfertas(criterioMongo, function (ofertas) {
             if (ofertas == null) {
                 res.status(500);
+                app.get("logger").error("(API) Se ha producido un error al obtener las ofertas");
                 res.json({
                     error: "se ha producido un error"
                 })
             } else {
                 res.status(200);
+                app.get("logger").info('(API) Se muestra la lista de ofertas');
                 res.send(JSON.stringify(ofertas));
             }
         });
@@ -27,11 +29,13 @@ module.exports = function (app, gestorBD) {
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
                 res.status(500);
+                app.get("logger").error("(API) Se ha producido un error al obtener las ofertas");
                 res.json({
                     error: "se ha producido un error"
                 })
             } else {
                 res.status(200);
+                app.get("logger").info('(API) Se muestra la oferta indicada');
                 res.send(JSON.stringify(ofertas[0]));
             }
         });
@@ -49,6 +53,7 @@ module.exports = function (app, gestorBD) {
         gestorBD.obtenerUsuarios(criterio, function (usuarios) {
             if (usuarios == null || usuarios.length === 0) {
                 res.status(401); // Unauthorized
+                app.get("logger").error("(API) Se ha producido un error al obtener los usuarios");
                 res.json({
                     autenticado: false
                 })
@@ -60,6 +65,7 @@ module.exports = function (app, gestorBD) {
                     },
                     "secreto");
                 res.status(200);
+                app.get("logger").info('(API) El usuario se ha autenticado');
                 res.json({
                     autenticado: true,
                     token: token
@@ -74,6 +80,7 @@ module.exports = function (app, gestorBD) {
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
                 res.status(500);
+                app.get("logger").error("(API) Se ha producido un error al obtener las ofertas");
                 res.json({
                     error: "se ha producido un error"
                 })
@@ -90,11 +97,13 @@ module.exports = function (app, gestorBD) {
                 gestorBD.insertarMensaje(mensaje, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
+                        app.get("logger").error("(API) Se ha producido un error al insertar los mensajes");
                         res.json({
                             error: "se ha producido un error"
                         })
                     } else {
                         res.status(200);
+                        app.get("logger").info('(API) Se muestra la lista de mensajes para la oferta indicada');
                         res.send(JSON.stringify(mensajes));
                     }
                 })
@@ -107,11 +116,13 @@ module.exports = function (app, gestorBD) {
         gestorBD.obtenerOfertas(criterioMongo, function (ofertas) {
             if (ofertas == null) {
                 res.status(500);
+                app.get("logger").error("(API) Oferta no encontrada");
                 res.json({
                     error: "se ha producido un error"
                 })
             } else if (ofertas.length === 0) {
                 res.status(400);
+                app.get("logger").error("(API) Oferta no encontrada");
                 res.json({
                     error: "Oferta no encontrada"
                 })
@@ -152,11 +163,13 @@ module.exports = function (app, gestorBD) {
                 gestorBD.obtenerMensajes(criterio, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
+                        app.get("logger").error("(API) Se ha producido un error al obtener los mensajes");
                         res.json({
                             error: "se ha producido un error"
                         })
                     } else {
                         res.status(200);
+                        app.get("logger").info('(API) Se muestra la conversación indicada');
                         res.send(JSON.stringify(mensajes));
                     }
                 });
@@ -169,15 +182,18 @@ module.exports = function (app, gestorBD) {
         gestorBD.obtenerConversaciones(criterioMensajes, function (ofertas) {
             if (ofertas == null) {
                 res.status(500);
+                app.get("logger").error("(API) Se ha producido un error al listar las conversaciones");
                 res.json({
                     error: "se ha producido un error"
                 })
             } else if (ofertas.length === 0) {
                 res.status(400);
+                app.get("logger").error("(API) Oferta no encontrada");
                 res.json({
                     error: "Oferta no encontrada"
                 })
             } else {
+                app.get("logger").info('(API) Se muestra la lista de conversaciones');
                 res.send(JSON.stringify(ofertas));
             }
         });
@@ -188,11 +204,13 @@ module.exports = function (app, gestorBD) {
         gestorBD.marcarMensajeComoLeido(criterio, function (mensajes) {
             if (mensajes == null) {
                 res.status(500);
+                app.get("logger").error("(API) Se ha producido un error al listar los mensajes");
                 res.json({
                     error: "se ha producido un error"
                 })
             } else {
                 res.status(200);
+                app.get("logger").info('(API) Se marcan los mensajes como leídos');
                 res.send(JSON.stringify(mensajes));
             }
         })
@@ -203,11 +221,13 @@ module.exports = function (app, gestorBD) {
         gestorBD.obtenerOfertas(criterioMongo, function (ofertas) {
             if (ofertas == null) {
                 res.status(500);
+                app.get("logger").error("(API) Se ha producido un error al eliminar los mensajes");
                 res.json({
                     error: "se ha producido un error"
                 })
             } else if (ofertas.length === 0) {
                 res.status(400);
+                app.get("logger").error("(API)Se ha producido un error al buscar la oferta");
                 res.json({
                     error: "Oferta no encontrada"
                 })
@@ -247,6 +267,7 @@ module.exports = function (app, gestorBD) {
                         })
                     } else {
                         res.status(200);
+                        app.get("logger").info('(API) Se eliminan los mensajes señalados');
                         res.send(JSON.stringify(mensajes));
                     }
                 });
@@ -288,6 +309,7 @@ module.exports = function (app, gestorBD) {
         gestorBD.obtenerMensajes(criterioMongo, function (mensajes) {
             if (mensajes == null) {
                 res.status(500);
+                app.get("logger").error("(API) Se ha producido un error al obtener los mensajes");
                 res.json({
                     error: "se ha producido un error"
                 })
@@ -302,6 +324,7 @@ module.exports = function (app, gestorBD) {
                 console.log(req.params.comprador);
                 console.log(idOferta);
                 res.status(400);
+                app.get("logger").error("(API) Se ha producido un error al obtener las ofertas");
                 res.json({
                     error: "Oferta no encontrada"
                 })
@@ -309,11 +332,13 @@ module.exports = function (app, gestorBD) {
                 gestorBD.eliminarMensajes(criterioMongo, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
+                        app.get("logger").error("(API) Se ha producido un error al eliminar los mensajes");
                         res.json({
                             error: "se ha producido un error"
                         })
                     } else {
                         res.status(200);
+                        app.get("logger").info('(API) Se eliminan los mensajes señalados');
                         res.send(JSON.stringify(mensajes));
                     }
                 });

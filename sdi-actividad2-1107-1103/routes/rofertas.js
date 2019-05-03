@@ -120,7 +120,7 @@ module.exports = function (app, swig, gestorBD) {
                                         "&tipoMensaje=alert-danger ");
                                 } else {
                                     req.session.user.dinero -= 20;
-                                    app.get("logger").info('Usuario dirigido a la lista de publicaciones');
+                                    app.get("logger").info('El usuario ha añadido una oferta');
                                     res.redirect("/publicaciones?mensaje=Nueva oferta añadida");
                                 }
                             });
@@ -177,6 +177,7 @@ module.exports = function (app, swig, gestorBD) {
                         actual: pg,
                         busqueda: req.query.busqueda
                     });
+                app.get("logger").info('Usuario dirigido a la tienda');
                 res.send(respuesta);
             }
         });
@@ -215,6 +216,7 @@ module.exports = function (app, swig, gestorBD) {
                         actual: pg,
                         busqueda: req.query.busqueda
                     });
+                app.get("logger").info('Usuario dirigido a la vista Home');
                 res.send(respuesta);
             }
         });
@@ -229,6 +231,7 @@ module.exports = function (app, swig, gestorBD) {
             precio: req.body.precio
         }
         if (req.body == null || req.genero == null || req.precio == null) {
+            app.get("logger").info('Usuario dirigido a la lista de publicaciones');
             res.redirect("/publicaciones" +
                 "?mensaje=Los datos proporcionados no son validos" +
                 "&tipoMensaje=alert-danger ");
@@ -265,6 +268,7 @@ module.exports = function (app, swig, gestorBD) {
         var criterio = {propietario: req.session.user.email};
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
+                app.get("logger").info('Error al listar');
                 res.send("Error al listar ");
             } else {
                 var respuesta = swig.renderFile('views/bpublicacionespropias.html',
@@ -272,6 +276,7 @@ module.exports = function (app, swig, gestorBD) {
                         user: req.session.user,
                         ofertas: ofertas
                     });
+                app.get("logger").info('Usuario dirigido a la lista de publicaciones');
                 res.send(respuesta);
             }
         });
@@ -279,17 +284,20 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get('/oferta/eliminar/:id', function (req, res) {
         if (req.params.id === null || req.params.id === undefined || req.params.id === '') {
+            app.get("logger").info('Error al eliminar la publicación');
             res.redirect("/publicaciones" +
-                "?mensaje=Error al eliminar la publicacion" +
+                "?mensaje=Error al eliminar la publicación" +
                 "&tipoMensaje=alert-danger ");
         } else {
             var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
             gestorBD.eliminarOferta(criterio, function (canciones) {
                 if (canciones == null) {
+                    app.get("logger").info('Error al eliminar la publicación');
                     res.redirect("/publicaciones" +
-                        "?mensaje=Error al eliminar la publicacion" +
+                        "?mensaje=Error al eliminar la publicación" +
                         "&tipoMensaje=alert-danger ");
                 } else {
+                    app.get("logger").info('Usuario redirigido a Publicaciones');
                     res.redirect("/publicaciones");
                 }
             });
@@ -299,29 +307,34 @@ module.exports = function (app, swig, gestorBD) {
     app.get('/oferta/destacar/:id', function (req, res) {
         gestorBD.obtenerOfertas({_id: req.params.id}, function (ofe) {
             if (req.params.id === null || req.params.id === undefined || req.params.id === '') {
+                app.get("logger").info('El valor de la oferta no es válido');
                 res.redirect("/publicaciones" +
-                    "?mensaje=El valor de la oferta no es valido" +
+                    "?mensaje=El valor de la oferta no es válido" +
                     "&tipoMensaje=alert-danger ");
             } else {
                 var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
                 if (req.session.user.dinero < 20) {
+                    app.get("logger").info('El usuario no tiene suficiente dinero para destacar ofertas');
                     res.redirect("/publicaciones" +
                         "?mensaje=No tienes suficiente dinero, necesitas 20€" +
                         "&tipoMensaje=alert-danger ");
                 } else {
                     gestorBD.destacarOferta(criterio, function (ofertas) {
                         if (ofertas == null) {
+                            app.get("logger").info('Error al destacar la publicación');
                             res.redirect("/publicaciones" +
                                 "?mensaje=No se puede destacar esta publicacion" +
                                 "&tipoMensaje=alert-danger ");
                         } else {
                             gestorBD.usuarioDestaca({"email": req.session.user.email}, function (result) {
                                 if (result == null) {
+                                    app.get("logger").info('Error al destacar la publicación');
                                     res.redirect("/publicaciones" +
                                         "?mensaje=Error destacando la oferta" +
                                         "&tipoMensaje=alert-danger ");
                                 } else {
                                     req.session.user.dinero -= 20;
+                                    app.get("logger").info('El usuario ha destacado una oferta');
                                     res.redirect("/publicaciones" +
                                         "?mensaje=Publicacion destacada" +
                                         "&tipoMensaje=alert-success ");
