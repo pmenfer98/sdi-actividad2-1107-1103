@@ -1,4 +1,5 @@
-<div id="widget-canciones" >
+<div id="widget-canciones">
+    <a id="btnConversaciones" onclick="conversaciones()">Conversaciones</a>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -18,51 +19,57 @@
     window.history.pushState("", "", "/cliente.html?w=ofertas");
 
     var ofertas;
-    function cargarOfertas(){
+
+    function cargarOfertas() {
         $.ajax({
             url: URLbase + "/oferta",
             type: "GET",
-            data: { },
+            data: {},
             dataType: 'json',
             headers: {
                 "token": Cookies.get('token')
             },
-            success: function(respuesta) {
+            success: function (respuesta) {
                 ofertas = respuesta;
                 actualizarTabla(ofertas);
             },
-            error : function (error){
+            error: function (error) {
                 alert('Error al listar los amigos. Intentelo de nuevo');
                 Cookies.remove('token');
-                $( "#contenedor-principal" ).load("widget-login.html");
+                $("#contenedor-principal").load("widget-login.html");
             }
         });
     }
-    function actualizarTabla(ofertasMostrar){
-        $( "#tablaCuerpo" ).empty(); // Vaciar la tabla
+
+    function actualizarTabla(ofertasMostrar) {
+        $("#tablaCuerpo").empty(); // Vaciar la tabla
         for (i = 0; i < ofertasMostrar.length; i++) {
-            if(ofertasMostrar[i].propietario != token.usuario)
-            $( "#tablaCuerpo" ).append(
-                "<tr id="+ofertasMostrar[i]._id+">"+
-                "<td>"+ofertasMostrar[i].nombre+"</td>" +
-                "<td>"+ofertasMostrar[i].detalles+"</td>" +
-                "<td>"+ofertasMostrar[i].precio+" € </td>" +
-                "<td>"+ofertasMostrar[i].propietario+"</td>" +
-                "<td>"+
-                "<a onclick = mensajes('"+ofertasMostrar[i]._id+"','"+ofertasMostrar[i].propietario+"')>Mensajes</a><br>"+
-                "</td>"+
-                "</tr>" );
+            if (ofertasMostrar[i].propietario != token.usuario)
+                $("#tablaCuerpo").append(
+                    "<tr id=" + ofertasMostrar[i]._id + ">" +
+                    "<td>" + ofertasMostrar[i].nombre + "</td>" +
+                    "<td>" + ofertasMostrar[i].detalles + "</td>" +
+                    "<td>" + ofertasMostrar[i].precio + " € </td>" +
+                    "<td>" + ofertasMostrar[i].propietario + "</td>" +
+                    "<td>" +
+                    "<a onclick = mensajes('" + ofertasMostrar[i]._id + "','" + ofertasMostrar[i].propietario + "','" + token.usuario + "')>Mensajes</a><br>" +
+                    "</td>" +
+                    "</tr>");
         }
     }
+
     cargarOfertas();
 
+    function conversaciones() {
+        $("#contenedor-principal").load("widget-conversaciones.html");
+    }
 
-
-    function mensajes(_id, receptor) {
+    function mensajes(_id, receptor, emisor) {
         idOfertaSeleccionada = _id;
         console.log(receptor);
         Cookies.set("receptor", receptor);
-        $( "#contenedor-principal" ).load( "widget-mensajes.html");
+        Cookies.set("emisor", emisor);
+        $("#contenedor-principal").load("widget-mensajes.html");
     }
 
 </script>

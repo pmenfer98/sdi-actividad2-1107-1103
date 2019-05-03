@@ -1,29 +1,22 @@
 <div id="widget-detalles">
     <h2>Mensajes</h2>
     <div id="mensajes" class="row">
-        <div id="mensajeEnviado" class="form-group">
-            <div class="text-right">
-                <span>Texto de prueba</span>
-            </div>
-        </div>
-        <div id="mensajeRecibido" class="form-group">
-            <div class="text-left">
-                <span>Texto de prueba</span>
-            </div>
-        </div>
+
     </div>
     <div>
         <input id="contenidoMensaje" type="text" class="form-control"
                placeholder="Envie un mensaje" name="contenido"/>
-        <button id="btnEnviar" class="btn btn-warning">
-            <span>Enviar</span>
-        </button>
+        <span>
+            <button id="btnEnviar" class="btn btn-warning">
+                <span>Enviar</span>
+            </button>
+        </span>
     </div>
 </div>
 
 <script>
 
-    window.history.pushState("", "", "/cliente.html?w=conversations");
+    window.history.pushState("", "", "/cliente.html?w=mensajes");
 
     cargarMensajes();
 
@@ -46,13 +39,14 @@
                 $("#alertMessage").remove();
                 $("#mensajes")
                     .prepend("<div id='alertMessage' class='alert alert-danger'>Error enviando el mensaje</div>");
+                $("#contenidoMensaje").value = "";
             }
         });
     });
 
     function cargarMensajes() {
         $.ajax({
-            url: URLbase + "/conversacion/oferta/" + idOfertaSeleccionada,
+            url: URLbase + "/conversacion/oferta/" + idOfertaSeleccionada + "/" + Cookies.get('receptor'),
             type: "GET",
             data: {},
             dataType: 'json',
@@ -80,9 +74,9 @@
                 $("#mensajes").append(
                     "<div id='mensajeEnviado' class='form-group'>" +
                     "<div class='text-right'>" +
-                    "<p id='nombreEmisor'>    " + mensajesMostrar[i].emisor + "    </p>" +
+                    "<p id='nombreEmisor'> -- " + mensajesMostrar[i].emisor + " -- </p>" +
                     "<p>" + mensajesMostrar[i].mensaje + "</p>" +
-                    "<p id='fechaEmisor'>    " + mensajesMostrar[i].fecha + "    </p>" +
+                    "<p id='fechaEmisor'> -- " + mensajesMostrar[i].fecha + " -- </p>" +
                     "</div>" +
                     "</div>"
                 );
@@ -91,9 +85,9 @@
                 $("#mensajes").append(
                     "<div id='mensajeRecibido' class='form-group'>" +
                     "<div class='text-left'>" +
-                    "<p id='nombreReceptor'>    " + mensajesMostrar[i].emisor + "    </p>" +
+                    "<p id='nombreReceptor'> -- " + mensajesMostrar[i].emisor + " -- </p>" +
                     "<p>" + mensajesMostrar[i].mensaje + "</p>" +
-                    "<p id='fechaReceptor'>    " + mensajesMostrar[i].fecha + "    </p>" +
+                    "<p id='fechaReceptor'> -- " + mensajesMostrar[i].fecha + " -- </p>" +
                     "</div>" +
                     "</div>"
                 );
