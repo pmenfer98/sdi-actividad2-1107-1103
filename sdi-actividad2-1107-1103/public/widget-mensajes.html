@@ -15,11 +15,8 @@
 </div>
 
 <script>
-
     window.history.pushState("", "", "/cliente.html?w=mensajes");
-
     cargarMensajes();
-
     $("#btnEnviar").click(function () {
         $.ajax({
             url: URLbase + "/mensaje/oferta/" + idOfertaSeleccionada,

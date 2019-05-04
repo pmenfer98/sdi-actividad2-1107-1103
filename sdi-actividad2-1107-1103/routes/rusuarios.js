@@ -141,26 +141,31 @@ module.exports = function (app, swig, gestorBD) {
     app.post('/user/delete', function (req, res) {
         let idsUsers = req.body.idsUser;
         //si es solo un usuario, creamos un array y lo metemos para trabajar con forEach
-        if (!Array.isArray(idsUsers)) {
-            let aux = idsUsers;
-            idsUsers = [];
-            idsUsers.push(aux);
-        }
-
-        let criterio = {
-            email: {$in: idsUsers}
-        };
-        let nuevoCriterio = {valid: false};
-        gestorBD.deleteUsers(criterio, nuevoCriterio, function (usuarios) {
-            if (usuarios == null || usuarios.length === 0) {
-                app.get("logger").error("Los usuarios no pudieron eliminarse");
-                res.redirect("/listarUsuarios" +
-                    "?mensaje=Los usuarios no pudieron eliminarse");
-            } else {
-                app.get("logger").info("Los usuarios se eliminaron correctamente");
-                res.redirect("/listarUsuarios" +
-                    "?mensaje=Los usuarios se eliminaron correctamente");
+        if (idsUsers === undefined) {
+            res.redirect("/listarUsuarios" +
+                "?mensaje=Los usuarios no pudieron eliminarse" + "&tipoMensaje=alert-danger ");
+        } else {
+            if (!Array.isArray(idsUsers)) {
+                let aux = idsUsers;
+                idsUsers = [];
+                idsUsers.push(aux);
             }
-        });
+
+            let criterio = {
+                email: {$in: idsUsers}
+            };
+            let nuevoCriterio = {valid: false};
+            gestorBD.deleteUsers(criterio, nuevoCriterio, function (usuarios) {
+                if (usuarios == null || usuarios.length === 0) {
+                    app.get("logger").error("Los usuarios no pudieron eliminarse");
+                    res.redirect("/listarUsuarios" +
+                        "?mensaje=Los usuarios no pudieron eliminarse");
+                } else {
+                    app.get("logger").info("Los usuarios se eliminaron correctamente");
+                    res.redirect("/listarUsuarios" +
+                        "?mensaje=Los usuarios se eliminaron correctamente");
+                }
+            });
+        }
     });
 };

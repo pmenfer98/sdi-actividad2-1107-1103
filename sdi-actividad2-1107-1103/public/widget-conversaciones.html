@@ -13,8 +13,8 @@
         $.ajax({
             url: URLbase + "/conversaciones/",
             type: "GET",
-            data: {},
             dataType: 'json',
+            data: {},
             headers: {
                 "token": Cookies.get('token')
             },
@@ -32,7 +32,7 @@
     function actualizarTabla(conversaciones) {
         $("#tablaCuerpo").empty(); // Vaciar la tabla
         for (i = 0; i < conversaciones.length; i++) {
-            if(conversaciones[i].emisor === Cookies.get('email'))
+            if (conversaciones[i].emisor === Cookies.get('email'))
                 $("#tablaCuerpo").append(
                     "<div onclick = mensajes('" + conversaciones[i].oferta._id + "','" + conversaciones[i].receptor + "','" + conversaciones[i].emisor + "')>" +
                     "<div id='conversacion' class='form-group'>" +
@@ -66,8 +66,6 @@
 
     }
 
-    cargarConversaciones();
-
 
     function mensajes(_id, receptor, emisor) {
         idOfertaSeleccionada = _id;
@@ -76,11 +74,11 @@
         $("#contenedor-principal").load("widget-mensajes.html");
     }
 
-    function eliminarConversacion(_id, propietario, comprador){
+    function eliminarConversacion(_id, propietario, comprador) {
         $.ajax({
             url: URLbase + "/conversaciones/eliminar/" + _id + "/" + propietario + "/" + comprador,
             type: "GET",
-            data: { },
+            data: {},
             dataType: 'json',
             headers: {
                 "token": Cookies.get('token')
@@ -99,4 +97,24 @@
         $("#contenedor-principal").load("widget-conversaciones.html");
     }
 
+    function marcarComoLeido() {
+        $.ajax({
+            url: URLbase + "/mensaje/leido/:id",
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {
+                "token": Cookies.get('token')
+            },
+            success: function (respuesta) {
+            },
+            error: function (error) {
+                console.log(error.toString());
+                alert('Error al marcar como leído');
+            }
+        })
+    }
+
+
+    cargarConversaciones();
 </script>

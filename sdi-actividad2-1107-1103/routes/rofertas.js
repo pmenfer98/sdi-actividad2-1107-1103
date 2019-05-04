@@ -41,7 +41,7 @@ module.exports = function (app, swig, gestorBD) {
         var criterio = {"comprador": req.session.user.email};
         gestorBD.obtenerOfertas(criterio, function (compras) {
             if (compras == null) {
-                app.get("logger").info('Error al listar');
+                app.get("logger").error('Error al listar');
                 res.send("Error al listar ");
             } else {
                 var respuesta = swig.renderFile('views/bcompras.html',
@@ -68,7 +68,7 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
                 app.get("logger").info('Error al listar ofertas');
-                res.send(respuesta);
+                res.redirect("/tienda?mensaje=Error al listar las ofertas");
             } else {
                 var respuesta = swig.renderFile('views/boferta.html',
                     {
@@ -92,7 +92,8 @@ module.exports = function (app, swig, gestorBD) {
                 precio: req.body.precio,
                 destacada: (req.body.destacada === "on"),
                 propietario: req.session.user.email,
-                fecha: dateString
+                fecha: dateString,
+                comprador: ''
             };
             if (oferta.destacada && req.session.user.dinero < 20) {
                 app.get("logger").info('El usuario no dispone de suficiente dinero');

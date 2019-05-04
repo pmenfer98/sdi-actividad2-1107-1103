@@ -24,7 +24,8 @@
 </div>
 
 <script>
-    $("#boton-login").click(function () {
+    window.history.pushState("", "", "/cliente.html?w=login");
+    $("#boton-login").click(function(){
         $.ajax({
             url: URLbase + "/autenticar",
             type: "POST",
