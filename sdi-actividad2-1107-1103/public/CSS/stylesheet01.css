@@ -73,7 +73,6 @@
 }
 
 #fechaReceptor{
-    font-size: 10px;
     background-color: #798fa6;
     color: white;
     border-radius: 5px;
@@ -85,13 +84,14 @@
 
 #conversacion{
     padding: 20px;
-    background-color: lightcyan;
+    background-color: #ced4ff;
     border-radius: 20px;
+    cursor: pointer;
 }
 
 #propietarioChat{
-    font-size: 20px;
-    background-color: #798fa6;
+    font-size: 15px;
+    background-color: #6e83a6;
     color: white;
-    border-radius: 10px;
+    border-radius: 6px;
 }
