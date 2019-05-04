@@ -56,9 +56,10 @@
                 actualizarMensajes(respuesta);
             },
             error: function (error) {
+                console.log(error);
                 $("#alertMessage").remove();
                 $("#mensajes")
-                    .prepend("<div id='alertMessage' class='alert alert-danger'>Error enviando el mensaje</div>");
+                    .prepend("<div id='alertMessage' class='alert alert-danger'>Error cargando los mensajes</div>");
             }
         });
     }

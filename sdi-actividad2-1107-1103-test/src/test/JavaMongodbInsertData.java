@@ -1,6 +1,7 @@
 package test;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import org.bson.Document;
 
@@ -42,6 +43,7 @@ public class JavaMongodbInsertData {
 	public void insertOneDataTest() throws ParseException {
 		try {
 			MongoCollection<Document> col = getMongodb().getCollection("usuarios");
+			ArrayList<Document> ofertas = new ArrayList<Document>();
 			col.insertOne(new Document().append("nombre", "admin").append("apellidos", "administrador")
 					.append("email", "admin@email.com")
 					.append("password", "ebd5359e500475700c6cc3dd4af89cfd0569aa31724a1bf10ed1e3019dcfdb11")
@@ -59,10 +61,12 @@ public class JavaMongodbInsertData {
 			col = getMongodb().getCollection("ofertas");			
 			for(int i = 0; i<100; i++) {
 				int counter = i/10;
-				col.insertOne(new Document().append("nombre", "oferta" + i).append("detalles", "Detalles de la oferta " + i)
+				Document oferta = new Document().append("nombre", "oferta" + i).append("detalles", "Detalles de la oferta " + i)
 						.append("precio", i+"0")
 						.append("propietario", "user" + counter + "@gmail.com")
-						.append("fecha", "04/28/2019"));
+						.append("fecha", "04/28/2019");
+				ofertas.add(oferta);
+				col.insertOne(oferta);
 			}
 			for(int i = 0; i<100; i++) {
 				int counter = i/10;
@@ -72,6 +76,22 @@ public class JavaMongodbInsertData {
 						.append("fecha", "04/28/2019")
 						.append("destacada", true));
 			}
+			/**
+			 * La base de datos estara vacia al iniciar los test ya que si añadimos la oferta
+			 * a los mensajes, el id de la oferta almacenada en el mensaje y el de la oferta
+			 * original no coincidiran y por lo tanto no se mostraran en la conversacion.
+			 * Sin embargo si los añadimos desde la aplicacion si coincidiran y por lo tanto el funcionamiento
+			 * sera el esperado
+			 */
+			/*col = getMongodb().getCollection("mensajes");
+			for(int i = 0; i<100; i++) {
+				int counter = i/10;
+				col.insertOne(new Document().append("emisor", "user" + counter + "@gmail.com").append("receptor", "user" + (9-counter) + "@gmail.com")
+						.append("oferta", ofertas.get(i))
+						.append("mensaje", "MENSAJEEEEEEE" + i)
+						.append("fecha", "sabado, mayo 4º 2019 , 1:18:"+ counter + " pm")
+						.append("leido", false));
+			}*/
 		} catch (Exception ex) {
 			System.out.print(ex.toString());
 		}
@@ -81,6 +101,7 @@ public class JavaMongodbInsertData {
 	public void removeDataTest() {
 		getMongodb().getCollection("ofertas").drop();
 		getMongodb().getCollection("usuarios").drop();
+		getMongodb().getCollection("mensajes").drop();
 	}
 
 	public MongoClient getMongoClient() {

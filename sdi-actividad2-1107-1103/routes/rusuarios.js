@@ -55,17 +55,17 @@ module.exports = function (app, swig, gestorBD) {
 
     app.post('/usuario', function (req, res) {
         var len = req.body.email;
-        if (req.body.nombre == null || req.body.nombre == '' || req.body.apellidos == null || req.body.apellidos == '' ||
-            req.body.email == null || req.body.email == '' || req.body.password == null || req.body.password == '' ||
-            req.body.repeatPassword == null || req.body.repeatPassword == '') {
+        if (req.body.nombre == null || req.body.nombre === '' || req.body.apellidos == null || req.body.apellidos === '' ||
+            req.body.email == null || req.body.email === '' || req.body.password == null || req.body.password === '' ||
+            req.body.repeatPassword == null || req.body.repeatPassword === '') {
             res.redirect("/registrarse?mensaje=Debes rellenar todos los campos");
-        } else if (len.split("@").length != 2) {
+        } else if (len.split("@").length !== 2) {
             app.get("logger").error("El email no es válido");
             res.redirect("/registrarse?mensaje=El email no es válido");
         } else if (req.body.password === req.body.repeatPassword) {
             var email = req.body.email
             var aux = email.split(".");
-            if (aux.length == 2) {
+            if (aux.length === 2) {
                 var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
                     .update(req.body.password).digest('hex');
                 var usuario = {
@@ -80,7 +80,7 @@ module.exports = function (app, swig, gestorBD) {
                     email: usuario.email
                 }
                 gestorBD.obtenerUsuarios(criterio, function (users) {
-                    if (users.length == 0) {
+                    if (users.length === 0) {
                         gestorBD.insertarUsuario(usuario, function (id) {
                             if (id == null) {
                                 app.get("logger").error("Error al registrar usuario");

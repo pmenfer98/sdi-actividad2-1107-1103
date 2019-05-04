@@ -53,7 +53,7 @@ gestorBD.init(app, mongo);
 
 var routerUserSession = express.Router();
 routerUserSession.use(function (req, res, next) {
-    if (req.session.user != null || req.session.user != undefined) { // dejamos correr la petición
+    if (req.session.user != null || req.session.user !== undefined) { // dejamos correr la petición
         if (req.session.user.email === app.get('current_user')) { // dejamos correr la petición
             next();
         } else {
@@ -68,7 +68,7 @@ routerUserSession.use(function (req, res, next) {
 
 var routerUserLogged = express.Router();
 routerUserLogged.use(function (req, res, next) {
-    if (req.session.user == null || req.session.user == undefined) { // dejamos correr la petición
+    if (req.session.user == null || req.session.user === undefined) { // dejamos correr la petición
         next();
     } else {
         res.redirect("/home");
