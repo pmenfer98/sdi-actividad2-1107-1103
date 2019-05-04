@@ -314,12 +314,6 @@ module.exports = function (app, gestorBD) {
                     error: "se ha producido un error"
                 })
             } else if (mensajes.length === 0) {
-                console.log("BORRADO");
-                console.log("BORRADO");
-                console.log("BORRADO");
-                console.log("BORRADO");
-                console.log("BORRADO");
-                console.log("BORRADO");
                 console.log(req.params.propietario);
                 console.log(req.params.comprador);
                 console.log(idOferta);
