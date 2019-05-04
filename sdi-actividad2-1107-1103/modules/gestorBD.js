@@ -394,7 +394,7 @@ module.exports = {
             if (err) {
                 funcionCallback(null);
             } else {
-                var collection = db.collection('mensajes');
+                var collection = db.collection('conversaciones');
                 collection.find(criterio).toArray(function (err, result) {
                     if (err) {
                         funcionCallback(null);
@@ -423,7 +423,45 @@ module.exports = {
                 });
             }
         });
-    }
+    },
+
+    buscarConversaciones: function (criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('conversaciones');
+                collection.find(criterio).toArray(function (err, canciones) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(canciones);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+    insertarConversacion: function (conversacion, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('conversaciones');
+                collection.insert(conversacion, function (err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result.ops[0]);
+                        console.log("Conversación añadida")
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+
+
 
 
 };

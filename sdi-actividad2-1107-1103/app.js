@@ -159,6 +159,7 @@ app.use('/api/conversacion/oferta/:id/:receptor', routerUsuarioToken);
 app.use('/api/mensaje/eliminar/:id', routerUsuarioToken);
 app.use('/api/conversaciones', routerUsuarioToken);
 app.use('/api/conversacion/eliminar/:id/:propietario/:comprador', routerUsuarioToken);
+app.use('/api/conversacion/usuario', routerUsuarioToken);
 
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);
