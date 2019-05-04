@@ -101,7 +101,6 @@ routerUsuarioToken.use(function (req, res, next) {
     if (token != null) {
 
         jwt.verify(token, 'secreto', function (err, infoToken) {
-            console.log(infoToken)
             if (err || (Date.now() / 1000 - infoToken.tiempo) > 24000) {
                 res.status(403); // Forbidden
                 res.json({
@@ -160,6 +159,7 @@ app.use('/api/mensaje/eliminar/:id', routerUsuarioToken);
 app.use('/api/conversaciones', routerUsuarioToken);
 app.use('/api/conversacion/eliminar/:id/:propietario/:comprador', routerUsuarioToken);
 app.use('/api/conversacion/usuario', routerUsuarioToken);
+app.use('/api/conversacion/nombre/:id', routerUsuarioToken);
 
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);

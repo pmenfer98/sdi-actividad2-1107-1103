@@ -34,38 +34,39 @@
         for (i = 0; i < conversaciones.length; i++) {
             if (conversaciones[i].emisor === Cookies.get('email'))
                 $("#tablaCuerpo").append(
-                    "<div onclick = mensajes('" + conversaciones[i].oferta._id + "','" + conversaciones[i].receptor + "','" + conversaciones[i].emisor + "')>" +
+                    "<div>" +
                     "<div id='conversacion' class='form-group'>" +
                     "<div>"+
                     "<p id = 'propietarioChat'>" + conversaciones[i].receptor.toUpperCase() + "</p>" +
                     "</div>"+
                     "<div>"+
-                    "<p>" + conversaciones[i].oferta.nombre + "</p>" +
+                    "<p>" + conversaciones[i].nombreOferta + "</p>" +
                     "</div>"+
                     "<div class='row text-right'>"+
-                    "<a id='eliminarConver' class='btn btn-danger' onclick=eliminarConversacion('" + conversaciones[i].oferta._id + "','" + conversaciones[i].receptor + "','" + conversaciones[i].emisor + "')>Eliminar</a>"+
+                    "<a id='entrarConver' class='btn btn-info' onclick=mensajes('" + conversaciones[i].oferta + "','" + conversaciones[i].receptor + "','" + conversaciones[i].emisor +"')>Mensajes</a>"+
+                    "<a id='eliminarConver' class='btn btn-danger' onclick=eliminarConversacion('" + conversaciones[i]._id + "')>Eliminar</a>"+
                     "</div>"+
                     "</div>"+
                     "</div>");
             else
                 $("#tablaCuerpo").append(
-                    "<div onclick = mensajes('" + conversaciones[i].oferta._id + "','" + conversaciones[i].emisor + "','" + conversaciones[i].receptor + "')>" +
+                    "<div>" +
                     "<div id='conversacion' class='form-group'>" +
                     "<div>"+
                     "<p id = 'propietarioChat'>" + conversaciones[i].emisor.toUpperCase() + "</p>" +
                     "</div>"+
                     "<div>"+
-                    "<p>" + conversaciones[i].oferta.nombre + "</p>" +
+                    "<p>" + conversaciones[i].nombreOferta + "</p>" +
                     "</div>"+
                     "<div class='row text-right'>"+
-                    "<a id='eliminarConver' class='btn btn-danger' onclick=eliminarConversacion('" + conversaciones[i].oferta._id + "','" + conversaciones[i].emisor + "','" + conversaciones[i].receptor + "')>Eliminar</a>"+
+                    "<a id='entrarConver' class='btn btn-info' onclick=mensajes('" + conversaciones[i].oferta + "','" + conversaciones[i].emisor + "','" + conversaciones[i].receptor +"')>Mensajes</a>"+
+                    "<a id='eliminarConver' class='btn btn-danger' onclick=eliminarConversacion('" + conversaciones[i]._id + "')>Eliminar</a>"+
                     "</div>"+
                     "</div>"+
                     "</div>");
         }
 
     }
-
 
     function mensajes(_id, receptor, emisor) {
         idOfertaSeleccionada = _id;
@@ -74,9 +75,9 @@
         $("#contenedor-principal").load("widget-mensajes.html");
     }
 
-    function eliminarConversacion(_id, propietario, comprador) {
+    function eliminarConversacion(_id) {
         $.ajax({
-            url: URLbase + "/conversaciones/eliminar/" + _id + "/" + propietario + "/" + comprador,
+            url: URLbase + "/conversaciones/eliminar/" + _id ,
             type: "GET",
             data: {},
             dataType: 'json',
@@ -84,11 +85,9 @@
                 "token": Cookies.get('token')
             },
             success: function (respuesta) {
-                console.log("Algo esta haciendo - 000000000000000000000000000000000000000000000000000000000000000000000");
                 $("#contenedor-principal").load("widget-conversaciones.html");
             },
             error: function (error) {
-                console.log(error.toString());
                 alert('Error al listar conversaciones');
                 Cookies.remove('token');
                 $("#contenedor-principal").load("widget-login.html");
@@ -109,7 +108,6 @@
             success: function (respuesta) {
             },
             error: function (error) {
-                console.log(error.toString());
                 alert('Error al marcar como leído');
             }
         })

@@ -120,6 +120,7 @@ module.exports = function (app, gestorBD) {
                     if (conversaciones.length === 0) {
                         let conversacion = {
                             oferta: gestorBD.mongo.ObjectID(req.params.id),
+                            nombreOferta: ofertas[0].nombre,
                             receptor: req.body.receptor,
                             emisor: res.usuario,
                             numMensajesNoLeidos: 0
@@ -252,6 +253,30 @@ module.exports = function (app, gestorBD) {
         });
     });
 
+    app.get("/api/conversacion/nombre/:id", function (req, res) {
+        let criterioMensajes = {
+            _id: gestorBD.mongo.ObjectID(req.params.id)
+        };
+        gestorBD.obtenerOfertas(criterioMensajes, function (ofertas) {
+            if (ofertas == null) {
+                res.status(500);
+                app.get("logger").error("(API) Se ha producido un error al listar las conversaciones");
+                res.json({
+                    error: "se ha producido un error"
+                })
+            } else if (ofertas.length === 0) {
+                res.status(400);
+                app.get("logger").error("(API) Oferta no encontrada");
+                res.json({
+                    error: "Oferta no encontrada"
+                })
+            } else {
+                app.get("logger").info('(API) Se muestra la lista de conversaciones');
+                res.send(JSON.stringify(ofertas));
+            }
+        });
+    });
+
     app.get("/api/conversaciones", function (req, res) {
         let usuario = res.usuario;
         let criterioMensajes = {
@@ -271,13 +296,7 @@ module.exports = function (app, gestorBD) {
                 app.get("logger").error("(API) Se ha producido un error al listar las conversaciones");
                 res.json({
                     error: "se ha producido un error"
-                })
-            } else if (ofertas.length === 0) {
-                res.status(400);
-                app.get("logger").error("(API) Oferta no encontrada");
-                res.json({
-                    error: "Oferta no encontrada"
-                })
+                });
             } else {
                 app.get("logger").info('(API) Se muestra la lista de conversaciones');
                 res.send(JSON.stringify(ofertas));
@@ -318,33 +337,6 @@ module.exports = function (app, gestorBD) {
                     error: "Oferta no encontrada"
                 })
             } else {
-                let oferta = ofertas[0];
-                let propietario = oferta.propietario;
-                let usuario = res.usuario;
-                let criterio = {
-                    $or: [
-                        {
-                            $and: [
-                                {
-                                    emisor: usuario
-                                },
-                                {
-                                    receptor: propietario
-                                }
-                            ]
-                        },
-                        {
-                            $and: [
-                                {
-                                    emisor: propietario
-                                },
-                                {
-                                    receptor: usuario
-                                }
-                            ]
-                        }
-                    ]
-                };
                 gestorBD.eliminarMensajes(criterio, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
@@ -361,38 +353,10 @@ module.exports = function (app, gestorBD) {
         });
     });
 
-    app.get("/api/conversaciones/eliminar/:id/:propietario/:comprador", function (req, res) {
+    app.get("/api/conversaciones/eliminar/:id", function (req, res) {
         let idOferta = gestorBD.mongo.ObjectID(req.params.id);
-        let criterioMongo = {
-            $or: [
-                {
-                    $and: [
-                        {
-                            emisor: req.params.propietario
-                        },
-                        {
-                            receptor: req.params.comprador
-                        },
-                        {
-                            oferta: {_id: idOferta}
-                        }
-                    ]
-                },
-                {
-                    $and: [
-                        {
-                            emisor: req.params.comprador
-                        },
-                        {
-                            receptor: req.params.propietario
-                        },
-                        {
-                            oferta: {_id: idOferta}
-                        }
-                    ]
-                }
-            ]
-        };
+        let criterioMongo = {idConversacion: idOferta};
+        let criterioConvers = {_id: idOferta};
         gestorBD.obtenerMensajes(criterioMongo, function (mensajes) {
             if (mensajes == null) {
                 res.status(500);
@@ -401,9 +365,6 @@ module.exports = function (app, gestorBD) {
                     error: "se ha producido un error"
                 })
             } else if (mensajes.length === 0) {
-                console.log(req.params.propietario);
-                console.log(req.params.comprador);
-                console.log(idOferta);
                 res.status(400);
                 app.get("logger").error("(API) Se ha producido un error al obtener las ofertas");
                 res.json({
@@ -418,9 +379,19 @@ module.exports = function (app, gestorBD) {
                             error: "se ha producido un error"
                         })
                     } else {
-                        res.status(200);
-                        app.get("logger").info('(API) Se eliminan los mensajes señalados');
-                        res.send(JSON.stringify(mensajes));
+                        gestorBD.eliminarConversaciones(criterioConvers, function (mensajes) {
+                            if (mensajes == null) {
+                                res.status(500);
+                                app.get("logger").error("(API) Se ha producido un error al eliminar los mensajes");
+                                res.json({
+                                    error: "se ha producido un error"
+                                })
+                            } else {
+                                res.status(200);
+                                app.get("logger").info('(API) Se eliminan los mensajes señalados');
+                                res.send(JSON.stringify(mensajes));
+                            }
+                        });
                     }
                 });
             }

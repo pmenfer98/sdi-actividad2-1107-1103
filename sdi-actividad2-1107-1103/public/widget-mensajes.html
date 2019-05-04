@@ -53,7 +53,6 @@
                 actualizarMensajes(respuesta);
             },
             error: function (error) {
-                console.log(error);
                 $("#alertMessage").remove();
                 $("#mensajes")
                     .prepend("<div id='alertMessage' class='alert alert-danger'>Error cargando los mensajes</div>");
@@ -64,9 +63,7 @@
     function actualizarMensajes(mensajesMostrar) {
         var i;
         $("#mensajes").empty(); // Vaciar la tabla
-        console.log("Mensajes de la conversacion: " + mensajesMostrar.length);
         for (i = 0; i < mensajesMostrar.length; i++) {
-            console.log(mensajesMostrar[i].emisor + "       " + Cookies.get('email'));
             if (mensajesMostrar[i].emisor === Cookies.get('email')) {
                 $("#mensajes").append(
                     "<div id='mensajeEnviado' class='form-group'>" +
