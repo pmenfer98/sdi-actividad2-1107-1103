@@ -34,34 +34,34 @@
         for (i = 0; i < conversaciones.length; i++) {
             if(conversaciones[i].emisor === Cookies.get('email'))
                 $("#tablaCuerpo").append(
-                    "<a onclick = mensajes('" + conversaciones[i].oferta._id + "','" + conversaciones[i].receptor + "','" + conversaciones[i].emisor + "')>" +
+                    "<div onclick = mensajes('" + conversaciones[i].oferta._id + "','" + conversaciones[i].receptor + "','" + conversaciones[i].emisor + "')>" +
                     "<div id='conversacion' class='form-group'>" +
                     "<div>"+
-                    "<td id = 'propietarioChat'>" + conversaciones[i].receptor.toUpperCase() + "</td>" +
+                    "<p id = 'propietarioChat'>" + conversaciones[i].receptor.toUpperCase() + "</p>" +
                     "</div>"+
                     "<div>"+
-                    "<td>" + conversaciones[i].oferta.nombre + "</td>" +
+                    "<p>" + conversaciones[i].oferta.nombre + "</p>" +
                     "</div>"+
                     "<div class='row text-right'>"+
                     "<a id='eliminarConver' class='btn btn-danger' onclick=eliminarConversacion('" + conversaciones[i].oferta._id + "','" + conversaciones[i].receptor + "','" + conversaciones[i].emisor + "')>Eliminar</a>"+
                     "</div>"+
                     "</div>"+
-                    "</a>");
+                    "</div>");
             else
                 $("#tablaCuerpo").append(
-                    "<a onclick = mensajes('" + conversaciones[i].oferta._id + "','" + conversaciones[i].emisor + "','" + conversaciones[i].receptor + "')>" +
+                    "<div onclick = mensajes('" + conversaciones[i].oferta._id + "','" + conversaciones[i].emisor + "','" + conversaciones[i].receptor + "')>" +
                     "<div id='conversacion' class='form-group'>" +
                     "<div>"+
-                    "<td id = 'propietarioChat'>" + conversaciones[i].emisor.toUpperCase() + "</td>" +
+                    "<p id = 'propietarioChat'>" + conversaciones[i].emisor.toUpperCase() + "</p>" +
                     "</div>"+
                     "<div>"+
-                    "<td>" + conversaciones[i].oferta.nombre + "</td>" +
+                    "<p>" + conversaciones[i].oferta.nombre + "</p>" +
                     "</div>"+
                     "<div class='row text-right'>"+
                     "<a id='eliminarConver' class='btn btn-danger' onclick=eliminarConversacion('" + conversaciones[i].oferta._id + "','" + conversaciones[i].emisor + "','" + conversaciones[i].receptor + "')>Eliminar</a>"+
                     "</div>"+
                     "</div>"+
-                    "</a>");
+                    "</div>");
         }
 
     }
