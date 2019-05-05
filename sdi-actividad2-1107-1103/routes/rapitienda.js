@@ -83,115 +83,119 @@ module.exports = function (app, gestorBD) {
     });
 
     app.post("/api/mensaje/oferta/:id", function (req, res) {
-        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
-        gestorBD.obtenerOfertas(criterio, function (ofertas) {
-            if (ofertas == null) {
-                res.status(500);
-                app.get("logger").error("(API) Se ha producido un error al obtener las ofertas");
-                res.json({
-                    error: "se ha producido un error"
-                })
-            }
-            else {
-                // Antes de añadir un mensaje, compruebas si hay una conversacion existente entre las dos personas
-                // Si existe coges el id de esta y se lo añades al mensaje
-                // Si no existe la creas y coges id para añadirselo al mensaje
-                let oferta = ofertas[0];
-                let criterio = {
-                    $or: [
-                        {
-                            $and: [
-                                {
-                                    emisor: res.usuario
-                                },
-                                {
-                                    receptor: oferta.propietario
-                                },
-                                {oferta: gestorBD.mongo.ObjectID(req.params.id)}
-                            ]
-                        },
-                        {
-                            $and: [
-                                {
-                                    emisor: oferta.propietario
-                                },
-                                {
-                                    receptor: res.usuario
-                                },
-                                {oferta: gestorBD.mongo.ObjectID(req.params.id)}
-                            ]
+        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        if(req.body.mensaje==null || req.body.mensaje ===''){
+            app.get("logger").info('(API) Se ha intentado enviar un mensaje vacío');
+        }else {
+            gestorBD.obtenerOfertas(criterio, function (ofertas) {
+                if (ofertas == null) {
+                    res.status(500);
+                    app.get("logger").error("(API) Se ha producido un error al obtener las ofertas");
+                    res.json({
+                        error: "se ha producido un error"
+                    })
+                }
+                else {
+                    // Antes de añadir un mensaje, compruebas si hay una conversacion existente entre las dos personas
+                    // Si existe coges el id de esta y se lo añades al mensaje
+                    // Si no existe la creas y coges id para añadirselo al mensaje
+                    let oferta = ofertas[0];
+                    let criterio = {
+                        $or: [
+                            {
+                                $and: [
+                                    {
+                                        emisor: res.usuario
+                                    },
+                                    {
+                                        receptor: oferta.propietario
+                                    },
+                                    {oferta: gestorBD.mongo.ObjectID(req.params.id)}
+                                ]
+                            },
+                            {
+                                $and: [
+                                    {
+                                        emisor: oferta.propietario
+                                    },
+                                    {
+                                        receptor: res.usuario
+                                    },
+                                    {oferta: gestorBD.mongo.ObjectID(req.params.id)}
+                                ]
+                            }
+                        ]
+                    };
+                    gestorBD.buscarConversaciones(criterio, function (conversaciones) {
+                        if (conversaciones.length === 0) {
+                            let conversacion = {
+                                oferta: gestorBD.mongo.ObjectID(req.params.id),
+                                nombreOferta: ofertas[0].nombre,
+                                receptor: req.body.receptor,
+                                emisor: res.usuario,
+                                numMensajesNoLeidos: 0
+                            };
+                            gestorBD.insertarConversacion(conversacion, function (conversaciones) {
+                                if (conversaciones == null) {
+                                    res.status(500);
+                                    app.get("logger").error("(API) Se ha producido un error al insertar las conversaciones");
+                                    res.json({
+                                        error: "se ha producido un error"
+                                    })
+                                } else {
+                                    let mensaje = {
+                                        emisor: res.usuario,
+                                        receptor: req.body.receptor,
+                                        oferta: oferta,
+                                        mensaje: req.body.mensaje,
+                                        fecha: moment().format('dddd, MMMM Do YYYY, h:mm:ss a'),
+                                        leido: false,
+                                        idConversacion: conversaciones._id
+                                    };
+                                    gestorBD.insertarMensaje(mensaje, function (mensajes) {
+                                        if (mensajes == null) {
+                                            res.status(500);
+                                            app.get("logger").error("(API) Se ha producido un error al insertar los mensajes");
+                                            res.json({
+                                                error: "se ha producido un error"
+                                            })
+                                        } else {
+                                            res.status(200);
+                                            app.get("logger").info('(API) Se muestra la lista de mensajes para la oferta indicada');
+                                            res.send(JSON.stringify(mensajes));
+                                        }
+                                    });
+                                }
+                            })
+                        } else if (conversaciones.length > 0) {
+                            app.get("logger").info('(API) Se ha insertado una nueva conversacion');
+                            let mensaje = {
+                                emisor: res.usuario,
+                                receptor: req.body.receptor,
+                                oferta: oferta,
+                                mensaje: req.body.mensaje,
+                                fecha: moment().format('dddd, MMMM Do YYYY, h:mm:ss a'),
+                                leido: false,
+                                idConversacion: conversaciones[0]._id
+                            };
+                            gestorBD.insertarMensaje(mensaje, function (mensajes) {
+                                if (mensajes == null) {
+                                    res.status(500);
+                                    app.get("logger").error("(API) Se ha producido un error al insertar los mensajes");
+                                    res.json({
+                                        error: "se ha producido un error"
+                                    })
+                                } else {
+                                    res.status(200);
+                                    app.get("logger").info('(API) Se muestra la lista de mensajes para la oferta indicada');
+                                    res.send(JSON.stringify(mensajes));
+                                }
+                            });
                         }
-                    ]
-                };
-                gestorBD.buscarConversaciones(criterio, function (conversaciones) {
-                    if (conversaciones.length === 0) {
-                        let conversacion = {
-                            oferta: gestorBD.mongo.ObjectID(req.params.id),
-                            nombreOferta: ofertas[0].nombre,
-                            receptor: req.body.receptor,
-                            emisor: res.usuario,
-                            numMensajesNoLeidos: 0
-                        };
-                        gestorBD.insertarConversacion(conversacion, function (conversaciones) {
-                            if (conversaciones == null) {
-                                res.status(500);
-                                app.get("logger").error("(API) Se ha producido un error al insertar las conversaciones");
-                                res.json({
-                                    error: "se ha producido un error"
-                                })
-                            } else {
-                                let mensaje = {
-                                    emisor: res.usuario,
-                                    receptor: req.body.receptor,
-                                    oferta: oferta,
-                                    mensaje: req.body.mensaje,
-                                    fecha: moment().format('dddd, MMMM Do YYYY, h:mm:ss a'),
-                                    leido: false,
-                                    idConversacion: conversaciones._id
-                                };
-                                gestorBD.insertarMensaje(mensaje, function (mensajes) {
-                                    if (mensajes == null) {
-                                        res.status(500);
-                                        app.get("logger").error("(API) Se ha producido un error al insertar los mensajes");
-                                        res.json({
-                                            error: "se ha producido un error"
-                                        })
-                                    } else {
-                                        res.status(200);
-                                        app.get("logger").info('(API) Se muestra la lista de mensajes para la oferta indicada');
-                                        res.send(JSON.stringify(mensajes));
-                                    }
-                                });
-                            }
-                        })
-                    } else if (conversaciones.length > 0) {
-                        app.get("logger").info('(API) Se ha insertado una nueva conversacion');
-                        let mensaje = {
-                            emisor: res.usuario,
-                            receptor: req.body.receptor,
-                            oferta: oferta,
-                            mensaje: req.body.mensaje,
-                            fecha: moment().format('dddd, MMMM Do YYYY, h:mm:ss a'),
-                            leido: false,
-                            idConversacion: conversaciones[0]._id
-                        };
-                        gestorBD.insertarMensaje(mensaje, function (mensajes) {
-                            if (mensajes == null) {
-                                res.status(500);
-                                app.get("logger").error("(API) Se ha producido un error al insertar los mensajes");
-                                res.json({
-                                    error: "se ha producido un error"
-                                })
-                            } else {
-                                res.status(200);
-                                app.get("logger").info('(API) Se muestra la lista de mensajes para la oferta indicada');
-                                res.send(JSON.stringify(mensajes));
-                            }
-                        });
-                    }
-                })
-            }
-        })
+                    })
+                }
+            })
+        }
     });
 
     app.get("/api/conversacion/oferta/:id/:receptor", function (req, res) {
