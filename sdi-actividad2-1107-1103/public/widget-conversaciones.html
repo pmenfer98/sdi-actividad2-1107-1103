@@ -20,7 +20,7 @@
             success: function (respuesta) {
                 actualizarTabla(respuesta);
             },
-            error: function (error) {
+            error: function () {
                 alert('Error al listar conversaciones');
                 Cookies.remove('token');
                 $("#contenedor-principal").load("widget-login.html");

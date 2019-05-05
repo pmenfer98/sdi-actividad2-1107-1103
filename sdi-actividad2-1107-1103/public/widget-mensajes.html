@@ -32,10 +32,11 @@
             headers: {
                 "token": Cookies.get('token')
             },
-            success: function (respuesta) {
+            success: function () {
                 cargarMensajes();
+                $("#contenidoMensaje").val('');
             },
-            error: function (error) {
+            error: function () {
                 $("#alertMessage").remove();
                 $("#mensajes")
                     .prepend("<div id='alertMessage' class='alert alert-danger'>Error enviando el mensaje</div>");
@@ -91,4 +92,6 @@
             }
         }
     }
+
+    refreshIntervalId = setInterval(cargarMensajes, 1000);
 </script>

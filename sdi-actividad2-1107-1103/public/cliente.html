@@ -43,6 +43,7 @@
     var ofertas;
     var token;
     var URLbase = "http://localhost:8081/api";
+    let refreshIntervalId;
     if (Cookies.get('token') != null) {
         token = Cookies.get('token');
         let url = new URL(window.location.href);
@@ -60,19 +61,24 @@
             default:
                 $("#contenedor-principal").load("widget-login.html");
         }
+    } else {
+        $("#contenedor-principal").load("widget-login.html");
     }
 
     function loadOfertas() {
+        clearInterval(refreshIntervalId);
         window.history.pushState("", "", "/cliente.html?w=ofertas");
         $("#contenedor-principal").load("widget-ofertas.html");
     }
 
     function loadConversaciones() {
+        clearInterval(refreshIntervalId);
         window.history.pushState("", "", "/cliente.html?w=conversaciones");
         $("#contenedor-principal").load("widget-conversaciones.html");
     }
 
     function desconectarse() {
+        clearInterval(refreshIntervalId);
         window.history.pushState("", "", "/cliente.html?w=login");
         $("#contenedor-principal").load("widget-login.html");
     }
