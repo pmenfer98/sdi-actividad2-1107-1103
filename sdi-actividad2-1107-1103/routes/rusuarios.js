@@ -162,9 +162,57 @@ module.exports = function (app, swig, gestorBD) {
                     res.redirect("/listarUsuarios" +
                         "?mensaje=Los usuarios no pudieron eliminarse");
                 } else {
-                    app.get("logger").info("Los usuarios se eliminaron correctamente");
-                    res.redirect("/listarUsuarios" +
-                        "?mensaje=Los usuarios se eliminaron correctamente");
+                    let criterioMensajes = {
+                        $or: [
+                            {
+                                emisor: {$in: idsUsers}
+
+                            },
+                            {
+                                receptor: {$in: idsUsers}
+                            }
+                        ]
+                    };
+                    gestorBD.eliminarMensajes(criterioMensajes, function (mensajes) {
+                        if (mensajes == null) {
+                            app.get("logger").info("Error al eliminar los mensajes de los usuarios");
+                            res.redirect("/listarUsuarios" +
+                                "?mensaje=Error al eliminar los mensajes del usuario");
+                        } else {
+                            app.get("logger").info("Los mensajes de los usuarios se eliminaron correctamente");
+                            gestorBD.eliminarConversaciones(criterioMensajes, function (mensajes) {
+                                if (mensajes == null) {
+                                    app.get("logger").info("Error al eliminar las conversaciones de los usuarios");
+                                    res.redirect("/listarUsuarios" +
+                                        "?mensaje=Error al eliminar las conversaciones de los usuarios");
+                                } else {
+                                    app.get("logger").info("Las conversaciones de los usuarios se eliminaron correctamente");
+                                    let criterioOferta = {
+                                        $and: [
+                                            {
+                                                propietario: {$in: idsUsers}
+
+                                            },
+                                            {
+                                                comprador : { $exists: false }
+                                            }
+                                        ]
+                                    };
+                                    gestorBD.eliminarOferta(criterioOferta, function (ofertas) {
+                                        if (ofertas == null) {
+                                            app.get("logger").info("Error al eliminar las ofertas de los usuarios");
+                                            res.redirect("/listarUsuarios" +
+                                                "?mensaje=Error al eliminar las ofertas de los usuarios");
+                                        } else {
+                                            app.get("logger").info("Usuarios eliminados correctamente");
+                                            res.redirect("/listarUsuarios" +
+                                                "?mensaje=Usuarios eliminados correctamente");
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
                 }
             });
         }

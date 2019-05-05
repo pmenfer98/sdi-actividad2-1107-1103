@@ -102,6 +102,7 @@ public class JavaMongodbInsertData {
 		getMongodb().getCollection("ofertas").drop();
 		getMongodb().getCollection("usuarios").drop();
 		getMongodb().getCollection("mensajes").drop();
+		getMongodb().getCollection("conversaciones").drop();
 	}
 
 	public MongoClient getMongoClient() {
