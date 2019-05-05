@@ -19,7 +19,6 @@
     $("#mListaOfertas").show();
     $("#mDesconectarse").show();
     $("#mConversaciones").show();
-    cargarMensajes();
     $("#btnEnviar").click(function () {
         $.ajax({
             url: URLbase + "/mensaje/oferta/" + idOfertaSeleccionada,
@@ -47,7 +46,7 @@
 
     function cargarMensajes() {
         $.ajax({
-            url: URLbase + "/conversacion/oferta/" + idOfertaSeleccionada + "/" + Cookies.get('receptor'),
+            url: URLbase + "/conversacion/oferta/" + Cookies.get('idOfertaSeleccionada') + "/" + Cookies.get('receptor'),
             type: "GET",
             data: {},
             dataType: 'json',
@@ -93,5 +92,6 @@
         }
     }
 
+    cargarMensajes();
     refreshIntervalId = setInterval(cargarMensajes, 1000);
 </script>
