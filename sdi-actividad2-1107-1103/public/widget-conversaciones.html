@@ -68,7 +68,7 @@
     }
 
     function mensajes(_id, receptor, emisor) {
-        idOfertaSeleccionada = _id;
+        Cookies.set("idOfertaSeleccionada", _id);
         Cookies.set("receptor", receptor);
         Cookies.set("emisor", emisor);
         $("#contenedor-principal").load("widget-mensajes.html");

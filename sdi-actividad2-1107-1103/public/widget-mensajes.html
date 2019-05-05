@@ -21,7 +21,7 @@
     $("#mConversaciones").show();
     $("#btnEnviar").click(function () {
         $.ajax({
-            url: URLbase + "/mensaje/oferta/" + idOfertaSeleccionada,
+            url: URLbase + "/mensaje/oferta/" + Cookies.get('idOfertaSeleccionada'),
             type: "POST",
             data: {
                 mensaje: $("#contenidoMensaje").val(),
@@ -68,28 +68,44 @@
         $("#mensajes").empty(); // Vaciar la tabla
         for (i = 0; i < mensajesMostrar.length; i++) {
             if (mensajesMostrar[i].emisor === Cookies.get('email')) {
-                $("#mensajes").append(
-                    "<div id='mensajeEnviado' class='form-group'>" +
+                let mensaje = "<div id='mensajeEnviado' class='form-group'>" +
                     "<div class='text-right'>" +
                     "<p id='nombreEmisor'> -- " + mensajesMostrar[i].emisor + " -- </p>" +
                     "<p>" + mensajesMostrar[i].mensaje + "</p>" +
-                    "<p id='fechaEmisor'> -- " + mensajesMostrar[i].fecha + " -- </p>" +
+                    "<p id='fechaEmisor'> -- " + mensajesMostrar[i].fecha + " -- </p>";
+                if (mensajesMostrar[i].leido) {
+                    mensaje += "<p> Leído </p>"
+                }
+                $("#mensajes").append(mensaje +
                     "</div>" +
                     "</div>"
                 );
             }
             else {
-                $("#mensajes").append(
-                    "<div id='mensajeRecibido' class='form-group'>" +
+                leidoMensaje(mensajesMostrar[i]);
+                let mensaje = "<div id='mensajeRecibido' class='form-group'>" +
                     "<div class='text-left'>" +
                     "<p id='nombreReceptor'> -- " + mensajesMostrar[i].emisor + " -- </p>" +
                     "<p>" + mensajesMostrar[i].mensaje + "</p>" +
-                    "<p id='fechaReceptor'> -- " + mensajesMostrar[i].fecha + " -- </p>" +
+                    "<p id='fechaReceptor'> -- " + mensajesMostrar[i].fecha + " -- </p>";
+                $("#mensajes").append(mensaje +
                     "</div>" +
                     "</div>"
                 );
             }
         }
+    }
+
+    function leidoMensaje(mensaje) {
+        $.ajax({
+            url: URLbase + "/mensaje/leido/" + mensaje._id,
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {"token": Cookies.get('token')},
+            success: function (respuesta) {
+            }
+        });
     }
 
     cargarMensajes();
