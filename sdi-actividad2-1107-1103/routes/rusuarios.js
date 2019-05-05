@@ -108,6 +108,7 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/registrarse?mensaje=Las contraseñas no coinciden")
         }
     });
+
     app.get('/listarUsuarios', function (req, res) {
         let criterioMongo = {
             $and: [

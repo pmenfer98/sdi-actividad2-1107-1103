@@ -42,36 +42,44 @@ module.exports = function (app, gestorBD) {
     });
 
     app.post("/api/autenticar/", function (req, res) {
-        var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
-            .update(req.body.password).digest('hex');
-        var criterio = {
-            email: req.body.email,
-            password: seguro
-        }
-
-        gestorBD.obtenerUsuarios(criterio, function (usuarios) {
-            if (usuarios == null || usuarios.length === 0) {
-                res.status(401); // Unauthorized
-                app.get("logger").error("(API) Se ha producido un error al obtener los usuarios");
-                res.json({
-                    autenticado: false
-                })
-            } else {
-                var token = app.get('jwt').sign(
-                    {
-                        usuario: req.body.email,
-                        tiempo: Date.now() / 1000
-                    },
-                    "secreto");
-                res.status(200);
-                app.get("logger").info('(API) El usuario se ha autenticado');
-                res.json({
-                    autenticado: true,
-                    token: token
-                })
+        if (req.body.email === '' || req.body.email == null || req.body.password == null || req.body.password === '') {
+            res.status(406);
+            app.get("logger").error("(API) Se ha introducido informacion vacía en la identificación");
+            res.json({
+                error: "Los datos no son validos"
+            });
+        } else {
+            var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
+                .update(req.body.password).digest('hex');
+            var criterio = {
+                email: req.body.email,
+                password: seguro
             }
 
-        });
+            gestorBD.obtenerUsuarios(criterio, function (usuarios) {
+                if (usuarios == null || usuarios.length === 0) {
+                    res.status(401); // Unauthorized
+                    app.get("logger").error("(API) Se ha producido un error al obtener los usuarios");
+                    res.json({
+                        autenticado: false
+                    })
+                } else {
+                    var token = app.get('jwt').sign(
+                        {
+                            usuario: req.body.email,
+                            tiempo: Date.now() / 1000
+                        },
+                        "secreto");
+                    res.status(200);
+                    app.get("logger").info('(API) El usuario se ha autenticado');
+                    res.json({
+                        autenticado: true,
+                        token: token
+                    })
+                }
+
+            });
+        }
     });
 
     app.post("/api/mensaje/oferta/:id", function (req, res) {
