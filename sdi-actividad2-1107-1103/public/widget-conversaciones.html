@@ -1,14 +1,13 @@
 <div id="widget-canciones">
-    <h2>Ofertas</h2>
+    <h2>Conversaciones</h2>
     <div id="tablaCuerpo">
-
     </div>
 </div>
 <script>
     window.history.pushState("", "", "/cliente.html?w=conversaciones");
-
-    var ofertas;
-
+    $("#mListaOfertas").show();
+    $("#mDesconectarse").show();
+    $("#mConversaciones").show();
     function cargarConversaciones() {
         $.ajax({
             url: URLbase + "/conversaciones/",

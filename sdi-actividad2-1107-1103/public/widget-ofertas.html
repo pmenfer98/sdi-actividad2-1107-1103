@@ -21,8 +21,9 @@
 </div>
 <script>
     window.history.pushState("", "", "/cliente.html?w=ofertas");
-
-    var ofertas;
+    $("#mListaOfertas").show();
+    $("#mDesconectarse").show();
+    $("#mConversaciones").show();
 
     function cargarOfertas() {
         $.ajax({
@@ -31,15 +32,14 @@
             data: {},
             dataType: 'json',
             headers: {
-                "token": Cookies.get('token')
+                "token": token
             },
             success: function (respuesta) {
                 ofertas = respuesta;
                 actualizarTabla(ofertas);
             },
-            error: function (error) {
-                alert('Error al listar los amigos. Intentelo de nuevo');
-                Cookies.remove('token');
+            error: function () {
+                alert('Error al listar las ofertas. Intentelo de nuevo');
                 $("#contenedor-principal").load("widget-login.html");
             }
         });

@@ -25,7 +25,12 @@
 
 <script>
     window.history.pushState("", "", "/cliente.html?w=login");
-    $("#boton-login").click(function(){
+
+    $("#mListaOfertas").hide();
+    $("#mDesconectarse").hide();
+    $("#mConversaciones").hide();
+
+    $("#boton-login").click(function () {
         $.ajax({
             url: URLbase + "/autenticar",
             type: "POST",
@@ -38,6 +43,7 @@
                 token = respuesta.token;
                 Cookies.set('email', $("#email").val());
                 Cookies.set('token', respuesta.token);
+                console.log(Cookies.get('token'))
                 $("#contenedor-principal").load("widget-ofertas.html");
             },
             error: function (error) {
