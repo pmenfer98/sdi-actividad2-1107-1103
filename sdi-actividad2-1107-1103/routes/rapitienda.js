@@ -41,7 +41,6 @@ module.exports = function (app, gestorBD) {
         });
     });
 
-
     app.post("/api/autenticar/", function (req, res) {
         var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
             .update(req.body.password).digest('hex');
@@ -396,17 +395,5 @@ module.exports = function (app, gestorBD) {
                 });
             }
         });
-    });
-
-    // TODO
-    // Terminarlo para que devuelva las conversaciones
-    app.get("/api/conversacion/usuario", function (req, res) {
-        let usuario = res.usuario;
-        let criterio = {
-            $or: [
-                {receptor: usuario},
-                {emisor: usuario}
-            ]
-        }
     });
 };
